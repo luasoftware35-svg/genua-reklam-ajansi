@@ -38,6 +38,7 @@ body {
 
 body.menu-open {
   overflow: hidden;
+  touch-action: none;
 }
 
 img,
@@ -1183,16 +1184,37 @@ body.is-loaded .loader {
     position: fixed;
     inset: 0;
     z-index: 101;
-    display: grid;
-    align-content: center;
-    justify-items: center;
-    gap: 10px;
-    padding: 88px 24px 40px;
-    background: rgba(10, 10, 0, 0.96);
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+    padding: max(78px, env(safe-area-inset-top) + 68px) 18px max(28px, env(safe-area-inset-bottom) + 20px);
+    background: rgba(10, 10, 0, 0.98);
     opacity: 0;
+    overflow-y: auto;
     visibility: hidden;
     transform: translateY(-18px);
     transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+  }
+
+  body.menu-open .site-header {
+    height: 100vh;
+    height: 100dvh;
+    background: rgba(10, 10, 0, 0.98);
+  }
+
+  body.menu-open .navbar {
+    position: relative;
+    z-index: 102;
+    align-items: flex-start;
+  }
+
+  body.menu-open .brand {
+    color: var(--white);
   }
 
   .nav-menu.is-open {
@@ -1204,7 +1226,11 @@ body.is-loaded .loader {
   .nav-menu a,
   .site-header.is-scrolled .nav-menu a {
     color: var(--white);
-    font-size: clamp(1.35rem, 6vw, 2.6rem);
+    width: min(100%, 320px);
+    padding: 8px 12px;
+    font-size: clamp(1.08rem, 5vw, 1.55rem);
+    line-height: 1.05;
+    text-align: center;
   }
 
   .nav-menu a:hover,
@@ -1215,11 +1241,11 @@ body.is-loaded .loader {
 
   .nav-menu .nav-cta,
   .site-header.is-scrolled .nav-menu .nav-cta {
-    margin: 18px 0 0;
-    padding: 16px 26px;
+    margin: 8px 0 0;
+    padding: 13px 24px;
     color: var(--dark);
     background: var(--accent);
-    font-size: 1.08rem;
+    font-size: 1rem;
   }
 
   .section-row,
@@ -1356,6 +1382,24 @@ body.is-loaded .loader {
 
   .testimonial-track {
     min-height: 500px;
+  }
+
+  .nav-menu {
+    gap: 3px;
+    padding-inline: 18px;
+    justify-content: flex-start;
+  }
+
+  .nav-menu a,
+  .site-header.is-scrolled .nav-menu a {
+    padding: 8px 12px;
+    font-size: clamp(1rem, 5.6vw, 1.35rem);
+  }
+
+  .nav-menu .nav-cta,
+  .site-header.is-scrolled .nav-menu .nav-cta {
+    margin-top: 10px;
+    font-size: 1rem;
   }
 }
 
