@@ -168,6 +168,26 @@ quoteForm?.addEventListener("submit", (event) => {
   window.location.href = "tesekkurler.html";
 });
 
+document.querySelectorAll("[data-show-more-clients]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const grid = document.querySelector(`#${button.getAttribute("aria-controls")}`);
+    const isExpanded = grid?.classList.toggle("is-expanded") ?? false;
+    button.setAttribute("aria-expanded", String(isExpanded));
+    button.textContent = isExpanded ? "Daha Az Göster" : "Daha Fazlasını Göster";
+  });
+});
+
+document.querySelectorAll("[data-toggle-panel]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const panel = document.querySelector(button.dataset.togglePanel);
+    if (!panel) return;
+
+    const isOpen = panel.hasAttribute("hidden");
+    panel.toggleAttribute("hidden", !isOpen);
+    button.setAttribute("aria-expanded", String(isOpen));
+  });
+});
+
 const initCursorTrail = () => {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const finePointer = window.matchMedia("(pointer: fine)").matches;
