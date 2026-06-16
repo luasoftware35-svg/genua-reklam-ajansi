@@ -15,20 +15,40 @@ if (siteHeader) {
 }
 
 if (menuToggle && navMenu) {
+  const closeMenu = () => {
+    navMenu.classList.remove("is-open");
+    menuToggle.classList.remove("is-open");
+    menuToggle.setAttribute("aria-expanded", "false");
+    menuToggle.setAttribute("aria-label", "Menüyü aç");
+    document.body.classList.remove("menu-open");
+  };
+
+  const openMenu = () => {
+    navMenu.classList.add("is-open");
+    menuToggle.classList.add("is-open");
+    menuToggle.setAttribute("aria-expanded", "true");
+    menuToggle.setAttribute("aria-label", "Menüyü kapat");
+    document.body.classList.add("menu-open");
+  };
+
   menuToggle.addEventListener("click", () => {
-    const isOpen = navMenu.classList.toggle("is-open");
-    menuToggle.classList.toggle("is-open", isOpen);
-    menuToggle.setAttribute("aria-expanded", String(isOpen));
-    document.body.classList.toggle("menu-open", isOpen);
+    const isOpen = navMenu.classList.contains("is-open");
+    if (isOpen) closeMenu();
+    else openMenu();
+  });
+
+  navMenu.addEventListener("click", (event) => {
+    if (event.target === navMenu) closeMenu();
   });
 
   navMenu.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
-      navMenu.classList.remove("is-open");
-      menuToggle.classList.remove("is-open");
-      menuToggle.setAttribute("aria-expanded", "false");
-      document.body.classList.remove("menu-open");
+      closeMenu();
     });
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && navMenu.classList.contains("is-open")) closeMenu();
   });
 }
 

@@ -1180,6 +1180,28 @@ body.is-loaded .loader {
     display: block;
   }
 
+  body.menu-open .menu-toggle {
+    position: fixed;
+    top: max(16px, env(safe-area-inset-top) + 12px);
+    right: 16px;
+    z-index: 140;
+    width: 56px;
+    height: 56px;
+    border: 1px solid rgba(219, 255, 43, 0.65);
+    border-radius: 18px;
+    background:
+      linear-gradient(135deg, var(--accent), #f2ff84);
+    box-shadow:
+      0 20px 46px rgba(219, 255, 43, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.38);
+  }
+
+  body.menu-open .menu-toggle span {
+    width: 24px;
+    height: 2.5px;
+    background: var(--dark);
+  }
+
   .nav-menu {
     position: fixed;
     inset: 0;
@@ -1192,7 +1214,7 @@ body.is-loaded .loader {
     align-items: center;
     justify-content: flex-start;
     gap: 8px;
-    padding: max(78px, env(safe-area-inset-top) + 68px) 18px max(28px, env(safe-area-inset-bottom) + 20px);
+    padding: max(92px, env(safe-area-inset-top) + 82px) 18px max(28px, env(safe-area-inset-bottom) + 20px);
     background:
       radial-gradient(circle at 82% 14%, rgba(219, 255, 43, 0.24), transparent 26%),
       radial-gradient(circle at 12% 86%, rgba(168, 204, 0, 0.18), transparent 28%),
