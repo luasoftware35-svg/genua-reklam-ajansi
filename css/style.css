@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap");
+
 :root {
   --accent: #dbff2b;
   --background: #ffffff;
@@ -16,11 +18,6 @@
   --radius-md: 18px;
   --container: 1180px;
   --header-height: 86px;
-  --brand-logo-height: 38px;
-  --brand-logo-height-scrolled: 34px;
-  --brand-logo-height-mobile: 30px;
-  --brand-logo-footer-height: 32px;
-  --brand-logo-loader-width: 260px;
 }
 
 * {
@@ -274,7 +271,8 @@ ul {
   letter-spacing: 0.14em;
 }
 
-.loader span::after {
+.loader span::after,
+.loader-brand::after {
   content: "";
   position: absolute;
   right: 0;
@@ -320,45 +318,77 @@ body.is-loaded .loader {
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
-  line-height: 0;
+  gap: 7px;
+  font-family: "Fredoka", "Nunito", sans-serif;
+  line-height: 1;
+  text-transform: lowercase;
 }
 
-.brand-image {
-  display: block;
-  width: auto;
-  height: var(--brand-logo-height);
-  max-width: none;
-  object-fit: contain;
-  object-position: left center;
+.brand-mark {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  color: var(--dark);
+  background: var(--accent);
+  border: 1px solid rgba(219, 255, 43, 0.58);
+  border-radius: 10px;
+  font-size: 1.28rem;
+  font-weight: 700;
 }
 
-.site-header.is-scrolled .brand-image {
-  height: var(--brand-logo-height-scrolled);
+.brand-word,
+.loader-brand {
+  display: inline-flex;
+  align-items: baseline;
+  color: var(--accent);
+  font-size: 1.72rem;
+  font-weight: 700;
+  letter-spacing: -0.045em;
 }
 
-.footer-logo .brand-image {
-  height: var(--brand-logo-footer-height);
+.brand-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: brandCharIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 0.07s + 0.08s);
 }
 
-.loader-logo {
-  display: block;
-  width: var(--brand-logo-loader-width);
-  max-width: min(78vw, 260px);
-  height: auto;
-  animation: loaderPulse 1.1s ease both;
+.brand-mark .brand-char {
+  animation-delay: 0s;
 }
 
-@keyframes loaderPulse {
-  from {
-    opacity: 0;
-    transform: scale(0.94);
-  }
+.brand-word .brand-char:nth-child(1) { --i: 1; }
+.brand-word .brand-char:nth-child(2) { --i: 2; }
+.brand-word .brand-char:nth-child(3) { --i: 3; }
+.brand-word .brand-char:nth-child(4) { --i: 4; }
 
+@keyframes brandCharIn {
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0);
   }
 }
+
+.loader-brand {
+  position: relative;
+  font-family: "Fredoka", "Nunito", sans-serif;
+  font-size: clamp(2.6rem, 8vw, 5.4rem);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  text-transform: lowercase;
+}
+
+.loader-brand .brand-char {
+  animation-delay: calc(var(--i, 0) * 0.11s + 0.05s);
+}
+
+.loader-brand .brand-char:nth-child(1) { --i: 0; }
+.loader-brand .brand-char:nth-child(2) { --i: 1; }
+.loader-brand .brand-char:nth-child(3) { --i: 2; }
+.loader-brand .brand-char:nth-child(4) { --i: 3; }
+.loader-brand .brand-char:nth-child(5) { --i: 4; }
 
 .nav-menu {
   display: flex;
@@ -1487,12 +1517,14 @@ body.is-loaded .loader {
 }
 
 @media (max-width: 430px) {
-  .brand-image {
-    height: var(--brand-logo-height-mobile);
+  .brand-mark {
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
   }
 
-  .site-header.is-scrolled .brand-image {
-    height: var(--brand-logo-height-mobile);
+  .brand-word {
+    font-size: 1.48rem;
   }
 
   .section-heading h2,
