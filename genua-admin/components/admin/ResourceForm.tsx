@@ -22,7 +22,8 @@ function Field({ field, row }: { field: ResourceField; row?: Record<string, unkn
   const wrapperClass = `field ${field.full || ['textarea', 'richtext', 'json'].includes(field.type) ? 'full' : ''}`;
 
   if (field.type === 'checkbox') {
-    return <label className={wrapperClass} style={{ alignContent: 'start' }}><span>{field.label}</span><input type="checkbox" name={field.name} defaultChecked={Boolean(row?.[field.name])} /></label>;
+    const defaultChecked = row ? Boolean(row[field.name]) : field.name === 'is_active';
+    return <label className={wrapperClass} style={{ alignContent: 'start' }}><span>{field.label}</span><input type="checkbox" name={field.name} defaultChecked={defaultChecked} /></label>;
   }
 
   if (field.type === 'select') {
