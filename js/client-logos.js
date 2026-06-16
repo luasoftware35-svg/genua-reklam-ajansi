@@ -43,26 +43,35 @@ function renderLogoCard(logo) {
   return `<article class="${classes.join(" ")}">${inner}</article>`;
 }
 
+async function fetchLogos(config, select) {
+  const endpoint = `${config.url}/rest/v1/client_logos?select=${encodeURIComponent(select)}&is_active=eq.true&order=display_order.asc`;
+
+  const response = await fetch(endpoint, {
+    cache: 'no-store',
+    headers: {
+      apikey: config.key,
+      Authorization: `Bearer ${config.key}`,
+    },
+  });
+
+  if (!response.ok) return null;
+
+  const logos = await response.json();
+  return Array.isArray(logos) && logos.length > 0 ? logos : null;
+}
+
 async function loadClientLogos() {
   const grid = document.querySelector("#clientGrid");
   const config = window.GenuaSupabase;
 
   if (!grid || !config?.url || !config?.key) return;
 
-  const endpoint = `${config.url}/rest/v1/client_logos?select=company_name,logo_url,initials,website_url,is_public_client,is_collapsed,display_order&is_active=eq.true&order=display_order.asc`;
+  const extendedSelect = "company_name,logo_url,initials,website_url,is_public_client,is_collapsed,display_order";
+  const basicSelect = "company_name,logo_url,website_url,display_order";
 
   try {
-    const response = await fetch(endpoint, {
-      headers: {
-        apikey: config.key,
-        Authorization: `Bearer ${config.key}`,
-      },
-    });
-
-    if (!response.ok) return;
-
-    const logos = await response.json();
-    if (!Array.isArray(logos) || logos.length === 0) return;
+    const logos = (await fetchLogos(config, extendedSelect)) ?? (await fetchLogos(config, basicSelect));
+    if (!logos) return;
 
     grid.innerHTML = logos.map(renderLogoCard).join("");
   } catch {
