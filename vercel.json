@@ -1,4 +1,16 @@
 {
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/anasayfa",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/anasayfa",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/admin",

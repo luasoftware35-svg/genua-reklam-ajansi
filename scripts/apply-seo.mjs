@@ -10,13 +10,15 @@ const ogPath = site.defaultOgImage.replace(/^\//, '');
 const ogImage = site.defaultOgImage.startsWith('http') ? site.defaultOgImage : `${origin}/${ogPath}`;
 const favicon = site.favicon;
 const faviconAbsolute = favicon.startsWith('http') ? favicon : `${origin}/${favicon.replace(/^\//, '')}`;
+const logoPath = site.logo ?? site.favicon;
+const logoAbsolute = logoPath.startsWith('http') ? logoPath : `${origin}/${logoPath.replace(/^\//, '')}`;
 
 const pages = {
-  'index.html': {
+  'anasayfa.html': {
     title: 'Genua Reklam Ajansı | Dijital Pazarlama & Sosyal Medya Ajansı – Denizli',
     description: 'Denizli merkezli Genua Reklam Ajansı; dijital reklam, sosyal medya yönetimi, marka tasarımı ve içerik üretimi ile markanızı büyütür. Kamu ve kurumsal projelerde deneyimli ekip.',
     keywords: 'dijital reklam ajansı denizli, sosyal medya ajansı, reklam ajansı denizli, dijital pazarlama, google ads yönetimi, meta reklam, marka tasarımı, içerik üretimi, genua reklam ajansı',
-    path: '/',
+    path: '/anasayfa',
     schema: 'home',
   },
   'hakkimizda.html': {
@@ -139,7 +141,7 @@ function organizationSchema() {
     '@type': ['Organization', 'ProfessionalService'],
     name: org.legalName,
     url: origin,
-    logo: faviconAbsolute,
+    logo: logoAbsolute,
     image: ogImage,
     email: org.email,
     telephone: org.phone,
