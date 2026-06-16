@@ -314,6 +314,7 @@ body.is-loaded .loader {
 .brand {
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
   gap: 10px;
   color: var(--white);
   font-family: "Space Grotesk", sans-serif;
@@ -323,6 +324,9 @@ body.is-loaded .loader {
 
 .site-header.is-scrolled .brand {
   color: var(--text);
+  padding: 7px 12px;
+  background: #111111;
+  border-radius: 12px;
 }
 
 .brand-mark {
@@ -344,37 +348,23 @@ body.is-loaded .loader {
 .brand-image {
   display: block;
   width: auto;
-  height: 28px;
+  height: 32px;
   object-fit: contain;
-}
-
-.brand-image-on-light {
-  display: none;
-}
-
-.site-header.is-scrolled .brand-image-on-dark {
-  display: none;
-}
-
-.site-header.is-scrolled .brand-image-on-light {
-  display: block;
-  height: 30px;
 }
 
 .site-header.is-scrolled .brand-image {
   height: 30px;
 }
 
-.footer-logo .brand-image-on-light {
-  display: none !important;
-}
-
-.footer-logo .brand-image-on-dark {
-  display: block !important;
-}
-
 .footer-logo .brand-image {
-  height: 26px;
+  height: 28px;
+}
+
+.footer-logo.brand,
+.brand.footer-logo {
+  padding: 0;
+  background: none;
+  border-radius: 0;
 }
 
 .loader-logo {
