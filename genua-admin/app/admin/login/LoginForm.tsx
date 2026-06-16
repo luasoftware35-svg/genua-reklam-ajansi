@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { type FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
@@ -9,10 +9,12 @@ export function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  async function onSubmit(formData: FormData) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     setLoading(true);
     setError(null);
     const supabase = createClient();
+    const formData = new FormData(event.currentTarget);
     const email = String(formData.get('email') ?? '');
     const password = String(formData.get('password') ?? '');
     const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
@@ -28,7 +30,7 @@ export function LoginForm() {
   }
 
   return (
-    <form action={onSubmit} className="login-card">
+    <form onSubmit={onSubmit} className="login-card">
       <h1>Genua Admin</h1>
       <p>Email ve şifrenizle giriş yapın.</p>
       {error ? <div className="error-box">{error}</div> : null}
