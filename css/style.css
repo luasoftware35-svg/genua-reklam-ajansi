@@ -316,25 +316,30 @@ body.is-loaded .loader {
   align-items: center;
   flex-shrink: 0;
   line-height: 0;
+  min-height: 44px;
 }
 
 .brand-image {
   display: block;
   width: auto;
-  height: 34px;
+  height: 44px;
+  max-width: min(46vw, 228px);
   object-fit: contain;
+  object-position: left center;
 }
 
 .site-header.is-scrolled .brand-image {
-  height: 32px;
+  height: 40px;
 }
 
 .footer-logo .brand-image {
-  height: 30px;
+  height: 36px;
+  max-width: 200px;
 }
 
 .loader-logo {
-  width: min(68vw, 240px);
+  display: block;
+  width: min(72vw, 280px);
   height: auto;
   animation: loaderPulse 1.1s ease both;
 }
@@ -1479,11 +1484,12 @@ body.is-loaded .loader {
 
 @media (max-width: 430px) {
   .brand-image {
-    height: 28px;
+    height: 36px;
+    max-width: min(52vw, 168px);
   }
 
   .site-header.is-scrolled .brand-image {
-    height: 26px;
+    height: 34px;
   }
 
   .section-heading h2,
