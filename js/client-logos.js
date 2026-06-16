@@ -14,6 +14,10 @@ function initialsFromName(name) {
 }
 
 function renderLogoMark(logo) {
+  if (logo.logo_url?.startsWith('initials:')) {
+    return `<span class="brand-logo">${logo.logo_url.slice(9)}</span>`;
+  }
+
   if (logo.logo_url) {
     return `<span class="brand-logo has-image"><img src="${logo.logo_url}" alt="${logo.company_name} logosu" loading="lazy"></span>`;
   }
@@ -23,9 +27,12 @@ function renderLogoMark(logo) {
 }
 
 function renderLogoCard(logo) {
+  const order = Number(logo.display_order || 0);
+  const isPublic = logo.is_public_client ?? order <= 6;
+  const isCollapsed = logo.is_collapsed ?? order >= 31;
   const classes = ["brand-logo-card", "reveal", "is-visible"];
-  if (logo.is_public_client) classes.push("public-client");
-  if (logo.is_collapsed) classes.push("client-extra");
+  if (isPublic) classes.push("public-client");
+  if (isCollapsed) classes.push("client-extra");
 
   const inner = `<div>${renderLogoMark(logo)}<span>${logo.company_name}</span></div>`;
 
@@ -42,7 +49,7 @@ async function loadClientLogos() {
 
   if (!grid || !config?.url || !config?.key) return;
 
-  const endpoint = `${config.url}/rest/v1/client_logos?select=company_name,logo_url,initials,website_url,is_public_client,is_collapsed&is_active=eq.true&order=display_order.asc`;
+  const endpoint = `${config.url}/rest/v1/client_logos?select=company_name,logo_url,initials,website_url,is_public_client,is_collapsed,display_order&is_active=eq.true&order=display_order.asc`;
 
   try {
     const response = await fetch(endpoint, {

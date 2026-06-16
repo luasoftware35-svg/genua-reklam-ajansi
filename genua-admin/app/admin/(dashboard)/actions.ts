@@ -25,6 +25,14 @@ function serializePayload(resourceKey: string, formData: FormData) {
   if ('slug' in payload && !payload.slug && payload.title) payload.slug = slugify(String(payload.title));
   if (resourceKey === 'blog' && payload.content) payload.read_time_minutes = estimateReadTime(String(payload.content));
   if (resourceKey === 'blog' && payload.status === 'published' && !payload.published_at) payload.published_at = new Date().toISOString();
+  if (resourceKey === 'musteriler') {
+    const initials = payload.initials ? String(payload.initials).trim() : '';
+    const logoUrl = payload.logo_url ? String(payload.logo_url) : '';
+    if (initials && (!logoUrl || logoUrl.startsWith('initials:'))) payload.logo_url = `initials:${initials}`;
+    delete payload.initials;
+    delete payload.is_public_client;
+    delete payload.is_collapsed;
+  }
   return { config, payload };
 }
 

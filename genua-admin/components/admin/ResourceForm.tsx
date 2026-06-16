@@ -6,6 +6,10 @@ import { RichTextEditor } from './RichTextEditor';
 
 function valueFor(row: Record<string, unknown> | null | undefined, field: ResourceField) {
   const value = row?.[field.name];
+  if (field.name === 'initials' && typeof row?.logo_url === 'string' && row.logo_url.startsWith('initials:')) {
+    return row.logo_url.slice(9);
+  }
+  if (field.name === 'logo_url' && typeof value === 'string' && value.startsWith('initials:')) return '';
   if (value == null) return '';
   if (field.type === 'tags' && Array.isArray(value)) return value.join(', ');
   if (field.type === 'json') return JSON.stringify(value, null, 2);

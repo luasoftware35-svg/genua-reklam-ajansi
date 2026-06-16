@@ -5,6 +5,7 @@ import { ConfirmSubmit } from './ConfirmDialog';
 
 function show(value: unknown, column?: string) {
   if (column === 'logo_url' && typeof value === 'string' && value) {
+    if (value.startsWith('initials:')) return value.slice(9);
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img src={value} alt="" style={{ width: 56, height: 36, objectFit: 'contain', background: '#f8f8f0', borderRadius: 8, padding: 4 }} />
