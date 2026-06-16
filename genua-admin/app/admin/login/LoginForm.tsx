@@ -1,11 +1,20 @@
 'use client';
 
 import { type FormEvent, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
+const LOGIN_TIMEOUT_MS = 12000;
+
+function withTimeout<T>(promise: Promise<T>, message: string): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => {
+      window.setTimeout(() => reject(new Error(message)), LOGIN_TIMEOUT_MS);
+    }),
+  ]);
+}
+
 export function LoginForm() {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -13,20 +22,28 @@ export function LoginForm() {
     event.preventDefault();
     setLoading(true);
     setError(null);
-    const supabase = createClient();
-    const formData = new FormData(event.currentTarget);
-    const email = String(formData.get('email') ?? '');
-    const password = String(formData.get('password') ?? '');
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
 
-    if (signInError) {
-      setError(signInError.message);
-      return;
+    try {
+      const supabase = createClient();
+      const formData = new FormData(event.currentTarget);
+      const email = String(formData.get('email') ?? '').trim();
+      const password = String(formData.get('password') ?? '');
+      const { error: signInError } = await withTimeout(
+        supabase.auth.signInWithPassword({ email, password }),
+        'Giriş isteği zaman aşımına uğradı. Lütfen bağlantıyı kontrol edip tekrar deneyin.',
+      );
+
+      if (signInError) {
+        setError(signInError.message);
+        return;
+      }
+
+      window.location.assign('/admin');
+    } catch (loginError) {
+      setError(loginError instanceof Error ? loginError.message : 'Giriş yapılamadı. Lütfen tekrar deneyin.');
+    } finally {
+      setLoading(false);
     }
-
-    router.replace('/admin');
-    router.refresh();
   }
 
   return (

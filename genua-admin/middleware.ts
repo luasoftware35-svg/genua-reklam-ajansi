@@ -1,6 +1,8 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
+const AUTH_TIMEOUT_MS = 8000;
+
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
   const isAdminRoute = request.nextUrl.pathname.startsWith('/admin');
@@ -35,7 +37,11 @@ export async function middleware(request: NextRequest) {
     },
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const userResult = await Promise.race([
+    supabase.auth.getUser(),
+    new Promise<null>((resolve) => setTimeout(() => resolve(null), AUTH_TIMEOUT_MS)),
+  ]).catch(() => null);
+  const user = userResult && 'data' in userResult ? userResult.data.user : null;
 
   if (isAdminRoute && !user) {
     return NextResponse.redirect(new URL('/admin/login', request.url));

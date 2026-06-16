@@ -2,6 +2,22 @@ import { redirect } from 'next/navigation';
 import { Bell, LogOut } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 
+const USER_TIMEOUT_MS = 8000;
+
+async function getUserEmail() {
+  try {
+    const supabase = await createClient();
+    const result = await Promise.race([
+      supabase.auth.getUser(),
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), USER_TIMEOUT_MS)),
+    ]);
+
+    return result && 'data' in result ? result.data.user?.email ?? 'Admin' : 'Admin';
+  } catch {
+    return 'Admin';
+  }
+}
+
 async function signOut() {
   'use server';
   const supabase = await createClient();
@@ -10,8 +26,7 @@ async function signOut() {
 }
 
 export async function Header() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const userEmail = await getUserEmail();
 
   return (
     <header className="admin-header">
@@ -24,7 +39,7 @@ export async function Header() {
         <form action={signOut}>
           <button className="btn" type="submit"><LogOut size={16} /> Çıkış</button>
         </form>
-        <span className="badge">{user?.email ?? 'Admin'}</span>
+        <span className="badge">{userEmail}</span>
       </div>
     </header>
   );
