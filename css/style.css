@@ -16,6 +16,16 @@
   --radius-md: 18px;
   --container: 1180px;
   --header-height: 86px;
+  --brand-logo-ratio: 6.173;
+  --brand-logo-height: 50px;
+  --brand-logo-width: 309px;
+  --brand-logo-height-scrolled: 46px;
+  --brand-logo-width-scrolled: 284px;
+  --brand-logo-height-mobile: 40px;
+  --brand-logo-width-mobile: 247px;
+  --brand-logo-footer-height: 44px;
+  --brand-logo-footer-width: 272px;
+  --brand-logo-loader-width: 300px;
 }
 
 * {
@@ -316,31 +326,47 @@ body.is-loaded .loader {
   align-items: center;
   flex-shrink: 0;
   line-height: 0;
-  min-height: 44px;
+  width: var(--brand-logo-width);
+  max-width: 42vw;
+  min-height: var(--brand-logo-height);
 }
 
 .brand-image {
   display: block;
-  width: auto;
-  height: 44px;
-  max-width: min(46vw, 228px);
+  width: var(--brand-logo-width);
+  height: var(--brand-logo-height);
   object-fit: contain;
   object-position: left center;
 }
 
+.site-header.is-scrolled .brand {
+  width: var(--brand-logo-width-scrolled);
+  max-width: 40vw;
+  min-height: var(--brand-logo-height-scrolled);
+}
+
 .site-header.is-scrolled .brand-image {
-  height: 40px;
+  width: var(--brand-logo-width-scrolled);
+  height: var(--brand-logo-height-scrolled);
+}
+
+.footer-logo.brand,
+.brand.footer-logo {
+  width: var(--brand-logo-footer-width);
+  max-width: 100%;
+  min-height: var(--brand-logo-footer-height);
 }
 
 .footer-logo .brand-image {
-  height: 36px;
-  max-width: 200px;
+  width: var(--brand-logo-footer-width);
+  height: var(--brand-logo-footer-height);
 }
 
 .loader-logo {
   display: block;
-  width: min(72vw, 280px);
+  width: var(--brand-logo-loader-width);
   height: auto;
+  aspect-ratio: 4.159;
   animation: loaderPulse 1.1s ease both;
 }
 
@@ -1483,13 +1509,35 @@ body.is-loaded .loader {
 }
 
 @media (max-width: 430px) {
+  .brand {
+    width: var(--brand-logo-width-mobile);
+    max-width: 58vw;
+    min-height: var(--brand-logo-height-mobile);
+  }
+
   .brand-image {
-    height: 36px;
-    max-width: min(52vw, 168px);
+    width: var(--brand-logo-width-mobile);
+    height: var(--brand-logo-height-mobile);
+  }
+
+  .site-header.is-scrolled .brand {
+    width: var(--brand-logo-width-mobile);
   }
 
   .site-header.is-scrolled .brand-image {
-    height: 34px;
+    width: var(--brand-logo-width-mobile);
+    height: var(--brand-logo-height-mobile);
+  }
+
+  .footer-logo.brand,
+  .brand.footer-logo {
+    width: min(var(--brand-logo-footer-width), 72vw);
+  }
+
+  .footer-logo .brand-image {
+    width: min(var(--brand-logo-footer-width), 72vw);
+    height: auto;
+    aspect-ratio: var(--brand-logo-ratio);
   }
 
   .section-heading h2,
