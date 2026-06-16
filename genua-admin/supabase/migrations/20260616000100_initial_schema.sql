@@ -270,7 +270,7 @@ DROP POLICY IF EXISTS "Public insert contact" ON contact_messages;
 CREATE POLICY "Public insert contact" ON contact_messages FOR INSERT WITH CHECK (TRUE);
 
 INSERT INTO site_settings (site_title, contact_email, contact_phone, contact_address, social_instagram, social_linkedin, social_behance, footer_description)
-SELECT 'Genua Reklam Ajansı', 'merhaba@genuareklam.com', '0551 124 53 06', 'Denizli, Türkiye', 'https://www.instagram.com/genuadigital/', 'https://tr.linkedin.com/company/genua-digital-media-agency', 'https://www.behance.net/umutavci4', 'Denizli merkezli dijital medya ve reklam ajansı.'
+SELECT 'Genua Reklam Ajansı', 'hello@genuadigital.com', '0551 124 53 06', 'Denizli, Türkiye', 'https://www.instagram.com/genuadigital/', 'https://tr.linkedin.com/company/genua-digital-media-agency', 'https://www.behance.net/umutavci4', 'Denizli merkezli dijital medya ve reklam ajansı.'
 WHERE NOT EXISTS (SELECT 1 FROM site_settings);
 
 INSERT INTO services (slug, title, short_description, icon, display_order, is_active, is_featured) VALUES
