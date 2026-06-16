@@ -71,14 +71,23 @@ function renderCard(post) {
     </a>`;
 }
 
+function prepareArticleContent(html) {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = html || '';
+  wrapper.querySelectorAll('h2').forEach((heading, index) => {
+    if (!heading.id) heading.id = `bolum-${index + 1}`;
+  });
+  return wrapper.innerHTML;
+}
+
 function renderToc(content) {
   if (!content || typeof document === 'undefined') return '';
   const wrapper = document.createElement('div');
-  wrapper.innerHTML = content;
-  const headings = wrapper.querySelectorAll('h2[id]');
+  wrapper.innerHTML = prepareArticleContent(content);
+  const headings = wrapper.querySelectorAll('h2');
   if (!headings.length) return '';
   return headings
-    .map((heading) => `<a href="#${heading.id}">${escapeHtml(heading.textContent)}</a>`)
+    .map((heading) => `<a href="#${heading.id}">${escapeHtml(heading.textContent.trim())}</a>`)
     .join('');
 }
 
@@ -119,6 +128,7 @@ async function loadBlogList() {
   gridEl.innerHTML = rest.map(renderCard).join('');
 
   if (popularEl) {
+    popularEl.className = 'sidebar-links';
     popularEl.innerHTML = posts
       .slice(0, 3)
       .map((post) => `<li><a href="${detailUrl(post.slug)}">${escapeHtml(post.title)}</a></li>`)
@@ -185,8 +195,9 @@ async function loadBlogDetail() {
   }
 
   if (contentEl) {
+    const articleHtml = prepareArticleContent(post.content || `<p>${escapeHtml(post.excerpt || '')}</p>`);
     contentEl.innerHTML = `
-      ${post.content || `<p>${escapeHtml(post.excerpt || '')}</p>`}
+      ${articleHtml}
       <div class="form-actions">
         <a class="btn btn-primary" href="teklif-al.html">Teklif Al</a>
         <a class="btn" href="blog.html">Blog'a Dön</a>
@@ -195,7 +206,14 @@ async function loadBlogDetail() {
 
   if (tocEl) {
     const links = renderToc(post.content);
-    tocEl.innerHTML = links || '<p style="color:var(--muted);font-weight:700;">Bu yazıda bölüm başlığı yok.</p>';
+    const tocBox = tocEl.closest('.sidebar-box');
+    if (links) {
+      tocEl.className = 'sidebar-links';
+      tocEl.innerHTML = links;
+      if (tocBox) tocBox.hidden = false;
+    } else if (tocBox) {
+      tocBox.hidden = true;
+    }
   }
 
   if (relatedEl) {
