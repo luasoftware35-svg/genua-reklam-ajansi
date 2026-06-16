@@ -1,22 +1,39 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import { Upload } from 'lucide-react';
+import { adminUploadUrl, parseUploadResponse } from '@/lib/admin-api';
 
 export function MediaUpload() {
-  const [pending, startTransition] = useTransition();
+  const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  function onFile(file: File) {
-    const formData = new FormData();
-    formData.append('file', file);
-    startTransition(async () => {
-      setMessage(null);
-      const response = await fetch('/api/admin/upload', { method: 'POST', body: formData });
-      const data = await response.json();
-      setMessage(response.ok ? `Yüklendi: ${data.url}` : data.error ?? 'Yükleme başarısız');
-      if (response.ok) window.location.reload();
-    });
+  async function onFile(file: File) {
+    setPending(true);
+    setMessage(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const response = await fetch(adminUploadUrl(), {
+        method: 'POST',
+        body: formData,
+        credentials: 'same-origin',
+      });
+      const { data, raw } = await parseUploadResponse(response);
+
+      if (!response.ok) {
+        setMessage(data.error ?? (raw ? 'Yükleme başarısız oldu.' : 'Sunucu yanıtı okunamadı.'));
+        return;
+      }
+
+      setMessage(`Yüklendi: ${data.url}`);
+      window.location.reload();
+    } catch {
+      setMessage('Görsel yüklenirken bağlantı hatası oluştu.');
+    } finally {
+      setPending(false);
+    }
   }
 
   return (

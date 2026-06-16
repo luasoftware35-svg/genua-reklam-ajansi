@@ -1,26 +1,44 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 import { Upload } from 'lucide-react';
+import { adminUploadUrl, parseUploadResponse } from '@/lib/admin-api';
 
 export function ImageUpload({ name, defaultValue }: { name: string; defaultValue?: string | null }) {
   const [url, setUrl] = useState(defaultValue ?? '');
-  const [pending, startTransition] = useTransition();
+  const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  function upload(file: File) {
-    const formData = new FormData();
-    formData.append('file', file);
-    startTransition(async () => {
-      setError(null);
-      const response = await fetch('/api/admin/upload', { method: 'POST', body: formData });
-      const data = await response.json();
+  async function upload(file: File) {
+    setPending(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const response = await fetch(adminUploadUrl(), {
+        method: 'POST',
+        body: formData,
+        credentials: 'same-origin',
+      });
+      const { data, raw } = await parseUploadResponse(response);
+
       if (!response.ok) {
-        setError(data.error ?? 'Yükleme başarısız');
+        setError(data.error ?? (raw ? 'Yükleme başarısız oldu.' : 'Sunucu yanıtı okunamadı.'));
         return;
       }
+
+      if (!data.url) {
+        setError('Yükleme tamamlandı ancak görsel adresi alınamadı.');
+        return;
+      }
+
       setUrl(data.url);
-    });
+    } catch {
+      setError('Görsel yüklenirken bağlantı hatası oluştu.');
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
