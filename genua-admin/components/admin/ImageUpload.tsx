@@ -1,53 +1,58 @@
 'use client';
 
-import { useState } from 'react';
-import { Upload } from 'lucide-react';
-import { adminUploadUrl, parseUploadResponse } from '@/lib/admin-api';
+import { useRef, useState } from 'react';
+import { uploadMediaAction } from '@/app/admin/(dashboard)/actions';
 
 export function ImageUpload({ name, defaultValue }: { name: string; defaultValue?: string | null }) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [url, setUrl] = useState(defaultValue ?? '');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function upload(file: File) {
+  async function handleUpload(file: File) {
     setPending(true);
     setError(null);
 
     try {
       const formData = new FormData();
       formData.append('file', file);
-      const response = await fetch(adminUploadUrl(), {
-        method: 'POST',
-        body: formData,
-        credentials: 'same-origin',
-      });
-      const { data, raw } = await parseUploadResponse(response);
+      const result = await uploadMediaAction(formData);
 
-      if (!response.ok) {
-        setError(data.error ?? (raw ? 'Yükleme başarısız oldu.' : 'Sunucu yanıtı okunamadı.'));
+      if (result.error) {
+        setError(result.error);
         return;
       }
 
-      if (!data.url) {
+      if (!result.url) {
         setError('Yükleme tamamlandı ancak görsel adresi alınamadı.');
         return;
       }
 
-      setUrl(data.url);
+      setUrl(result.url);
     } catch {
-      setError('Görsel yüklenirken bağlantı hatası oluştu.');
+      setError('Görsel yüklenirken beklenmeyen bir hata oluştu.');
     } finally {
       setPending(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   }
 
   return (
     <div className="field">
       <input className="input" name={name} value={url} onChange={(event) => setUrl(event.target.value)} placeholder="https://..." />
-      <label className="btn" style={{ justifyContent: 'flex-start' }}>
-        <Upload size={16} /> {pending ? 'Yükleniyor...' : 'Dosya Yükle'}
-        <input type="file" accept="image/*" hidden onChange={(event) => event.target.files?.[0] && upload(event.target.files[0])} />
-      </label>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        hidden
+        onChange={(event) => {
+          const file = event.target.files?.[0];
+          if (file) void handleUpload(file);
+        }}
+      />
+      <button className="btn" type="button" style={{ justifyContent: 'flex-start' }} disabled={pending} onClick={() => fileInputRef.current?.click()}>
+        {pending ? 'Yükleniyor...' : 'Dosya Yükle'}
+      </button>
       {url ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={url} alt="Önizleme" style={{ width: 120, height: 80, objectFit: 'contain', background: '#f8f8f0', borderRadius: 12, padding: 8 }} />

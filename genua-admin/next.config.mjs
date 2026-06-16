@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
-const adminOrigin = process.env.NEXT_PUBLIC_ADMIN_ORIGIN?.replace(/\/$/, '');
-
 const nextConfig = {
-  assetPrefix: adminOrigin || undefined,
   images: {
     remotePatterns: [
       {

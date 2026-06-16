@@ -3,8 +3,23 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createAdminClient } from '@/lib/supabase/server';
+import { uploadMediaFile } from '@/lib/upload-media';
 import { estimateReadTime, parseJson, parseList, slugify } from '@/lib/utils';
 import { getResourceConfig, type ResourceField } from '@/lib/admin/resources';
+
+export async function uploadMediaAction(formData: FormData) {
+  try {
+    const file = formData.get('file');
+    if (!(file instanceof File)) return { error: 'Dosya bulunamadı' };
+
+    const result = await uploadMediaFile(file);
+    if ('error' in result) return { error: result.error };
+    return { url: result.url, path: result.path };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Görsel yüklenemedi';
+    return { error: message };
+  }
+}
 
 function getValue(field: ResourceField, formData: FormData) {
   const raw = formData.get(field.name);
