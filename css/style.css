@@ -344,20 +344,41 @@ body.is-loaded .loader {
 .brand-image {
   display: block;
   width: auto;
-  height: 40px;
+  height: 28px;
   object-fit: contain;
 }
 
+.brand-image-on-light {
+  display: none;
+}
+
+.site-header.is-scrolled .brand-image-on-dark {
+  display: none;
+}
+
+.site-header.is-scrolled .brand-image-on-light {
+  display: block;
+  height: 30px;
+}
+
 .site-header.is-scrolled .brand-image {
-  height: 36px;
+  height: 30px;
+}
+
+.footer-logo .brand-image-on-light {
+  display: none !important;
+}
+
+.footer-logo .brand-image-on-dark {
+  display: block !important;
 }
 
 .footer-logo .brand-image {
-  height: 34px;
+  height: 26px;
 }
 
 .loader-logo {
-  width: min(72vw, 220px);
+  width: min(62vw, 180px);
   height: auto;
   animation: loaderPulse 1.1s ease both;
 }
