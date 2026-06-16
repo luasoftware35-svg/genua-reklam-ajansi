@@ -111,10 +111,17 @@ export const resources: Record<string, ResourceConfig> = {
     ], columns: ['full_name', 'email', 'phone', 'status', 'created_at'],
   },
   musteriler: {
-    key: 'musteriler', title: 'Müşteri Logoları', description: 'Referans markaları ve logo sıralaması.', table: 'client_logos', orderBy: 'display_order', createLabel: 'Yeni Logo',
+    key: 'musteriler', title: 'Müşteri Logoları', description: 'Projelerimiz sayfasındaki referans markaları, kamu kurumları ve logo sıralaması.', table: 'client_logos', orderBy: 'display_order', createLabel: 'Yeni Logo',
     fields: [
-      { name: 'company_name', label: 'Firma Adı', type: 'text', required: true }, { name: 'logo_url', label: 'Logo', type: 'image' }, { name: 'website_url', label: 'Web Sitesi', type: 'url' }, { name: 'display_order', label: 'Sıra', type: 'number' }, { name: 'is_active', label: 'Aktif', type: 'checkbox' },
-    ], columns: ['company_name', 'website_url', 'display_order', 'is_active'],
+      { name: 'company_name', label: 'Firma Adı', type: 'text', required: true },
+      { name: 'logo_url', label: 'Logo Görseli', type: 'image' },
+      { name: 'initials', label: 'Kısaltma (logo yoksa)', type: 'text', placeholder: 'Örn: TG, AB' },
+      { name: 'website_url', label: 'Web Sitesi', type: 'url' },
+      { name: 'display_order', label: 'Sıra', type: 'number' },
+      { name: 'is_public_client', label: 'Kamu / Kurumsal Vurgu', type: 'checkbox' },
+      { name: 'is_collapsed', label: 'Daha Fazla Göster Altında', type: 'checkbox' },
+      { name: 'is_active', label: 'Aktif', type: 'checkbox' },
+    ], columns: ['company_name', 'logo_url', 'initials', 'display_order', 'is_public_client', 'is_collapsed', 'is_active'],
   },
   bannerlar: {
     key: 'bannerlar', title: 'Bannerlar', description: 'Kampanya ve duyuru bannerları.', table: 'banners', orderBy: 'display_order', createLabel: 'Yeni Banner',

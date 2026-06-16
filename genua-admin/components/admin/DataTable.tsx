@@ -3,7 +3,13 @@ import { Pencil, Trash2 } from 'lucide-react';
 import { deleteResource } from '@/app/admin/(dashboard)/actions';
 import { ConfirmSubmit } from './ConfirmDialog';
 
-function show(value: unknown) {
+function show(value: unknown, column?: string) {
+  if (column === 'logo_url' && typeof value === 'string' && value) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={value} alt="" style={{ width: 56, height: 36, objectFit: 'contain', background: '#f8f8f0', borderRadius: 8, padding: 4 }} />
+    );
+  }
   if (value === true) return <span className="badge">Aktif</span>;
   if (value === false) return <span className="badge">Pasif</span>;
   if (Array.isArray(value)) return value.join(', ');
@@ -23,7 +29,7 @@ export function DataTable({ resourceKey, columns, rows }: { resourceKey: string;
         <tbody>
           {rows.map((row) => (
             <tr key={String(row.id)}>
-              {columns.map((column) => <td key={column}>{show(row[column])}</td>)}
+              {columns.map((column) => <td key={column}>{show(row[column], column)}</td>)}
               <td>
                 <div className="actions">
                   <Link className="btn" href={`/admin/${resourceKey}/${row.id}`}><Pencil size={15} /> Düzenle</Link>

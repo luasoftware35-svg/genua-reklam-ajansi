@@ -165,8 +165,11 @@ CREATE TABLE IF NOT EXISTS client_logos (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   company_name TEXT NOT NULL,
   logo_url TEXT,
+  initials TEXT,
   website_url TEXT,
   display_order INTEGER DEFAULT 0,
+  is_public_client BOOLEAN DEFAULT FALSE,
+  is_collapsed BOOLEAN DEFAULT FALSE,
   is_active BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -281,6 +284,62 @@ INSERT INTO services (slug, title, short_description, icon, display_order, is_ac
 ('seo', 'SEO & İçerik Pazarlama', 'Arama motorlarında üst sıralara çıkın.', 'Search', 5, TRUE, FALSE),
 ('web-tasarim', 'Web Tasarım & Geliştirme', 'Hızlı, modern ve dönüşüm odaklı web siteleri.', 'Monitor', 6, TRUE, FALSE)
 ON CONFLICT (slug) DO NOTHING;
+
+INSERT INTO client_logos (company_name, logo_url, initials, display_order, is_public_client, is_collapsed, is_active)
+SELECT * FROM (
+  VALUES
+    ('Adalet Bakanlığı', 'varlıklar/resimler/logolar/adalet-bakanligi.svg', NULL::TEXT, 1, TRUE, FALSE, TRUE),
+    ('Sağlık Bakanlığı', 'varlıklar/resimler/logolar/saglik-bakanligi.png', NULL, 2, TRUE, FALSE, TRUE),
+    ('Aile ve Sosyal Hizmetler Bakanlığı', 'varlıklar/resimler/logolar/aile-sosyal-hizmetler.svg', NULL, 3, TRUE, FALSE, TRUE),
+    ('Denizli Valiliği', 'varlıklar/resimler/logolar/denizli-valiligi.png', NULL, 4, TRUE, FALSE, TRUE),
+    ('Denizli İl Kültür Turizm Müdürlüğü', NULL, 'DK', 5, TRUE, FALSE, TRUE),
+    ('Orman Bakanlığı', NULL, 'OB', 6, TRUE, FALSE, TRUE),
+    ('Togg', NULL, 'TG', 7, FALSE, FALSE, TRUE),
+    ('Simya Sigorta', NULL, 'SS', 8, FALSE, FALSE, TRUE),
+    ('Gajah', NULL, 'GJ', 9, FALSE, FALSE, TRUE),
+    ('Bösendorfer', NULL, 'BÖ', 10, FALSE, FALSE, TRUE),
+    ('Kaburgacı Usta', NULL, 'KU', 11, FALSE, FALSE, TRUE),
+    ('Çağla Şeker Beauty', NULL, 'ÇB', 12, FALSE, FALSE, TRUE),
+    ('Hiera Coffee', NULL, 'HC', 13, FALSE, FALSE, TRUE),
+    ('Sağdıçlar Shop', NULL, 'SŞ', 14, FALSE, FALSE, TRUE),
+    ('Alfin Yapı', NULL, 'AY', 15, FALSE, FALSE, TRUE),
+    ('Altınordu SK', NULL, 'AS', 16, FALSE, FALSE, TRUE),
+    ('Anason Pera', NULL, 'AP', 17, FALSE, FALSE, TRUE),
+    ('Antalya Ink Fest', NULL, 'AIF', 18, FALSE, FALSE, TRUE),
+    ('Avare Meyhane', NULL, 'AM', 19, FALSE, FALSE, TRUE),
+    ('Aydın İnşaat', NULL, 'Aİ', 20, FALSE, FALSE, TRUE),
+    ('Belfast Efes', NULL, 'BE', 21, FALSE, FALSE, TRUE),
+    ('Bonin Bakery & Eatery', NULL, 'BB', 22, FALSE, FALSE, TRUE),
+    ('Boom Pub', NULL, 'BP', 23, FALSE, FALSE, TRUE),
+    ('Ciğerci Ahmet Şef', NULL, 'CA', 24, FALSE, FALSE, TRUE),
+    ('Denizli AK Parti Kongresi', NULL, 'AK', 25, FALSE, FALSE, TRUE),
+    ('Diyarbakır OSB', NULL, 'DO', 26, FALSE, FALSE, TRUE),
+    ('Engiz İnşaat', NULL, 'Eİ', 27, FALSE, FALSE, TRUE),
+    ('Flora Duvar Kağıtları', NULL, 'FD', 28, FALSE, FALSE, TRUE),
+    ('Gajah Dekorasyon', NULL, 'GD', 29, FALSE, FALSE, TRUE),
+    ('Halk Oyunları Festivali', NULL, 'HF', 30, FALSE, FALSE, TRUE),
+    ('HD Optik', NULL, 'HO', 31, FALSE, TRUE, TRUE),
+    ('Kavdemir Tarım', NULL, 'KT', 32, FALSE, TRUE, TRUE),
+    ('Kocatepe Tarım', NULL, 'KT', 33, FALSE, TRUE, TRUE),
+    ('Lufian', NULL, 'LF', 34, FALSE, TRUE, TRUE),
+    ('Lumix', NULL, 'LX', 35, FALSE, TRUE, TRUE),
+    ('Luuq Coffee (Hiera Coffee)', NULL, 'LC', 36, FALSE, TRUE, TRUE),
+    ('Mazzini Mobilya', NULL, 'MM', 37, FALSE, TRUE, TRUE),
+    ('Meftune Restoran', NULL, 'MR', 38, FALSE, TRUE, TRUE),
+    ('Milss', NULL, 'ML', 39, FALSE, TRUE, TRUE),
+    ('Müdavim Ocakbaşı & Sahne', NULL, 'MO', 40, FALSE, TRUE, TRUE),
+    ('Ocasso Mobilya', NULL, 'OM', 41, FALSE, TRUE, TRUE),
+    ('Saylanlar İnşaat', NULL, 'Sİ', 42, FALSE, TRUE, TRUE),
+    ('Sessli Meyhane', NULL, 'SM', 43, FALSE, TRUE, TRUE),
+    ('SMF Hafriyat', NULL, 'SH', 44, FALSE, TRUE, TRUE),
+    ('Star Yapı İnşaat', NULL, 'SY', 45, FALSE, TRUE, TRUE),
+    ('Timur İnşaat', NULL, 'Tİ', 46, FALSE, TRUE, TRUE),
+    ('Tinyhouse İnşaat', NULL, 'TH', 47, FALSE, TRUE, TRUE),
+    ('Tiyatro Festivali', NULL, 'TF', 48, FALSE, TRUE, TRUE),
+    ('Turuncu Kuruyemiş', NULL, 'TK', 49, FALSE, TRUE, TRUE),
+    ('Vuslat Gecesi', NULL, 'VG', 50, FALSE, TRUE, TRUE)
+) AS seed(company_name, logo_url, initials, display_order, is_public_client, is_collapsed, is_active)
+WHERE NOT EXISTS (SELECT 1 FROM client_logos LIMIT 1);
 
 -- Storage setup: run after Supabase Storage is available.
 INSERT INTO storage.buckets (id, name, public)

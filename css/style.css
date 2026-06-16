@@ -2159,6 +2159,8 @@ body.is-loaded .loader {
   min-height: 164px;
   display: grid;
   place-items: center;
+  text-decoration: none;
+  color: inherit;
   padding: 24px;
   background: var(--card);
   border: 1px solid rgba(168, 204, 0, 0.24);
