@@ -242,60 +242,24 @@
 
         <div class="testimonial-shell reveal" aria-live="polite">
           <button class="slider-btn prev" type="button" aria-label="Önceki müşteri yorumu">‹</button>
-          <div class="testimonial-track">
+          <div class="testimonial-track" id="testimonialTrack">
             <article class="testimonial-card is-active">
               <div class="testimonial-person">
-                <span class="avatar" aria-hidden="true">AE</span>
+                <span class="avatar" aria-hidden="true">GA</span>
                 <div>
-                  <h3>Ayşe Ergin</h3>
-                  <p>Nova Tower Pazarlama Direktörü</p>
+                  <h3>Genua Müşterileri</h3>
+                  <p>Referans yorumları yükleniyor</p>
                 </div>
               </div>
-              <p class="quote">Genua, kampanya bütçemizi daha verimli kullanmamızı sağladı. Üç ay içinde nitelikli talep sayımız belirgin şekilde arttı.</p>
-              <span class="stars" aria-label="5 yıldız">★★★★★</span>
-            </article>
-            <article class="testimonial-card">
-              <div class="testimonial-person">
-                <span class="avatar" aria-hidden="true">MK</span>
-                <div>
-                  <h3>Mert Kaya</h3>
-                  <p>Arden Foods Kurucu Ortağı</p>
-                </div>
-              </div>
-              <p class="quote">Sosyal medya dilimizi tamamen yenilediler. İçerik kalitesi, raporlama disiplini ve hızlı aksiyon alma becerileri çok güçlü.</p>
-              <span class="stars" aria-label="5 yıldız">★★★★★</span>
-            </article>
-            <article class="testimonial-card">
-              <div class="testimonial-person">
-                <span class="avatar" aria-hidden="true">DS</span>
-                <div>
-                  <h3>Deniz Sarı</h3>
-                  <p>Mira Clinic Genel Müdürü</p>
-                </div>
-              </div>
-              <p class="quote">Marka kimliğimizden web sitemize kadar bütün süreci tek ekip yönetti. Kurumsal görünümümüz çok daha güçlü hale geldi.</p>
-              <span class="stars" aria-label="5 yıldız">★★★★★</span>
-            </article>
-            <article class="testimonial-card">
-              <div class="testimonial-person">
-                <span class="avatar" aria-hidden="true">EK</span>
-                <div>
-                  <h3>Elif Koç</h3>
-                  <p>Forte Teknoloji İletişim Lideri</p>
-                </div>
-              </div>
-              <p class="quote">B2B pazarlama hedeflerimizi iyi anladılar. İçerik stratejisi ve LinkedIn reklamlarında beklediğimizden hızlı sonuç aldık.</p>
-              <span class="stars" aria-label="5 yıldız">★★★★★</span>
+              <p class="quote">Markalarımızın deneyimleri burada listelenir.</p>
+              <span class="stars" aria-hidden="true">★★★★★</span>
             </article>
           </div>
           <button class="slider-btn next" type="button" aria-label="Sonraki müşteri yorumu">›</button>
         </div>
 
-        <div class="slider-dots" role="tablist" aria-label="Müşteri yorumu seçimi">
+        <div class="slider-dots" id="testimonialDots" role="tablist" aria-label="Müşteri yorumu seçimi">
           <button class="dot is-active" type="button" aria-label="1. yorum"></button>
-          <button class="dot" type="button" aria-label="2. yorum"></button>
-          <button class="dot" type="button" aria-label="3. yorum"></button>
-          <button class="dot" type="button" aria-label="4. yorum"></button>
         </div>
       </div>
     </section>
@@ -363,17 +327,14 @@
     </div>
   </footer>
 
+  <script src="js/supabase-config.js"></script>
+  <script src="js/testimonials.js"></script>
   <script>
     const header = document.querySelector("#siteHeader");
     const menuToggle = document.querySelector(".menu-toggle");
     const navMenu = document.querySelector("#primaryMenu");
     const revealItems = document.querySelectorAll(".reveal");
     const counters = document.querySelectorAll(".counter");
-    const cards = document.querySelectorAll(".testimonial-card");
-    const dots = document.querySelectorAll(".dot");
-    const prev = document.querySelector(".prev");
-    const next = document.querySelector(".next");
-    let activeSlide = 0;
 
     window.addEventListener("load", () => {
       document.body.classList.add("is-loaded");
@@ -438,17 +399,6 @@
     }, { threshold: 0.55 });
 
     counters.forEach((counter) => counterObserver.observe(counter));
-
-    const showSlide = (index) => {
-      activeSlide = (index + cards.length) % cards.length;
-      cards.forEach((card, i) => card.classList.toggle("is-active", i === activeSlide));
-      dots.forEach((dot, i) => dot.classList.toggle("is-active", i === activeSlide));
-    };
-
-    prev.addEventListener("click", () => showSlide(activeSlide - 1));
-    next.addEventListener("click", () => showSlide(activeSlide + 1));
-    dots.forEach((dot, index) => dot.addEventListener("click", () => showSlide(index)));
-    setInterval(() => showSlide(activeSlide + 1), 6500);
 
     const initCursorTrail = () => {
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
