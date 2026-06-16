@@ -1,0 +1,19 @@
+{
+  "siteOrigin": "https://genuareklam.com",
+  "siteName": "Genua Reklam Ajansı",
+  "locale": "tr_TR",
+  "defaultOgImage": "/varlıklar/resimler/genua-og.svg",
+  "favicon": "varlıklar/favicon.svg",
+  "twitterHandle": "@genuadigital",
+  "organization": {
+    "legalName": "Genua Reklam Ajansı",
+    "email": "hello@genuadigital.com",
+    "phone": "+905511245306",
+    "addressLocality": "Denizli",
+    "addressRegion": "Denizli",
+    "addressCountry": "TR",
+    "instagram": "https://www.instagram.com/genuadigital/",
+    "linkedin": "https://tr.linkedin.com/company/genua-digital-media-agency",
+    "behance": "https://www.behance.net/umutavci4"
+  }
+}
