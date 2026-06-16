@@ -344,8 +344,12 @@ body.is-loaded .loader {
 .brand-image {
   display: block;
   width: auto;
-  height: 38px;
+  height: 40px;
   object-fit: contain;
+}
+
+.site-header.is-scrolled .brand-image {
+  height: 36px;
 }
 
 .footer-logo .brand-image {
