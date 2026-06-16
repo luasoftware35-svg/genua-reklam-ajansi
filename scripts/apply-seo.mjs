@@ -6,9 +6,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 const site = JSON.parse(readFileSync(resolve(root, 'seo/site.json'), 'utf8'));
 const origin = site.siteOrigin.replace(/\/$/, '');
-const ogImage = site.defaultOgImage.startsWith('http')
-  ? site.defaultOgImage
-  : `${origin}${site.defaultOgImage.startsWith('/') ? '' : '/'}${site.defaultOgImage.replace(/^\//, '')}`;
+const ogPath = site.defaultOgImage.replace(/^\//, '');
+const ogImage = site.defaultOgImage.startsWith('http') ? site.defaultOgImage : `${origin}/${ogPath}`;
 const favicon = site.favicon;
 const faviconAbsolute = favicon.startsWith('http') ? favicon : `${origin}/${favicon.replace(/^\//, '')}`;
 
