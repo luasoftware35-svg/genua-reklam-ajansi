@@ -1963,6 +1963,20 @@ body.is-loaded .loader {
   border: 1px solid rgba(168, 204, 0, 0.25);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.featured-post .blog-image {
+  margin: 0;
+  min-height: 0;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-lg);
+}
+
+.featured-post .blog-image img {
+  min-height: 0;
+  height: auto;
+  aspect-ratio: inherit;
 }
 
 .blog-card {
@@ -2465,6 +2479,10 @@ body.is-loaded .loader {
   .quote-layout,
   .featured-post {
     grid-template-columns: 1fr;
+  }
+
+  .featured-post .blog-image {
+    aspect-ratio: 16 / 9;
   }
 
   .service-sidebar,
