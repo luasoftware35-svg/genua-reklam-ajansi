@@ -174,11 +174,11 @@ async function loadBlogDetail() {
 
   if (heroEl) {
     const coverMarkup = post.cover_image_url
-      ? `<div class="blog-article-cover reveal"><img src="${escapeHtml(post.cover_image_url)}" alt="${escapeHtml(post.title)}" loading="eager" decoding="async"></div>`
+      ? `<div class="blog-article-cover"><img src="${escapeHtml(post.cover_image_url)}" alt="${escapeHtml(post.title)}" loading="eager" decoding="async"></div>`
       : '';
 
     heroEl.innerHTML = `
-      <div class="container reveal">
+      <div class="container">
         <div class="breadcrumb">
           <a href="anasayfa.html">Ana Sayfa</a><span>/</span>
           <a href="blog.html">Blog</a><span>/</span>
