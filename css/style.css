@@ -1601,6 +1601,47 @@ body.is-loaded .loader {
   font-size: clamp(1.05rem, 2vw, 1.28rem);
 }
 
+.page-hero-blog {
+  padding: 132px 0 56px;
+}
+
+.page-hero-blog h1 {
+  max-width: 820px;
+  font-size: clamp(2.1rem, 5.5vw, 3.8rem);
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+}
+
+.page-hero-blog p:not(.eyebrow) {
+  margin-top: 18px;
+  font-size: clamp(0.98rem, 1.8vw, 1.08rem);
+}
+
+.blog-article-meta {
+  margin-top: 16px !important;
+}
+
+.blog-article-cover {
+  margin-top: 28px;
+  aspect-ratio: 16 / 9;
+  max-height: 420px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: #111;
+}
+
+.blog-article-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blog-article-section {
+  padding: 48px 0 110px;
+}
+
 .breadcrumb {
   display: flex;
   flex-wrap: wrap;
@@ -2606,6 +2647,24 @@ body.is-loaded .loader {
 @media (max-width: 680px) {
   .page-hero {
     padding: 132px 0 70px;
+  }
+
+  .page-hero-blog {
+    padding: 112px 0 40px;
+  }
+
+  .page-hero-blog h1 {
+    font-size: clamp(1.85rem, 8vw, 2.5rem);
+  }
+
+  .blog-article-cover {
+    margin-top: 22px;
+    max-height: 220px;
+    border-radius: var(--radius-lg);
+  }
+
+  .blog-article-section {
+    padding: 36px 0 82px;
   }
 
   .card-grid,

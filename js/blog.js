@@ -168,12 +168,15 @@ async function loadBlogDetail() {
   if (metaDescription && post.meta_description) metaDescription.setAttribute('content', post.meta_description);
 
   const heroEl = document.querySelector('#blogHero');
-  const coverEl = document.querySelector('#blogCover');
   const contentEl = document.querySelector('#blogContent');
   const tocEl = document.querySelector('#blogToc');
   const relatedEl = document.querySelector('#blogRelated');
 
   if (heroEl) {
+    const coverMarkup = post.cover_image_url
+      ? `<div class="blog-article-cover reveal"><img src="${escapeHtml(post.cover_image_url)}" alt="${escapeHtml(post.title)}" loading="eager" decoding="async"></div>`
+      : '';
+
     heroEl.innerHTML = `
       <div class="container reveal">
         <div class="breadcrumb">
@@ -183,15 +186,9 @@ async function loadBlogDetail() {
         </div>
         <p class="eyebrow">${escapeHtml(post.category || 'Blog')}</p>
         <h1>${escapeHtml(post.title)}</h1>
-        <p>Yazar: ${escapeHtml(post.author_name || 'Genua Ekibi')} · ${formatDate(post.published_at)}${post.read_time_minutes ? ` · ${post.read_time_minutes} dk okuma` : ''}</p>
+        <p class="blog-article-meta">Yazar: ${escapeHtml(post.author_name || 'Genua Ekibi')} · ${formatDate(post.published_at)}${post.read_time_minutes ? ` · ${post.read_time_minutes} dk okuma` : ''}</p>
+        ${coverMarkup}
       </div>`;
-  }
-
-  if (coverEl) {
-    coverEl.classList.toggle('has-cover', Boolean(post.cover_image_url));
-    if (post.cover_image_url) {
-      coverEl.innerHTML = `<img src="${escapeHtml(post.cover_image_url)}" alt="${escapeHtml(post.title)}" loading="eager" decoding="async">`;
-    }
   }
 
   if (contentEl) {
