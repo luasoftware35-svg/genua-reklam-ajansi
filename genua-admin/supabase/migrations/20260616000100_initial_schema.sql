@@ -35,6 +35,11 @@ CREATE TABLE IF NOT EXISTS site_settings (
   portfolio_hero_eyebrow TEXT DEFAULT 'Seçilmiş İşler',
   portfolio_hero_title TEXT DEFAULT 'Stratejiyle başlayan, sonuçla kanıtlanan projeler.',
   portfolio_hero_description TEXT DEFAULT 'Farklı sektörlerde markaların görünürlüğünü, iletişim kalitesini ve dönüşüm performansını büyüttüğümüz çalışmalardan seçkiler.',
+  team_spotify_eyebrow TEXT DEFAULT 'Ofis Ritmi',
+  team_spotify_title TEXT DEFAULT 'Ekibimizin dinledikleri',
+  team_spotify_description TEXT DEFAULT 'Strateji toplantılarından gece yarısı teslimatlarına — Genua ofisinde dönen playlist.',
+  team_spotify_url TEXT,
+  team_spotify_cover_url TEXT,
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
