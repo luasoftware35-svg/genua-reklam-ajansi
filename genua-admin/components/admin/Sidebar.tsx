@@ -5,7 +5,7 @@ const items = [
   { href: '/admin', label: 'Dashboard', icon: Home },
   { href: '/admin/ayarlar', label: 'Ayarlar', icon: Settings },
   { href: '/admin/hizmetler', label: 'Hizmetler', icon: Wrench },
-  { href: '/admin/projeler', label: 'Projeler', icon: FolderKanban },
+  { href: '/admin/projeler', label: 'Portföy', icon: FolderKanban },
   { href: '/admin/ekip', label: 'Ekip', icon: Users },
   { href: '/admin/testimonials', label: 'Görüşler', icon: MessageSquareQuote },
   { href: '/admin/blog', label: 'Blog', icon: FileText },

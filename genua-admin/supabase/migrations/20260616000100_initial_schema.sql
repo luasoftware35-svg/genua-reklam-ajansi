@@ -32,6 +32,9 @@ CREATE TABLE IF NOT EXISTS site_settings (
   google_analytics_id TEXT,
   google_tag_manager_id TEXT,
   meta_og_image_url TEXT,
+  portfolio_hero_eyebrow TEXT DEFAULT 'Seçilmiş İşler',
+  portfolio_hero_title TEXT DEFAULT 'Stratejiyle başlayan, sonuçla kanıtlanan projeler.',
+  portfolio_hero_description TEXT DEFAULT 'Farklı sektörlerde markaların görünürlüğünü, iletişim kalitesini ve dönüşüm performansını büyüttüğümüz çalışmalardan seçkiler.',
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
@@ -64,6 +67,8 @@ CREATE TABLE IF NOT EXISTS projects (
   cover_image_url TEXT,
   gallery_images JSONB DEFAULT '[]',
   short_description TEXT,
+  case_hero_title TEXT,
+  case_hero_lead TEXT,
   challenge TEXT,
   strategy TEXT,
   execution TEXT,

@@ -18,7 +18,7 @@ export default async function DashboardPage() {
 
   const cards = [
     { label: 'Hizmet', value: services, href: '/admin/hizmetler' },
-    { label: 'Proje', value: projects, href: '/admin/projeler' },
+    { label: 'Portföy', value: projects, href: '/admin/projeler' },
     { label: 'Blog Yazısı', value: posts, href: '/admin/blog' },
     { label: 'Mesaj', value: messages, href: '/admin/mesajlar' },
     { label: 'Müşteri Logosu', value: logos, href: '/admin/musteriler' },
