@@ -1720,6 +1720,21 @@ body.is-loaded .loader {
     radial-gradient(circle at 26% 28%, var(--accent) 0 13%, transparent 14%),
     linear-gradient(135deg, var(--card), var(--background-soft) 48%, var(--dark) 49% 100%);
   box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.visual-panel.has-photo {
+  padding: 0;
+  background: #111;
+}
+
+.visual-panel.has-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 430px;
+  object-fit: cover;
+  object-position: center 18%;
 }
 
 .card-grid {
