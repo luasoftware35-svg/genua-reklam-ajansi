@@ -9,6 +9,10 @@ function escapeHtml(value) {
 const DEFAULT_OFFICE = 'Yeni, Menderes Blv. No: 7A D:3, 20030 Denizli Merkezefendi/Denizli';
 const DEFAULT_STUDIO = 'Denizli Yenişehir, Ladik Evler Sitesi, 56. Sk. No: 1 M';
 
+let officeQuery = DEFAULT_OFFICE;
+let studioQuery = DEFAULT_STUDIO;
+let activeMap = 'office';
+
 function mapEmbedSrc(query) {
   return `https://maps.google.com/maps?q=${encodeURIComponent(query)}&hl=tr&z=16&output=embed`;
 }
@@ -17,7 +21,53 @@ function mapOpenUrl(query) {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 }
 
+function currentQuery() {
+  return activeMap === 'studio' ? studioQuery : officeQuery;
+}
+
+function renderActiveMap(customOfficeEmbed) {
+  const mapWrap = document.querySelector('.contact-map[data-map-for="office"]');
+  const link = document.querySelector('.map-open-link[data-map-link-for]');
+  const query = currentQuery();
+
+  if (mapWrap) {
+    if (activeMap === 'office' && customOfficeEmbed?.includes('<iframe')) {
+      mapWrap.innerHTML = customOfficeEmbed;
+    } else {
+      let iframe = mapWrap.querySelector('iframe');
+      if (!iframe) {
+        mapWrap.innerHTML =
+          '<iframe id="contactMapFrame" title="Genua konum haritası" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>';
+        iframe = mapWrap.querySelector('iframe');
+      }
+      if (iframe) iframe.src = mapEmbedSrc(query);
+    }
+  }
+
+  if (link) link.href = mapOpenUrl(query);
+}
+
+function bindMapSwitch() {
+  const buttons = document.querySelectorAll('.map-switch-btn[data-map-target]');
+  if (!buttons.length) return;
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      activeMap = button.dataset.mapTarget || 'office';
+      buttons.forEach((item) => {
+        const isActive = item === button;
+        item.classList.toggle('is-active', isActive);
+        item.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+      renderActiveMap();
+    });
+  });
+}
+
 function applyAddresses(office, studio, customOfficeEmbed) {
+  officeQuery = office;
+  studioQuery = studio;
+
   document.querySelectorAll('[data-office-address]').forEach((el) => {
     el.innerHTML = escapeHtml(office).replace(/\n/g, '<br>');
   });
@@ -26,39 +76,15 @@ function applyAddresses(office, studio, customOfficeEmbed) {
     el.innerHTML = escapeHtml(studio).replace(/\n/g, '<br>');
   });
 
-  applyMaps(office, studio, customOfficeEmbed);
-}
-
-function applyMaps(office, studio, customOfficeEmbed) {
-  const officeMap = document.querySelector('[data-map-for="office"]');
-  if (officeMap) {
-    if (customOfficeEmbed?.includes('<iframe')) {
-      officeMap.innerHTML = customOfficeEmbed;
-    } else {
-      const iframe = officeMap.querySelector('iframe');
-      if (iframe) iframe.src = mapEmbedSrc(office);
-    }
-  }
-
-  document.querySelectorAll('[data-map-link-for="office"]').forEach((link) => {
-    link.href = mapOpenUrl(office);
-  });
-
-  const studioMap = document.querySelector('[data-map-for="studio"]');
-  if (studioMap) {
-    const iframe = studioMap.querySelector('iframe');
-    if (iframe) iframe.src = mapEmbedSrc(studio);
-  }
-
-  document.querySelectorAll('[data-map-link-for="studio"]').forEach((link) => {
-    link.href = mapOpenUrl(studio);
-  });
+  renderActiveMap(customOfficeEmbed);
 }
 
 async function loadSiteAddresses() {
   const officeFallback = document.querySelector('[data-office-address]')?.textContent?.trim() || DEFAULT_OFFICE;
   const studioFallback = document.querySelector('[data-studio-address]')?.textContent?.trim() || DEFAULT_STUDIO;
   const config = window.GenuaSupabase;
+
+  bindMapSwitch();
 
   if (!config?.url || !config?.key) {
     applyAddresses(officeFallback, studioFallback);
@@ -80,9 +106,11 @@ async function loadSiteAddresses() {
 
   const rows = await response.json();
   const settings = rows?.[0] ?? {};
-  const office = settings.contact_address || officeFallback;
-  const studio = settings.contact_studio_address || studioFallback;
-  applyAddresses(office, studio, settings.contact_map_embed || null);
+  applyAddresses(
+    settings.contact_address || officeFallback,
+    settings.contact_studio_address || studioFallback,
+    settings.contact_map_embed || null,
+  );
 }
 
 loadSiteAddresses();
