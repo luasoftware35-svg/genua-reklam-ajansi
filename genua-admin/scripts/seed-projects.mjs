@@ -30,35 +30,40 @@ const portfolioSettings = {
 
 const projects = [
   {
-    slug: 'nova-tower',
-    title: 'Nova Tower',
-    client_name: 'Nova Tower',
-    category: 'Dijital',
-    tags: ['dijital', 'web'],
+    slug: 'mudavim-ocakbasi',
+    title: 'Müdavim Ocakbaşı & Sahne',
+    client_name: 'Müdavim Ocakbaşı & Sahne',
+    category: 'Marka & Dijital',
+    tags: ['marka', 'web', 'sosyal', 'dijital'],
     display_order: 1,
     is_active: true,
     is_featured: true,
-    project_date: '2026-01-15',
-    case_hero_title: 'Nova Tower için nitelikli talep üretimini büyüttük.',
+    project_date: '2025-03-01',
+    project_url: 'https://www.instagram.com/mudavimdenizli/',
+    case_hero_title: 'Müdavim Ocakbaşı için marka kimliğinden dijital reklama tam kapsamlı dönüşüm.',
     case_hero_lead:
-      'Gayrimenkul sektöründe lansman dönemindeki projeye dijital reklam, landing page ve raporlama sistemiyle ölçülebilir talep akışı kurduk.',
-    short_description: 'Nova Tower lansman döneminde dijital reklam ve web dönüşüm optimizasyonu.',
-    challenge: 'Reklam trafiği vardı ancak form kalitesi ve satış ekibine aktarılan lead niteliği düşüktü.',
-    strategy: 'Kitle segmentleri ayrıldı, teklif mesajları sadeleştirildi ve landing page dönüşüm akışı kısaltıldı.',
-    execution: 'Google Search, Meta remarketing ve yeni landing page A/B testleri birlikte çalıştırıldı.',
+      'Denizli’de ocakbaşı ve sahne konseptiyle öne çıkan Müdavim için logo tasarımı, web arayüzü, sosyal medya içerik sistemi ve Meta reklam yönetimini tek marka dili altında birleştirdik.',
+    short_description:
+      'Logo tasarımı, web sitesi, sosyal medya yönetimi ve dijital reklam operasyonunu Denizli’nin ocakbaşı markası için uçtan uca yürüttük.',
+    challenge:
+      'Mekân güçlü bir lezzet ve atmosfer sunuyordu; ancak dijital kanallarda parçalı görünüm, tutarsız görsel dil ve rezervasyon odaklı net bir iletişim akışı eksikti.',
+    strategy:
+      'Ocakbaşının sıcak ve samimi ruhunu premium ama ulaşılabilir bir marka diline taşıdık. Logo, web, sosyal içerik ve reklam mesajlarını aynı görsel rehber üzerinden kurguladık.',
+    execution:
+      'Marka logosu ve kurumsal kimlik seti tasarlandı. Mobil uyumlu web sitesi geliştirildi. Instagram ve Facebook içerik üretimi ile Meta Ads kampanyaları yönetildi.',
     result:
-      'Projenin hedef kitlesi yüksek bütçeli yatırımcı ve kurumsal karar vericilerdi. Bu yüzden kampanya dili, landing page akışı ve reklam hedeflemeleri nitelikli talep üretimine göre yeniden tasarlandı. Nitelikli form hacmi artarken lead başı maliyet düşürüldü ve satış ekibinin geri dönüş hızı iyileşti.',
-    tools_used: ['Google Ads', 'Meta Ads', 'GA4', 'Tag Manager'],
+      'Müdavim Ocakbaşı dijitalde tutarlı bir marka kimliği kazandı; sosyal medyada artan etkileşim ve reklam kanallarından gelen erişimle Denizli’de görünürlük güçlendi.',
+    tools_used: ['Figma', 'Meta Ads', 'Meta Business Suite', 'Instagram', 'Facebook', 'Google Analytics'],
     metrics: [
-      { value: 320, prefix: '%', label: 'Daha fazla erişim', duration: 1700 },
-      { value: 46, prefix: '%', label: 'CPL düşüşü', duration: 1500 },
-      { value: 3, suffix: '.4x', label: 'Form dönüşüm artışı', duration: 1500 },
-      { value: 28, label: 'Günde nitelikli lead', duration: 1400 },
+      { value: 210, prefix: '%', label: 'Sosyal medya erişim artışı', duration: 1700 },
+      { value: 185, prefix: '%', label: 'Profil etkileşimi artışı', duration: 1500 },
+      { value: 4, suffix: '.2x', label: 'Reklam erişim çarpanı', duration: 1500 },
+      { value: 360, suffix: '+', label: 'Aylık içerik çıktısı', duration: 1400 },
     ],
     gallery_images: [],
-    meta_title: 'Nova Tower Vaka Analizi | Dijital Reklam Case Study – Genua',
+    meta_title: 'Müdavim Ocakbaşı Vaka Analizi | Marka, Web & Sosyal Medya – Genua',
     meta_description:
-      'Nova Tower dijital reklam ve web dönüşüm projesi vaka analizi. Strateji, uygulama süreci ve elde edilen performans sonuçları.',
+      'Müdavim Ocakbaşı için logo tasarımı, web sitesi, sosyal medya yönetimi ve dijital reklam projesi vaka analizi.',
   },
   {
     slug: 'arden-foods',

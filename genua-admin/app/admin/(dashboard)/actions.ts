@@ -6,6 +6,7 @@ import { createAdminClient } from '@/lib/supabase/server';
 import { uploadMediaFile } from '@/lib/upload-media';
 import { estimateReadTime, parseJson, parseList, slugify } from '@/lib/utils';
 import { getResourceConfig, type ResourceField } from '@/lib/admin/resources';
+import { stripProjectHeroFields } from '@/lib/admin/project-row';
 
 export async function uploadMediaAction(formData: FormData) {
   try {
@@ -54,7 +55,10 @@ function serializePayload(resourceKey: string, formData: FormData) {
 export async function createResource(resourceKey: string, formData: FormData) {
   const { config, payload } = serializePayload(resourceKey, formData);
   const supabase = createAdminClient();
-  const { error } = await supabase.from(config.table).insert(payload);
+  let { error } = await supabase.from(config.table).insert(payload);
+  if (error?.message?.includes('case_hero') && resourceKey === 'projeler') {
+    ({ error } = await supabase.from(config.table).insert(stripProjectHeroFields(payload)));
+  }
   if (error) throw new Error(error.message);
   revalidatePath(`/admin/${resourceKey}`);
   redirect(`/admin/${resourceKey}`);
@@ -63,7 +67,10 @@ export async function createResource(resourceKey: string, formData: FormData) {
 export async function updateResource(resourceKey: string, id: string, formData: FormData) {
   const { config, payload } = serializePayload(resourceKey, formData);
   const supabase = createAdminClient();
-  const { error } = await supabase.from(config.table).update(payload).eq('id', id);
+  let { error } = await supabase.from(config.table).update(payload).eq('id', id);
+  if (error?.message?.includes('case_hero') && resourceKey === 'projeler') {
+    ({ error } = await supabase.from(config.table).update(stripProjectHeroFields(payload)).eq('id', id));
+  }
   if (error) throw new Error(error.message);
   revalidatePath(`/admin/${resourceKey}`);
   redirect(`/admin/${resourceKey}`);
