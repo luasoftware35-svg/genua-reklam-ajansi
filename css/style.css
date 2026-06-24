@@ -1874,6 +1874,87 @@ body.is-loaded .loader {
   margin-top: 18px;
 }
 
+.team-resume-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 14px;
+  min-height: 40px;
+  padding: 0 16px;
+  color: var(--dark);
+  background: var(--accent);
+  border: 0;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.team-resume-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(168, 204, 0, 0.28);
+}
+
+.modal-card-resume {
+  width: min(100%, 760px);
+  max-height: min(85vh, 860px);
+  overflow: auto;
+}
+
+.modal-card-resume h2 {
+  margin: 8px 0 20px;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+}
+
+.resume-body {
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.resume-body section + section {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(168, 204, 0, 0.18);
+}
+
+.resume-body h4 {
+  margin: 0 0 10px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.resume-body p {
+  margin: 0;
+}
+
+.resume-body ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.resume-body li + li {
+  margin-top: 10px;
+}
+
+.resume-body a {
+  color: var(--dark);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+.resume-lead {
+  margin-bottom: 4px !important;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
 .team-socials a,
 .pill,
 .filter-btn,

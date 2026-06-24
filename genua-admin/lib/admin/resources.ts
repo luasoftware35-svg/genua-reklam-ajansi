@@ -98,6 +98,7 @@ export const resources: Record<string, ResourceConfig> = {
     key: 'ekip', title: 'Ekip', description: 'Ekip üyeleri, görevleri ve sosyal bağlantıları.', table: 'team_members', orderBy: 'display_order', createLabel: 'Yeni Üye',
     fields: [
       { name: 'full_name', label: 'Ad Soyad', type: 'text', required: true }, { name: 'title', label: 'Ünvan', type: 'text', required: true }, { name: 'bio', label: 'Bio', type: 'textarea', full: true },
+      { name: 'resume_content', label: 'Özgeçmiş (HTML)', type: 'textarea', full: true, placeholder: '<section><h4>Profil</h4><p>...</p></section>' },
       { name: 'photo_url', label: 'Fotoğraf', type: 'image' }, { name: 'email', label: 'Email', type: 'email' }, { name: 'social_linkedin', label: 'LinkedIn', type: 'url' }, { name: 'social_instagram', label: 'Instagram', type: 'url' }, { name: 'social_twitter', label: 'Twitter/X', type: 'url' },
       { name: 'display_order', label: 'Sıra', type: 'number' }, { name: 'is_active', label: 'Aktif', type: 'checkbox' },
     ], columns: ['full_name', 'title', 'display_order', 'is_active'],
