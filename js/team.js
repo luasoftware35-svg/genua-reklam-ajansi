@@ -71,13 +71,12 @@ function resolveResumeContent(member) {
   const resume = member.resume_content?.trim();
   if (resume) return resume;
 
-  if (isUmutAvci(member.full_name)) {
-    const bio = member.bio?.trim();
-    if (bio) return formatBioAsResume(bio);
-    return DEFAULT_UMUT_RESUME;
-  }
+  const bio = member.bio?.trim();
+  if (bio) return formatBioAsResume(bio);
 
-  return '';
+  if (isUmutAvci(member.full_name)) return DEFAULT_UMUT_RESUME;
+
+  return `<section><p>${escapeHtml(member.title || 'Ekip üyesi')} — Genua Reklam Ajansı.</p></section>`;
 }
 
 function socialLink(url, label) {
@@ -101,17 +100,13 @@ function renderTeamMember(member, index) {
     .filter(Boolean)
     .join('');
 
-  const resumeContent = resolveResumeContent(member);
-  const resumeButton = resumeContent
-    ? `<button class="team-resume-btn" type="button" data-resume-index="${index}">Özgeçmiş</button>`
-    : '';
+  const resumeButton = `<button class="team-resume-btn" type="button" data-resume-index="${index}">Özgeçmiş</button>`;
 
   return `
     <article class="team-card reveal">
       ${photoMarkup(member)}
       <h3>${escapeHtml(member.full_name)}</h3>
       <p>${escapeHtml(member.title)}</p>
-      ${!resumeContent && member.bio ? `<p class="team-bio">${escapeHtml(member.bio)}</p>` : ''}
       ${resumeButton}
       ${socials ? `<div class="team-socials">${socials}</div>` : ''}
     </article>`;
