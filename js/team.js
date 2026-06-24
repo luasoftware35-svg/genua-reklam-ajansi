@@ -52,10 +52,31 @@ function isUmutAvci(name) {
   return /umut\s+avc/i.test(String(name || '').trim());
 }
 
+function formatBioAsResume(bio) {
+  const paragraphs = String(bio || '')
+    .split(/\n\s*\n/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  if (!paragraphs.length) return '';
+
+  const body = paragraphs
+    .map((part) => `<p>${escapeHtml(part).replace(/\n/g, '<br>')}</p>`)
+    .join('');
+
+  return `<section><h4>Profil</h4>${body}</section>`;
+}
+
 function resolveResumeContent(member) {
-  const content = member.resume_content?.trim();
-  if (content) return content;
-  if (isUmutAvci(member.full_name)) return DEFAULT_UMUT_RESUME;
+  const resume = member.resume_content?.trim();
+  if (resume) return resume;
+
+  if (isUmutAvci(member.full_name)) {
+    const bio = member.bio?.trim();
+    if (bio) return formatBioAsResume(bio);
+    return DEFAULT_UMUT_RESUME;
+  }
+
   return '';
 }
 
@@ -90,7 +111,7 @@ function renderTeamMember(member, index) {
       ${photoMarkup(member)}
       <h3>${escapeHtml(member.full_name)}</h3>
       <p>${escapeHtml(member.title)}</p>
-      ${member.bio ? `<p class="team-bio">${escapeHtml(member.bio)}</p>` : ''}
+      ${!resumeContent && member.bio ? `<p class="team-bio">${escapeHtml(member.bio)}</p>` : ''}
       ${resumeButton}
       ${socials ? `<div class="team-socials">${socials}</div>` : ''}
     </article>`;
