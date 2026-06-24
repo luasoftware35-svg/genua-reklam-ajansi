@@ -41,6 +41,7 @@ export const resources: Record<string, ResourceConfig> = {
       { name: 'contact_phone', label: 'Telefon', type: 'text' },
       { name: 'contact_address', label: 'Merkez Ofis Adresi', type: 'textarea', full: true },
       { name: 'contact_studio_address', label: 'Stüdyo Adresi', type: 'textarea', full: true },
+      { name: 'contact_map_embed', label: 'Merkez Ofis Harita Embed (opsiyonel)', type: 'textarea', full: true, placeholder: 'Google Maps iframe kodu' },
       { name: 'social_instagram', label: 'Instagram', type: 'url' },
       { name: 'social_linkedin', label: 'LinkedIn', type: 'url' },
       { name: 'social_behance', label: 'Behance', type: 'url' },
