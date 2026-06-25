@@ -2622,6 +2622,11 @@ body.is-loaded .loader {
   display: block;
 }
 
+.form-message.is-error {
+  color: #fff;
+  background: #8a1f1f;
+}
+
 .map-placeholder {
   display: grid;
   min-height: 270px;

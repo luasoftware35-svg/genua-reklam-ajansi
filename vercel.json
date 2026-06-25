@@ -17,6 +17,10 @@
       "destination": "/anasayfa.html"
     },
     {
+      "source": "/api/forms/:path*",
+      "destination": "https://genua-admin.vercel.app/api/forms/:path*"
+    },
+    {
       "source": "/api/admin/:path*",
       "destination": "https://genua-admin.vercel.app/api/admin/:path*"
     },

@@ -162,15 +162,6 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") modal?.classList.remove("is-open");
 });
 
-document.querySelectorAll("[data-success-form]").forEach((form) => {
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const message = form.querySelector(".form-message");
-    message?.classList.add("is-visible");
-    form.reset();
-  });
-});
-
 const quoteForm = document.querySelector("#quoteForm");
 const quoteSteps = document.querySelectorAll(".quote-step");
 const progress = document.querySelector(".progress span");
@@ -193,11 +184,6 @@ quoteForm?.querySelectorAll("[data-prev-step]").forEach((button) => {
     quoteStepIndex = Math.max(quoteStepIndex - 1, 0);
     updateQuoteStep();
   });
-});
-
-quoteForm?.addEventListener("submit", (event) => {
-  event.preventDefault();
-  window.location.href = "tesekkurler.html";
 });
 
 document.querySelectorAll("[data-show-more-clients]").forEach((button) => {
