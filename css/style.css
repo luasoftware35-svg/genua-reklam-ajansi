@@ -1734,7 +1734,7 @@ body.is-loaded .loader {
   height: 100%;
   min-height: 430px;
   object-fit: cover;
-  object-position: center 18%;
+  object-position: center center;
 }
 
 .card-grid {
