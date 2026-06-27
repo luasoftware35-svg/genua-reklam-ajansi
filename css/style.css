@@ -1829,6 +1829,10 @@ body.is-loaded .loader {
   object-fit: cover;
 }
 
+.team-photo.is-portrait img {
+  object-position: center 18%;
+}
+
 .team-photo-initials {
   font-family: "Space Grotesk", sans-serif;
   font-size: 2.4rem;

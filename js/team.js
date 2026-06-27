@@ -52,6 +52,13 @@ function isUmutAvci(name) {
   return /umut\s+avc/i.test(String(name || '').trim());
 }
 
+const DEFAULT_UMUT_PHOTO = 'varlıklar/resimler/umut-avci.jpg';
+
+function resolvePhotoUrl(member) {
+  if (isUmutAvci(member.full_name)) return DEFAULT_UMUT_PHOTO;
+  return member.photo_url?.trim() || null;
+}
+
 function formatBioAsResume(bio) {
   const paragraphs = String(bio || '')
     .split(/\n\s*\n/)
@@ -85,8 +92,11 @@ function socialLink(url, label) {
 }
 
 function photoMarkup(member) {
-  if (member.photo_url) {
-    return `<div class="team-photo has-photo"><img src="${escapeHtml(member.photo_url)}" alt="${escapeHtml(member.full_name)}" loading="lazy" decoding="async"></div>`;
+  const photoUrl = resolvePhotoUrl(member);
+  const portraitClass = isUmutAvci(member.full_name) ? ' is-portrait' : '';
+
+  if (photoUrl) {
+    return `<div class="team-photo has-photo${portraitClass}"><img src="${escapeHtml(photoUrl)}" alt="${escapeHtml(member.full_name)}" loading="lazy" decoding="async"></div>`;
   }
   return `<div class="team-photo"><span class="team-photo-initials" aria-hidden="true">${initialsFromName(member.full_name)}</span></div>`;
 }
