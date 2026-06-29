@@ -715,14 +715,56 @@ body.is-loaded .loader {
 
 .service-card {
   position: relative;
-  min-height: 320px;
-  padding: 30px;
+  min-height: 100%;
+  padding: 0;
   background: var(--card);
   border: 1px solid rgba(168, 204, 0, 0.22);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   overflow: hidden;
+}
+
+.service-card-link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.service-card-media {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #111;
+}
+
+.service-card-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.service-card:hover .service-card-media img {
+  transform: scale(1.04);
+}
+
+.service-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 24px 28px 28px;
+}
+
+.service-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 22px;
+  font-weight: 800;
 }
 
 .service-card::before {
@@ -762,7 +804,7 @@ body.is-loaded .loader {
 }
 
 .service-card h3 {
-  margin: 24px 0 12px;
+  margin: 0 0 12px;
   font-family: "Space Grotesk", sans-serif;
   font-size: 1.55rem;
   line-height: 1.05;
@@ -774,16 +816,7 @@ body.is-loaded .loader {
   color: var(--muted);
 }
 
-.service-card a {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 24px;
-  color: var(--text);
-  font-weight: 800;
-}
-
-.service-card a:hover {
+.service-card:hover .service-card-cta {
   text-decoration: underline;
   text-decoration-color: var(--accent);
   text-decoration-thickness: 4px;

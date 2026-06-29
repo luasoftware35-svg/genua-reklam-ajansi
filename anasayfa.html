@@ -138,44 +138,7 @@
           <p>Stratejiden kreatife, medya satın almadan raporlamaya kadar her adımda ölçülebilir ve sürdürülebilir büyüme için çalışıyoruz.</p>
         </div>
 
-        <div class="services-grid">
-          <article class="service-card reveal">
-            <span class="service-icon" aria-hidden="true">AD</span>
-            <h3>Dijital Reklam</h3>
-            <p>Denizli merkezli ekibimizle Google ve Meta kampanyalarınızı doğru hedefleme, teklif stratejisi ve düzenli optimizasyonla büyütürüz.</p>
-            <a href="dijital-reklam.html">Detay <span aria-hidden="true">→</span></a>
-          </article>
-          <article class="service-card reveal">
-            <span class="service-icon" aria-hidden="true">SM</span>
-            <h3>Sosyal Medya</h3>
-            <p>İçerik takvimi, topluluk yönetimi ve yaratıcı kampanyalarla sosyal medya varlığınızı güçlendiririz.</p>
-            <a href="sosyal-medya.html">Detay <span aria-hidden="true">→</span></a>
-          </article>
-          <article class="service-card reveal">
-            <span class="service-icon" aria-hidden="true">BR</span>
-            <h3>Marka Tasarımı</h3>
-            <p>Kurumsal kimlik, görsel dil ve iletişim tonu ile markanızın pazarda net ayrışmasını sağlarız.</p>
-            <a href="marka-tasarim.html">Detay <span aria-hidden="true">→</span></a>
-          </article>
-          <article class="service-card reveal">
-            <span class="service-icon" aria-hidden="true">CT</span>
-            <h3>İçerik Üretimi</h3>
-            <p>Fotoğraf, video, motion ve metin üretimiyle satışa, güvene ve etkileşime hizmet eden içerikler hazırlarız.</p>
-            <a href="icerik-uretimi.html">Detay <span aria-hidden="true">→</span></a>
-          </article>
-          <article class="service-card reveal">
-            <span class="service-icon" aria-hidden="true">SEO</span>
-            <h3>SEO</h3>
-            <p>Teknik analiz, içerik planlama ve arama niyeti odaklı optimizasyonlarla organik görünürlüğünüzü artırırız.</p>
-            <a href="hizmetler.html#seo">Detay <span aria-hidden="true">→</span></a>
-          </article>
-          <article class="service-card reveal">
-            <span class="service-icon" aria-hidden="true">WEB</span>
-            <h3>Web Tasarım</h3>
-            <p>Hızlı, erişilebilir, SEO uyumlu ve dönüşüm odaklı kurumsal web siteleri tasarlar ve geliştiririz.</p>
-            <a href="hizmetler.html#web-tasarim">Detay <span aria-hidden="true">→</span></a>
-          </article>
-        </div>
+        <div class="services-grid" id="servicesGrid" aria-live="polite"></div>
       </div>
     </section>
 
@@ -291,6 +254,8 @@
           <li><a href="sosyal-medya.html">Sosyal Medya</a></li>
           <li><a href="marka-tasarim.html">Marka Tasarımı</a></li>
           <li><a href="icerik-uretimi.html">İçerik Üretimi</a></li>
+          <li><a href="seo.html">SEO</a></li>
+          <li><a href="web-tasarim.html">Web Tasarım</a></li>
         </ul>
       </div>
 
@@ -322,13 +287,14 @@
   </footer>
 
   <script src="js/supabase-config.js"></script>
+  <script src="js/services-preview.js"></script>
   <script src="js/site-contact.js"></script>
   <script src="js/testimonials.js"></script>
   <script>
     const header = document.querySelector("#siteHeader");
     const menuToggle = document.querySelector(".menu-toggle");
     const navMenu = document.querySelector("#primaryMenu");
-    const revealItems = document.querySelectorAll(".reveal");
+    let revealItems = document.querySelectorAll(".reveal");
     const counters = document.querySelectorAll(".counter");
 
     window.addEventListener("load", () => {
@@ -365,6 +331,12 @@
     }, { threshold: 0.16 });
 
     revealItems.forEach((item) => revealObserver.observe(item));
+
+    document.addEventListener("genua:services-rendered", () => {
+      document.querySelectorAll("#servicesGrid .reveal:not(.is-visible)").forEach((item) => {
+        revealObserver.observe(item);
+      });
+    });
 
     const animateCounter = (counter) => {
       const target = Number(counter.dataset.target);
