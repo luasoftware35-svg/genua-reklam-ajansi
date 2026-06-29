@@ -21,11 +21,11 @@ function hasCaseStudy(project) {
 }
 
 function projectCardLink(project, options = {}) {
+  if (project.project_url) return project.project_url;
   if (project.href) return project.href;
   if (options.preferCaseStudy && hasCaseStudy(project) && project.slug) {
     return `vaka-analizi.html?slug=${encodeURIComponent(project.slug)}`;
   }
-  if (project.project_url) return project.project_url;
   if (hasCaseStudy(project) && project.slug) return `vaka-analizi.html?slug=${encodeURIComponent(project.slug)}`;
   if (project.slug) return `vaka-analizi.html?slug=${encodeURIComponent(project.slug)}`;
   return 'projelerimiz.html';

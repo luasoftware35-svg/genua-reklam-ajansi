@@ -4,19 +4,20 @@ window.GenuaFeaturedProjectsCatalog = [
     title: 'Togg',
     category: 'Otomotiv & Marka',
     image: 'varlıklar/resimler/projeler/togg.jpg',
+    logo_url: 'varlıklar/resimler/logolar/togg.svg',
     short_description:
       'Türkiye’nin yerli otomobil markası için dijital iletişim, kreatif üretim ve marka görünürlüğü çalışmaları.',
     project_url: 'https://www.togg.com.tr/',
   },
   {
-    slug: 'denizli-valiligi',
-    title: 'Denizli Valiliği',
-    category: 'Kurumsal İletişim',
-    image: 'varlıklar/resimler/projeler/denizli-valiligi.jpg',
-    logo_url: 'varlıklar/resimler/logolar/denizli-valiligi.png',
+    slug: 'bosendorfer',
+    title: 'Bösendorfer',
+    category: 'Marka & Etkinlik',
+    image: 'varlıklar/resimler/projeler/bosendorfer.jpg',
+    logo_url: 'varlıklar/resimler/logolar/bosendorfer.svg',
     short_description:
-      'Kamu kurumsal iletişiminde dijital görünürlük, duyuru içerikleri ve kurumsal kimlik uyumlu kreatif üretim.',
-    href: 'projelerimiz.html',
+      'Dünyaca ünlü piyano markası için dijital iletişim, etkinlik tanıtımı ve premium marka görünürlüğü çalışmaları.',
+    project_url: 'https://www.boesendorfer.com/',
   },
   {
     slug: 'buyuk-sehir-hastanesi',
@@ -26,6 +27,6 @@ window.GenuaFeaturedProjectsCatalog = [
     logo_url: 'varlıklar/resimler/logolar/saglik-bakanligi.png',
     short_description:
       'Sağlık kurumları için bilgilendirme içerikleri, dijital iletişim ve güven odaklı kreatif üretim.',
-    href: 'projelerimiz.html',
+    project_url: 'https://www.saglik.gov.tr/',
   },
 ];
