@@ -60,7 +60,12 @@ if ("IntersectionObserver" in window) {
     });
   }, { threshold: 0.16 });
 
-  revealItems.forEach((item) => revealObserver.observe(item));
+  const observeRevealItems = (root = document) => {
+    root.querySelectorAll(".reveal:not(.is-visible)").forEach((item) => revealObserver.observe(item));
+  };
+
+  observeRevealItems();
+  document.addEventListener("genua:service-detail-ready", () => observeRevealItems());
 } else {
   revealItems.forEach((item) => item.classList.add("is-visible"));
 }

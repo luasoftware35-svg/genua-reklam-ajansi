@@ -1,54 +1,3 @@
-const SERVICE_CATALOG = [
-  {
-    slug: 'dijital-reklam',
-    title: 'Dijital Reklam',
-    description:
-      'Denizli merkezli ekibimizle Google ve Meta kampanyalarınızı doğru hedefleme, teklif stratejisi ve düzenli optimizasyonla büyütürüz.',
-    href: 'dijital-reklam.html',
-    image: 'varlıklar/resimler/hizmetler/dijital-reklam.jpg',
-  },
-  {
-    slug: 'sosyal-medya',
-    title: 'Sosyal Medya',
-    description:
-      'İçerik takvimi, topluluk yönetimi ve yaratıcı kampanyalarla sosyal medya varlığınızı güçlendiririz.',
-    href: 'sosyal-medya.html',
-    image: 'varlıklar/resimler/hizmetler/sosyal-medya.jpg',
-  },
-  {
-    slug: 'marka-tasarim',
-    title: 'Marka Tasarımı',
-    description:
-      'Kurumsal kimlik, görsel dil ve iletişim tonu ile markanızın pazarda net ayrışmasını sağlarız.',
-    href: 'marka-tasarim.html',
-    image: 'varlıklar/resimler/hizmetler/marka-tasarim.jpg',
-  },
-  {
-    slug: 'icerik-uretimi',
-    title: 'İçerik Üretimi',
-    description:
-      'Fotoğraf, video, motion ve metin üretimiyle satışa, güvene ve etkileşime hizmet eden içerikler hazırlarız.',
-    href: 'icerik-uretimi.html',
-    image: 'varlıklar/resimler/hizmetler/icerik-uretimi.jpg',
-  },
-  {
-    slug: 'seo',
-    title: 'SEO',
-    description:
-      'Teknik analiz, içerik planlama ve arama niyeti odaklı optimizasyonlarla organik görünürlüğünüzü artırırız.',
-    href: 'seo.html',
-    image: 'varlıklar/resimler/hizmetler/seo.jpg',
-  },
-  {
-    slug: 'web-tasarim',
-    title: 'Web Tasarım',
-    description:
-      'Hızlı, erişilebilir, SEO uyumlu ve dönüşüm odaklı kurumsal web siteleri tasarlar ve geliştiririz.',
-    href: 'web-tasarim.html',
-    image: 'varlıklar/resimler/hizmetler/web-tasarim.jpg',
-  },
-];
-
 function escapeHtml(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
@@ -88,7 +37,8 @@ async function loadServicesPreview() {
   const grid = document.querySelector('#servicesGrid');
   if (!grid) return;
 
-  let services = SERVICE_CATALOG.map((item) => ({ ...item }));
+  const catalog = window.GenuaServiceCatalog || [];
+  let services = catalog.map((item) => ({ ...item }));
   const config = window.GenuaSupabase;
 
   if (config?.url && config?.key) {
@@ -108,7 +58,7 @@ async function loadServicesPreview() {
         const remoteItems = await response.json();
         if (Array.isArray(remoteItems) && remoteItems.length) {
           const remoteBySlug = Object.fromEntries(remoteItems.map((item) => [item.slug, item]));
-          services = SERVICE_CATALOG.map((item) => mergeServiceRecord(item, remoteBySlug[item.slug]));
+          services = catalog.map((item) => mergeServiceRecord(item, remoteBySlug[item.slug]));
         }
       }
     } catch {
