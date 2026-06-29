@@ -152,44 +152,7 @@
           <a class="text-link" href="portfolyo.html">Tüm projeleri gör <span aria-hidden="true">→</span></a>
         </div>
 
-        <div class="portfolio-grid">
-          <article class="project-card reveal">
-            <a href="vaka-analizi.html?slug=nova-tower" aria-label="Nova Tower vaka analizini incele">
-              <div class="project-visual project-one" role="img" aria-label="Nova Tower kampanya görseli"></div>
-              <div class="project-overlay">
-                <span>İncele</span>
-              </div>
-              <div class="project-info">
-                <span class="tag">Dijital Reklam</span>
-                <h3>Nova Tower</h3>
-              </div>
-            </a>
-          </article>
-          <article class="project-card reveal">
-            <a href="portfolyo.html" aria-label="Arden Foods projesini incele">
-              <div class="project-visual project-two" role="img" aria-label="Arden Foods sosyal medya çalışması"></div>
-              <div class="project-overlay">
-                <span>İncele</span>
-              </div>
-              <div class="project-info">
-                <span class="tag">Sosyal Medya</span>
-                <h3>Arden Foods</h3>
-              </div>
-            </a>
-          </article>
-          <article class="project-card reveal">
-            <a href="portfolyo.html" aria-label="Mira Clinic projesini incele">
-              <div class="project-visual project-three" role="img" aria-label="Mira Clinic marka tasarımı"></div>
-              <div class="project-overlay">
-                <span>İncele</span>
-              </div>
-              <div class="project-info">
-                <span class="tag">Marka Tasarımı</span>
-                <h3>Mira Clinic</h3>
-              </div>
-            </a>
-          </article>
-        </div>
+        <div class="portfolio-grid" id="featuredProjectsGrid" aria-live="polite"></div>
       </div>
     </section>
 
@@ -289,6 +252,9 @@
   <script src="js/supabase-config.js"></script>
   <script src="js/service-catalog.js"></script>
   <script src="js/services-preview.js"></script>
+  <script src="js/project-cards.js"></script>
+  <script src="js/featured-projects-catalog.js"></script>
+  <script src="js/featured-projects.js"></script>
   <script src="js/site-contact.js"></script>
   <script src="js/testimonials.js"></script>
   <script>
@@ -332,6 +298,12 @@
     }, { threshold: 0.16 });
 
     revealItems.forEach((item) => revealObserver.observe(item));
+
+    document.addEventListener("genua:featured-projects-rendered", () => {
+      document.querySelectorAll("#featuredProjectsGrid .reveal:not(.is-visible)").forEach((item) => {
+        revealObserver.observe(item);
+      });
+    });
 
     document.addEventListener("genua:services-rendered", () => {
       document.querySelectorAll("#servicesGrid .reveal:not(.is-visible)").forEach((item) => {

@@ -1,21 +1,3 @@
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function filterKey(value) {
-  return String(value || '')
-    .trim()
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-}
-
 function categoryFilters(projects) {
   const defaults = [
     { key: 'all', label: 'Tümü' },
@@ -32,64 +14,10 @@ function categoryFilters(projects) {
 function projectTags(projects) {
   const tags = new Set();
   projects.forEach((project) => {
-    (project.tags || []).forEach((tag) => tags.add(filterKey(tag)));
-    if (project.category) tags.add(filterKey(project.category));
+    (project.tags || []).forEach((tag) => tags.add(window.GenuaProjectCards.filterKey(tag)));
+    if (project.category) tags.add(window.GenuaProjectCards.filterKey(project.category));
   });
   return tags;
-}
-
-function projectCategories(project) {
-  const values = [...(project.tags || [])];
-  if (project.category) values.push(project.category);
-  return [...new Set(values.map(filterKey).filter(Boolean))].join(' ');
-}
-
-function hasCaseStudy(project) {
-  return Boolean(project.challenge || project.strategy || project.execution || project.result);
-}
-
-function cardLink(project) {
-  if (project.project_url) return project.project_url;
-  if (hasCaseStudy(project)) return `vaka-analizi.html?slug=${encodeURIComponent(project.slug)}`;
-  return '#';
-}
-
-function overlayLabel(project) {
-  if (project.project_url) return 'Siteyi Gör';
-  if (hasCaseStudy(project)) return 'Vaka Analizi';
-  return 'İncele';
-}
-
-function visualStyle(project, index) {
-  if (project.cover_image_url) {
-    return `background-image:linear-gradient(135deg,rgba(10,10,0,.12),rgba(10,10,0,.62)),url('${escapeHtml(project.cover_image_url)}');`;
-  }
-  const classes = ['project-one', 'project-two', 'project-three'];
-  return `class="${classes[index % classes.length]}"`;
-}
-
-function renderCard(project, index) {
-  const href = cardLink(project);
-  const modalAttrs =
-    href === '#'
-      ? ` data-modal-title="${escapeHtml(project.title)}" data-modal-text="${escapeHtml(project.short_description || '')}"`
-      : '';
-  const externalAttrs = project.project_url ? ' target="_blank" rel="noopener"' : '';
-  const visual = project.cover_image_url
-    ? `<div class="project-visual" style="${visualStyle(project, index)}"></div>`
-    : `<div class="project-visual ${['project-one', 'project-two', 'project-three'][index % 3]}"></div>`;
-
-  return `
-    <article class="project-card reveal" data-category="${projectCategories(project)}">
-      <a href="${escapeHtml(href)}"${modalAttrs}${externalAttrs}>
-        ${visual}
-        <div class="project-overlay"><span>${overlayLabel(project)}</span></div>
-        <div class="project-info">
-          <span class="tag">${escapeHtml(project.category || 'Proje')}</span>
-          <h3>${escapeHtml(project.title)}</h3>
-        </div>
-      </a>
-    </article>`;
 }
 
 function bindFilters() {
@@ -161,7 +89,8 @@ async function loadPortfolio() {
   const filtersEl = document.querySelector('#portfolioFilters');
   const heroEl = document.querySelector('#portfolioHero');
   const config = window.GenuaSupabase;
-  if (!grid || !config?.url || !config?.key) return;
+  const cards = window.GenuaProjectCards;
+  if (!grid || !config?.url || !config?.key || !cards) return;
 
   const projectSelect =
     'slug,title,category,tags,cover_image_url,short_description,challenge,strategy,execution,result,project_url,display_order';
@@ -180,9 +109,9 @@ async function loadPortfolio() {
       heroEl.innerHTML = `
         <div class="container reveal">
           <div class="breadcrumb"><a href="anasayfa.html">Ana Sayfa</a><span>/</span><span>Portföy</span></div>
-          <p class="eyebrow">${escapeHtml(page.portfolio_hero_eyebrow || 'Seçilmiş İşler')}</p>
-          <h1>${escapeHtml(page.portfolio_hero_title || 'Stratejiyle başlayan, sonuçla kanıtlanan projeler.')}</h1>
-          <p>${escapeHtml(page.portfolio_hero_description || '')}</p>
+          <p class="eyebrow">${cards.escapeHtml(page.portfolio_hero_eyebrow || 'Seçilmiş İşler')}</p>
+          <h1>${cards.escapeHtml(page.portfolio_hero_title || 'Stratejiyle başlayan, sonuçla kanıtlanan projeler.')}</h1>
+          <p>${cards.escapeHtml(page.portfolio_hero_description || '')}</p>
         </div>`;
     }
   }
@@ -195,7 +124,7 @@ async function loadPortfolio() {
       .join('');
   }
 
-  grid.innerHTML = projects.map(renderCard).join('');
+  grid.innerHTML = projects.map((project, index) => cards.renderProjectCard(project, index, { useModal: true })).join('');
   bindFilters();
   bindModal();
   observeReveal(document);

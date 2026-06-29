@@ -849,11 +849,56 @@ body.is-loaded .loader {
 }
 
 .project-visual {
+  position: relative;
   height: 335px;
   background-color: var(--dark);
   background-position: center;
   background-size: cover;
   transition: transform 0.45s ease, filter 0.45s ease;
+}
+
+.project-visual.has-photo {
+  background-color: #111;
+}
+
+.project-visual.has-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-brand-logo {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(168, 204, 0, 0.35);
+  border-radius: 18px;
+  box-shadow: var(--shadow-soft);
+}
+
+.project-brand-logo.has-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.project-summary {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.94rem;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .project-one {
@@ -3079,6 +3124,7 @@ body.is-loaded .loader {
 }
 
 .brand-showcase-card {
+  position: relative;
   min-height: 360px;
   display: flex;
   flex-direction: column;
@@ -3092,6 +3138,56 @@ body.is-loaded .loader {
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow);
   overflow: hidden;
+}
+
+.brand-showcase-card.has-photo {
+  padding: 0;
+  justify-content: flex-start;
+  background: #111;
+}
+
+.brand-showcase-media {
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.brand-showcase-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.brand-showcase-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px 30px 30px;
+}
+
+.brand-showcase-card.has-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 10, 0, 0.08) 20%, rgba(10, 10, 0, 0.88) 100%);
+  pointer-events: none;
+}
+
+.brand-showcase-card.has-photo .tag,
+.brand-showcase-card.has-photo h3,
+.brand-showcase-card.has-photo p,
+.brand-showcase-card.has-photo .text-link {
+  position: relative;
+  z-index: 1;
+}
+
+.brand-showcase-card .text-link {
+  margin-top: 18px;
+  color: var(--white);
+  font-weight: 800;
 }
 
 .brand-showcase-card h3 {
