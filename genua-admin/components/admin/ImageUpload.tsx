@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { uploadImageViaApi } from '@/lib/upload-client';
 
 export function ImageUpload({ name, defaultValue }: { name: string; defaultValue?: string | null }) {
@@ -8,6 +8,10 @@ export function ImageUpload({ name, defaultValue }: { name: string; defaultValue
   const [url, setUrl] = useState(defaultValue ?? '');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setUrl(defaultValue ?? '');
+  }, [defaultValue]);
 
   async function handleUpload(file: File) {
     setPending(true);
@@ -32,7 +36,8 @@ export function ImageUpload({ name, defaultValue }: { name: string; defaultValue
 
   return (
     <div className="field">
-      <input className="input" name={name} value={url} onChange={(event) => setUrl(event.target.value)} placeholder="https://..." />
+      <input type="hidden" name={name} value={url} />
+      <input className="input" value={url} onChange={(event) => setUrl(event.target.value)} placeholder="https://..." aria-label={name} />
       <input
         ref={fileInputRef}
         type="file"

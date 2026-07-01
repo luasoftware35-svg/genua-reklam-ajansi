@@ -55,8 +55,10 @@ function isUmutAvci(name) {
 const DEFAULT_UMUT_PHOTO = 'varlıklar/resimler/umut-avci.jpg';
 
 function resolvePhotoUrl(member) {
+  const remote = member.photo_url?.trim();
+  if (remote) return remote;
   if (isUmutAvci(member.full_name)) return DEFAULT_UMUT_PHOTO;
-  return member.photo_url?.trim() || null;
+  return null;
 }
 
 function formatBioAsResume(bio) {

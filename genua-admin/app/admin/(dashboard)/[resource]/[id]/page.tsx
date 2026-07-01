@@ -11,7 +11,7 @@ export default async function EditResourcePage({
   searchParams,
 }: {
   params: { resource: string; id: string };
-  searchParams?: { error?: string };
+  searchParams?: { error?: string; saved?: string };
 }) {
   const { resource, id } = params;
   const config = getResourceConfig(resource);
@@ -24,7 +24,12 @@ export default async function EditResourcePage({
   return (
     <div>
       <div className="section-head"><div><h2>{config.title} Düzenle</h2><p>{config.description}</p></div></div>
-      <ResourceForm config={config} row={row} errorMessage={searchParams?.error ? decodeURIComponent(searchParams.error) : null} />
+      <ResourceForm
+        config={config}
+        row={row}
+        errorMessage={searchParams?.error ? decodeURIComponent(searchParams.error) : null}
+        successMessage={searchParams?.saved === '1' ? 'Kayıt başarıyla güncellendi.' : null}
+      />
     </div>
   );
 }

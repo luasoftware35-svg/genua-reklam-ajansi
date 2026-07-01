@@ -102,7 +102,8 @@ export async function updateResource(resourceKey: string, id: string, formData: 
 
   if (error) redirect(resourceErrorPath(resourceKey, id, error.message));
   revalidatePath(`/admin/${resourceKey}`);
-  redirect(`/admin/${resourceKey}`);
+  revalidatePath(`/admin/${resourceKey}/${id}`);
+  redirect(`/admin/${resourceKey}/${id}?saved=1`);
 }
 
 export async function deleteResource(resourceKey: string, id: string) {

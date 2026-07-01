@@ -50,10 +50,12 @@ export function ResourceForm({
   config,
   row,
   errorMessage,
+  successMessage,
 }: {
   config: ResourceConfig;
   row?: Record<string, unknown> | null;
   errorMessage?: string | null;
+  successMessage?: string | null;
 }) {
   const id = row?.id ? String(row.id) : null;
   const action = config.single ? saveSettings.bind(null, id) : id ? updateResource.bind(null, config.key, id) : createResource.bind(null, config.key);
@@ -61,6 +63,7 @@ export function ResourceForm({
   return (
     <form action={action} className="card card-pad">
       {errorMessage ? <div className="error-box" style={{ marginBottom: 18 }}>{errorMessage}</div> : null}
+      {successMessage ? <div className="toast-note" style={{ marginBottom: 18 }}>{successMessage}</div> : null}
       <div className="form-grid">
         {config.fields.map((field) => <Field key={field.name} field={field} row={row} />)}
       </div>
