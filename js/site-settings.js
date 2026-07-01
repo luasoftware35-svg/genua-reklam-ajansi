@@ -275,18 +275,27 @@ async function fetchSiteSettings() {
   }
 
   const select =
-    'contact_address,contact_studio_address,contact_map_embed,contact_phone,contact_email,google_analytics_id,google_tag_manager_id,social_instagram,social_linkedin,social_behance';
+    'contact_address,contact_map_embed,contact_phone,contact_email,google_analytics_id,google_tag_manager_id,social_instagram,social_linkedin,social_behance';
   const response = await fetch(`${config.url}/rest/v1/site_settings?select=${encodeURIComponent(select)}&limit=1`, {
     cache: 'no-store',
     headers: { apikey: config.key, Authorization: `Bearer ${config.key}` },
   });
 
   if (!response.ok) {
+    const analyticsOnly = await fetch(
+      `${config.url}/rest/v1/site_settings?select=google_analytics_id,google_tag_manager_id&limit=1`,
+      {
+        cache: 'no-store',
+        headers: { apikey: config.key, Authorization: `Bearer ${config.key}` },
+      },
+    );
+    const analyticsRows = analyticsOnly.ok ? await analyticsOnly.json() : [];
     return {
       contact_address: officeFallback,
       contact_studio_address: studioFallback,
       contact_phone: DEFAULT_PHONE,
       contact_email: DEFAULT_EMAIL,
+      ...(analyticsRows?.[0] ?? {}),
     };
   }
 
