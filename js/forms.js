@@ -1,3 +1,8 @@
+function hasPrivacyConsent(form) {
+  const consent = form.querySelector('input[name="privacy_consent"]');
+  return consent ? consent.checked : true;
+}
+
 async function submitFormPayload(payload) {
   const response = await fetch('/api/forms/submit', {
     method: 'POST',
@@ -30,13 +35,59 @@ function setSubmitting(form, isSubmitting) {
   });
 }
 
+function trackFormConversion(formType) {
+  window.GenuaAnalytics?.track('generate_lead', {
+    form_type: formType,
+    page_path: window.location.pathname,
+  });
+}
+
+function trackFormEvent(eventName, formType, extra = {}) {
+  window.GenuaAnalytics?.track(eventName, {
+    form_type: formType,
+    page_path: window.location.pathname,
+    ...extra,
+  });
+}
+
+function bindFormEngagement(form, formType) {
+  let started = false;
+  let submitted = false;
+
+  const markStarted = () => {
+    if (started) return;
+    started = true;
+    trackFormEvent('form_start', formType);
+  };
+
+  form.addEventListener('focusin', markStarted, { once: true });
+  form.addEventListener('change', markStarted, { once: true });
+
+  form.addEventListener('submit', () => {
+    submitted = true;
+  });
+
+  window.addEventListener('beforeunload', () => {
+    if (started && !submitted) {
+      trackFormEvent('form_abandon', formType);
+    }
+  });
+}
+
 function bindContactForm() {
   const form = document.querySelector('#contactForm');
   if (!form) return;
 
+  bindFormEngagement(form, 'contact');
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const formData = new FormData(form);
+
+    if (!hasPrivacyConsent(form)) {
+      setFormMessage(form, 'Devam etmek için KVKK aydınlatma metnini onaylamanız gerekir.', 'error');
+      return;
+    }
 
     setSubmitting(form, true);
     form.querySelector('.form-message')?.classList.remove('is-visible');
@@ -52,6 +103,7 @@ function bindContactForm() {
         referrer_page: window.location.pathname,
       });
 
+      trackFormConversion('contact');
       setFormMessage(
         form,
         'Teşekkürler, mesajınız alındı. Genua ekibi en kısa sürede sizinle iletişime geçecek.',
@@ -69,12 +121,24 @@ function bindQuoteForm() {
   const form = document.querySelector('#quoteForm');
   if (!form) return;
 
+  bindFormEngagement(form, 'quote');
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const formData = new FormData(form);
     const services = formData.getAll('service').map((value) => String(value).trim()).filter(Boolean);
     const note = String(formData.get('note') || '').trim();
     const messageParts = [];
+
+    if (!services.length) {
+      alert('Lütfen en az bir hizmet seçin.');
+      return;
+    }
+
+    if (!hasPrivacyConsent(form)) {
+      alert('Devam etmek için KVKK aydınlatma metnini onaylamanız gerekir.');
+      return;
+    }
 
     if (services.length) messageParts.push(`İstenen hizmetler: ${services.join(', ')}`);
     if (note) messageParts.push(`Ek notlar:\n${note}`);
@@ -97,6 +161,7 @@ function bindQuoteForm() {
         referrer_page: window.location.pathname,
       });
 
+      trackFormConversion('quote');
       window.location.href = 'tesekkurler.html';
     } catch (error) {
       setSubmitting(form, false);

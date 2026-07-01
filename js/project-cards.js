@@ -32,9 +32,9 @@ function projectCardLink(project, options = {}) {
 }
 
 function projectOverlayLabel(project) {
-  if (project.project_url) return 'Siteyi Gör';
+  if (project.project_url) return 'Marka Sitesi';
   if (hasCaseStudy(project)) return 'Vaka Analizi';
-  if (project.href === 'projelerimiz.html') return 'Markalarımız';
+  if (project.href === 'projelerimiz.html') return 'Referanslar';
   return 'İncele';
 }
 

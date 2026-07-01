@@ -62,6 +62,8 @@ export const resources: Record<string, ResourceConfig> = {
       { name: 'stats_counters', label: 'Sayaçlar JSON', type: 'json', full: true },
       { name: 'footer_description', label: 'Footer Açıklaması', type: 'textarea', full: true },
       { name: 'footer_copyright', label: 'Telif Metni', type: 'text', full: true },
+      { name: 'google_analytics_id', label: 'Google Analytics 4 Ölçüm Kimliği', type: 'text', placeholder: 'G-XXXXXXXXXX' },
+      { name: 'google_tag_manager_id', label: 'Google Tag Manager ID', type: 'text', placeholder: 'GTM-XXXXXXX' },
     ], columns: ['site_title', 'contact_email', 'contact_phone', 'updated_at'],
   },
   hizmetler: {
