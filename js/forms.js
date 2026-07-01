@@ -36,7 +36,7 @@ function setSubmitting(form, isSubmitting) {
 }
 
 function trackFormConversion(formType) {
-  window.GenuaAnalytics?.track('generate_lead', {
+  return window.GenuaAnalytics?.track('generate_lead', {
     form_type: formType,
     page_path: window.location.pathname,
   });
@@ -103,7 +103,7 @@ function bindContactForm() {
         referrer_page: window.location.pathname,
       });
 
-      trackFormConversion('contact');
+      await trackFormConversion('contact');
       setFormMessage(
         form,
         'Teşekkürler, mesajınız alındı. Genua ekibi en kısa sürede sizinle iletişime geçecek.',
@@ -161,7 +161,7 @@ function bindQuoteForm() {
         referrer_page: window.location.pathname,
       });
 
-      trackFormConversion('quote');
+      window.sessionStorage?.setItem('genua_pending_lead', 'quote');
       window.location.href = 'tesekkurler.html';
     } catch (error) {
       setSubmitting(form, false);

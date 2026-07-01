@@ -42,14 +42,36 @@ let settingsCache = null;
 
 window.GenuaAnalytics = window.GenuaAnalytics || {
   track(eventName, params = {}) {
+    return trackAnalyticsEvent(eventName, params);
+  },
+};
+
+function trackAnalyticsEvent(eventName, params = {}) {
+  return new Promise((resolve) => {
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      resolve();
+    };
+
     const payload = { event: eventName, ...params };
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push(payload);
+
     if (typeof window.gtag === 'function') {
-      window.gtag('event', eventName, params);
+      window.gtag('event', eventName, {
+        ...params,
+        event_callback: finish,
+        event_timeout: 2000,
+      });
+      window.setTimeout(finish, 2000);
+      return;
     }
-  },
-};
+
+    window.setTimeout(finish, 300);
+  });
+}
 
 function phoneToWhatsApp(phone) {
   const digits = String(phone || '').replace(/\D/g, '');
@@ -244,20 +266,32 @@ function initAnalytics(settings) {
 
   window.GenuaAnalytics = {
     track(eventName, params = {}) {
-      const payload = { event: eventName, ...params };
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push(payload);
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', eventName, params);
-      }
+      return trackAnalyticsEvent(eventName, params);
     },
   };
 
-  if (document.body?.dataset.analyticsEvent) {
-    window.GenuaAnalytics.track(document.body.dataset.analyticsEvent, {
+  fireDeferredAnalyticsEvents();
+}
+
+function fireDeferredAnalyticsEvents() {
+  const pendingLead = window.sessionStorage?.getItem('genua_pending_lead');
+  if (pendingLead && /tesekkurler\.html$/i.test(window.location.pathname)) {
+    window.sessionStorage.removeItem('genua_pending_lead');
+    trackAnalyticsEvent('generate_lead', {
+      form_type: pendingLead,
       page_path: window.location.pathname,
+      conversion_page: 'thank_you',
     });
+    return;
   }
+
+  const eventName = document.body?.dataset.analyticsEvent;
+  if (!eventName) return;
+
+  trackAnalyticsEvent(eventName, {
+    page_path: window.location.pathname,
+    ...(document.body.dataset.formType ? { form_type: document.body.dataset.formType } : {}),
+  });
 }
 
 async function fetchSiteSettings() {
