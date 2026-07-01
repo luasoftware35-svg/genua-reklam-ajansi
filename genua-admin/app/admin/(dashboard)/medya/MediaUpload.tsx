@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { uploadMediaAction } from '@/app/admin/(dashboard)/actions';
+import { uploadImageViaApi } from '@/lib/upload-client';
 
 export function MediaUpload() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -13,11 +13,9 @@ export function MediaUpload() {
     setMessage(null);
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      const result = await uploadMediaAction(formData);
+      const result = await uploadImageViaApi(file);
 
-      if (result.error) {
+      if ('error' in result) {
         setMessage(result.error);
         return;
       }

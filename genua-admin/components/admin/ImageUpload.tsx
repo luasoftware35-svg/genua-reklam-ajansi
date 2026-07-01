@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { uploadMediaAction } from '@/app/admin/(dashboard)/actions';
+import { uploadImageViaApi } from '@/lib/upload-client';
 
 export function ImageUpload({ name, defaultValue }: { name: string; defaultValue?: string | null }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -14,17 +14,10 @@ export function ImageUpload({ name, defaultValue }: { name: string; defaultValue
     setError(null);
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      const result = await uploadMediaAction(formData);
+      const result = await uploadImageViaApi(file);
 
-      if (result.error) {
+      if ('error' in result) {
         setError(result.error);
-        return;
-      }
-
-      if (!result.url) {
-        setError('Yükleme tamamlandı ancak görsel adresi alınamadı.');
         return;
       }
 

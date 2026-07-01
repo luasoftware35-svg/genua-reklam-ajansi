@@ -7,6 +7,7 @@ import { uploadMediaFile } from '@/lib/upload-media';
 import { estimateReadTime, parseJson, parseList, slugify } from '@/lib/utils';
 import { getResourceConfig, type ResourceField } from '@/lib/admin/resources';
 import { stripProjectHeroFields } from '@/lib/admin/project-row';
+import { stripTeamResumeField } from '@/lib/admin/team-row';
 
 export async function uploadMediaAction(formData: FormData) {
   try {
@@ -52,14 +53,37 @@ function serializePayload(resourceKey: string, formData: FormData) {
   return { config, payload };
 }
 
+function resourceErrorPath(resourceKey: string, id?: string, message?: string) {
+  const base = id ? `/admin/${resourceKey}/${id}` : `/admin/${resourceKey}/yeni`;
+  if (!message) return base;
+  return `${base}?error=${encodeURIComponent(message)}`;
+}
+
+function handleResourceWriteError(resourceKey: string, error: { message: string }, payload: Record<string, unknown>, id?: string) {
+  if (error.message.includes('case_hero') && resourceKey === 'projeler') {
+    return { retryPayload: stripProjectHeroFields(payload) };
+  }
+
+  if (error.message.includes('resume_content') && resourceKey === 'ekip') {
+    return { retryPayload: stripTeamResumeField(payload) };
+  }
+
+  redirect(resourceErrorPath(resourceKey, id, error.message));
+}
+
 export async function createResource(resourceKey: string, formData: FormData) {
   const { config, payload } = serializePayload(resourceKey, formData);
   const supabase = createAdminClient();
   let { error } = await supabase.from(config.table).insert(payload);
-  if (error?.message?.includes('case_hero') && resourceKey === 'projeler') {
-    ({ error } = await supabase.from(config.table).insert(stripProjectHeroFields(payload)));
+
+  if (error) {
+    const retry = handleResourceWriteError(resourceKey, error, payload);
+    if (retry?.retryPayload) {
+      ({ error } = await supabase.from(config.table).insert(retry.retryPayload));
+    }
   }
-  if (error) throw new Error(error.message);
+
+  if (error) redirect(resourceErrorPath(resourceKey, undefined, error.message));
   revalidatePath(`/admin/${resourceKey}`);
   redirect(`/admin/${resourceKey}`);
 }
@@ -68,10 +92,15 @@ export async function updateResource(resourceKey: string, id: string, formData: 
   const { config, payload } = serializePayload(resourceKey, formData);
   const supabase = createAdminClient();
   let { error } = await supabase.from(config.table).update(payload).eq('id', id);
-  if (error?.message?.includes('case_hero') && resourceKey === 'projeler') {
-    ({ error } = await supabase.from(config.table).update(stripProjectHeroFields(payload)).eq('id', id));
+
+  if (error) {
+    const retry = handleResourceWriteError(resourceKey, error, payload, id);
+    if (retry?.retryPayload) {
+      ({ error } = await supabase.from(config.table).update(retry.retryPayload).eq('id', id));
+    }
   }
-  if (error) throw new Error(error.message);
+
+  if (error) redirect(resourceErrorPath(resourceKey, id, error.message));
   revalidatePath(`/admin/${resourceKey}`);
   redirect(`/admin/${resourceKey}`);
 }

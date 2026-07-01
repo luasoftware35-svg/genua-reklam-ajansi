@@ -38,7 +38,7 @@ export async function uploadMediaFile(file: File): Promise<MediaUploadResult> {
   const admin = createAdminClient();
   const { error } = await admin.storage.from('genua-media').upload(fileName, buffer, {
     contentType: resolveContentType(file),
-    upsert: false,
+    upsert: true,
   });
 
   if (error) {

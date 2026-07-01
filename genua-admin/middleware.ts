@@ -5,8 +5,10 @@ const AUTH_TIMEOUT_MS = 8000;
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
-  const isAdminRoute = request.nextUrl.pathname.startsWith('/admin');
-  const isLoginRoute = request.nextUrl.pathname === '/admin/login';
+  const pathname = request.nextUrl.pathname;
+  const isAdminRoute = pathname.startsWith('/admin');
+  const isAdminApiRoute = pathname.startsWith('/api/admin');
+  const isLoginRoute = pathname === '/admin/login';
 
   if (isLoginRoute) {
     return supabaseResponse;
@@ -16,7 +18,7 @@ export async function middleware(request: NextRequest) {
     .getAll()
     .some((cookie) => cookie.name.startsWith('sb-') && cookie.name.includes('auth-token'));
 
-  if (isAdminRoute && !hasAuthCookie) {
+  if ((isAdminRoute || isAdminApiRoute) && !hasAuthCookie) {
     return NextResponse.redirect(new URL('/admin/login', request.url));
   }
 
@@ -43,7 +45,7 @@ export async function middleware(request: NextRequest) {
   ]).catch(() => null);
   const user = userResult && 'data' in userResult ? userResult.data.user : null;
 
-  if (isAdminRoute && !user) {
+  if ((isAdminRoute || isAdminApiRoute) && !user) {
     return NextResponse.redirect(new URL('/admin/login', request.url));
   }
 
@@ -51,5 +53,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/api/admin/:path*'],
 };
