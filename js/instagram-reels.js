@@ -16,7 +16,7 @@ function reelCard(reel) {
       <div class="reel-card-media">
         ${
           thumb
-            ? `<img src="${escapeHtml(thumb)}" alt="" loading="lazy" decoding="async">`
+            ? `<img src="${escapeHtml(thumb)}" alt="${escapeHtml(title)}" loading="lazy" decoding="async">`
             : '<span class="reel-card-fallback" aria-hidden="true">REEL</span>'
         }
         <span class="reel-card-play" aria-hidden="true"></span>
@@ -64,7 +64,7 @@ function setReelCardThumbnail(card, thumbnailUrl) {
   media.querySelector('.reel-card-fallback')?.remove();
   const img = document.createElement('img');
   img.src = thumbnailUrl;
-  img.alt = '';
+  img.alt = card.getAttribute('aria-label')?.replace(/ — Instagram Reels'te izle$/, '') || 'Instagram Reels';
   img.loading = 'lazy';
   img.decoding = 'async';
   media.prepend(img);
@@ -111,10 +111,19 @@ function getFallbackReels() {
   return Array.isArray(catalog) && catalog.length ? catalog : [];
 }
 
+function scheduleReelThumbnailHydration(section) {
+  const run = () => hydrateReelThumbnails(section);
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(run, { timeout: 2500 });
+  } else {
+    window.setTimeout(run, 400);
+  }
+}
+
 function renderInstagramReels(section, reels, instagramUrl) {
   if (!section || !reels.length) return;
   renderMarquee(section, reels, instagramUrl);
-  hydrateReelThumbnails(section);
+  scheduleReelThumbnailHydration(section);
   document.dispatchEvent(new CustomEvent('genua:reels-rendered'));
 }
 
@@ -169,17 +178,18 @@ async function loadInstagramReels() {
   const fallback = getFallbackReels();
   const defaultInstagramUrl = 'https://www.instagram.com/genuadigital/';
 
-  if (fallback.length) {
-    renderInstagramReels(section, fallback, defaultInstagramUrl);
-  }
-
   const remote = await loadInstagramReelsFromSupabase(section, defaultInstagramUrl);
   if (remote?.reels?.length) {
     renderInstagramReels(section, remote.reels, remote.instagramUrl);
     return;
   }
 
-  if (!fallback.length) section.hidden = true;
+  if (fallback.length) {
+    renderInstagramReels(section, fallback, defaultInstagramUrl);
+    return;
+  }
+
+  section.hidden = true;
 }
 
 loadInstagramReels();
