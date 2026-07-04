@@ -39,6 +39,50 @@ function bindReelAnalytics(container) {
   });
 }
 
+const reelMetaCache = new Map();
+
+async function fetchReelMeta(reelUrl) {
+  if (reelMetaCache.has(reelUrl)) return reelMetaCache.get(reelUrl);
+
+  try {
+    const response = await fetch(`/api/reel-meta?url=${encodeURIComponent(reelUrl)}`, {
+      cache: 'force-cache',
+    });
+    if (!response.ok) return null;
+    const meta = await response.json();
+    reelMetaCache.set(reelUrl, meta);
+    return meta;
+  } catch {
+    return null;
+  }
+}
+
+function setReelCardThumbnail(card, thumbnailUrl) {
+  const media = card.querySelector('.reel-card-media');
+  if (!media || media.querySelector('img')) return;
+
+  media.querySelector('.reel-card-fallback')?.remove();
+  const img = document.createElement('img');
+  img.src = thumbnailUrl;
+  img.alt = '';
+  img.loading = 'lazy';
+  img.decoding = 'async';
+  media.prepend(img);
+}
+
+async function hydrateReelThumbnails(section) {
+  const cards = [...section.querySelectorAll('.reel-card')];
+  await Promise.all(
+    cards.map(async (card) => {
+      if (card.querySelector('.reel-card-media img')) return;
+      const reelUrl = card.getAttribute('href');
+      if (!reelUrl) return;
+      const meta = await fetchReelMeta(reelUrl);
+      if (meta?.thumbnail_url) setReelCardThumbnail(card, meta.thumbnail_url);
+    }),
+  );
+}
+
 function renderMarquee(section, reels, instagramUrl) {
   section.hidden = false;
   const cards = reels.map(reelCard).join('');
@@ -70,6 +114,7 @@ function getFallbackReels() {
 function renderInstagramReels(section, reels, instagramUrl) {
   if (!section || !reels.length) return;
   renderMarquee(section, reels, instagramUrl);
+  hydrateReelThumbnails(section);
   document.dispatchEvent(new CustomEvent('genua:reels-rendered'));
 }
 
