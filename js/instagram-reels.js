@@ -62,38 +62,50 @@ function renderMarquee(section, reels, instagramUrl) {
   bindReelAnalytics(section);
 }
 
+function getFallbackReels() {
+  const catalog = window.GenuaInstagramReelsCatalog;
+  return Array.isArray(catalog) && catalog.length ? catalog : [];
+}
+
 async function loadInstagramReels() {
   const section = document.querySelector('#instagramReelsSection');
-  const config = window.GenuaSupabase;
-  if (!section || !config?.url || !config?.key) return;
+  if (!section) return;
 
-  const select = 'title,client_name,reel_url,thumbnail_url,display_order';
-  const [reelsResponse, settingsResponse] = await Promise.all([
-    fetch(
-      `${config.url}/rest/v1/instagram_reels?select=${encodeURIComponent(select)}&is_active=eq.true&order=display_order.asc`,
-      {
+  const config = window.GenuaSupabase;
+  let reels = [];
+  let instagramUrl = 'https://www.instagram.com/genuadigital/';
+
+  if (config?.url && config?.key) {
+    const select = 'title,client_name,reel_url,thumbnail_url,display_order';
+    const [reelsResponse, settingsResponse] = await Promise.all([
+      fetch(
+        `${config.url}/rest/v1/instagram_reels?select=${encodeURIComponent(select)}&is_active=eq.true&order=display_order.asc`,
+        {
+          cache: 'no-store',
+          headers: { apikey: config.key, Authorization: `Bearer ${config.key}` },
+        },
+      ),
+      fetch(`${config.url}/rest/v1/site_settings?select=social_instagram&limit=1`, {
         cache: 'no-store',
         headers: { apikey: config.key, Authorization: `Bearer ${config.key}` },
-      },
-    ),
-    fetch(`${config.url}/rest/v1/site_settings?select=social_instagram&limit=1`, {
-      cache: 'no-store',
-      headers: { apikey: config.key, Authorization: `Bearer ${config.key}` },
-    }),
-  ]);
+      }),
+    ]);
 
-  if (!reelsResponse.ok) return;
+    if (reelsResponse.ok) {
+      const rows = await reelsResponse.json();
+      if (Array.isArray(rows) && rows.length) reels = rows;
+    }
 
-  const reels = await reelsResponse.json();
-  if (!Array.isArray(reels) || !reels.length) {
-    section.hidden = true;
-    return;
+    if (settingsResponse.ok) {
+      const settingsRows = await settingsResponse.json();
+      instagramUrl = settingsRows?.[0]?.social_instagram?.trim() || instagramUrl;
+    }
   }
 
-  let instagramUrl = 'https://www.instagram.com/genuadigital/';
-  if (settingsResponse.ok) {
-    const settingsRows = await settingsResponse.json();
-    instagramUrl = settingsRows?.[0]?.social_instagram?.trim() || instagramUrl;
+  if (!reels.length) reels = getFallbackReels();
+  if (!reels.length) {
+    section.hidden = true;
+    return;
   }
 
   renderMarquee(section, reels, instagramUrl);
