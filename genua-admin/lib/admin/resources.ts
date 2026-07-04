@@ -144,6 +144,23 @@ export const resources: Record<string, ResourceConfig> = {
       { name: 'is_active', label: 'Aktif', type: 'checkbox' },
     ], columns: ['company_name', 'logo_url', 'initials', 'display_order', 'is_public_client', 'is_collapsed', 'is_active'],
   },
+  reels: {
+    key: 'reels',
+    title: 'Instagram Reels',
+    description: 'Anasayfadaki kayan Reels bandı. Instagram reel linki yapıştırın; kapak görseli otomatik çekilir.',
+    table: 'instagram_reels',
+    orderBy: 'display_order',
+    createLabel: 'Yeni Reel',
+    fields: [
+      { name: 'title', label: 'Başlık', type: 'text', placeholder: 'Boş bırakılırsa Instagram başlığı kullanılır' },
+      { name: 'client_name', label: 'Müşteri / Marka', type: 'text', placeholder: 'Örn: Togg, Müdavim' },
+      { name: 'reel_url', label: 'Instagram Reel URL', type: 'url', required: true, placeholder: 'https://www.instagram.com/reel/...' },
+      { name: 'thumbnail_url', label: 'Kapak Görseli', type: 'image', placeholder: 'Boş bırakılırsa linkten otomatik çekilir' },
+      { name: 'display_order', label: 'Sıra', type: 'number' },
+      { name: 'is_active', label: 'Aktif', type: 'checkbox' },
+    ],
+    columns: ['title', 'client_name', 'reel_url', 'display_order', 'is_active'],
+  },
   bannerlar: {
     key: 'bannerlar', title: 'Bannerlar', description: 'Kampanya ve duyuru bannerları.', table: 'banners', orderBy: 'display_order', createLabel: 'Yeni Banner',
     fields: [

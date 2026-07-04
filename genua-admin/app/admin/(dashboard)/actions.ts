@@ -8,6 +8,21 @@ import { estimateReadTime, parseJson, parseList, slugify } from '@/lib/utils';
 import { getResourceConfig, type ResourceField } from '@/lib/admin/resources';
 import { stripProjectHeroFields } from '@/lib/admin/project-row';
 import { stripTeamResumeField } from '@/lib/admin/team-row';
+import { fetchInstagramReelMeta } from '@/lib/instagram-oembed';
+
+async function enrichInstagramReelPayload(payload: Record<string, unknown>) {
+  const reelUrl = String(payload.reel_url || '').trim();
+  if (!reelUrl) return payload;
+
+  const thumbnail = String(payload.thumbnail_url || '').trim();
+  const title = String(payload.title || '').trim();
+  if (thumbnail && title) return payload;
+
+  const meta = await fetchInstagramReelMeta(reelUrl);
+  if (!thumbnail && meta.thumbnail_url) payload.thumbnail_url = meta.thumbnail_url;
+  if (!title && meta.title) payload.title = meta.title;
+  return payload;
+}
 
 export async function uploadMediaAction(formData: FormData) {
   try {
@@ -73,6 +88,7 @@ function handleResourceWriteError(resourceKey: string, error: { message: string 
 
 export async function createResource(resourceKey: string, formData: FormData) {
   const { config, payload } = serializePayload(resourceKey, formData);
+  if (resourceKey === 'reels') await enrichInstagramReelPayload(payload);
   const supabase = createAdminClient();
   let { error } = await supabase.from(config.table).insert(payload);
 
@@ -90,6 +106,7 @@ export async function createResource(resourceKey: string, formData: FormData) {
 
 export async function updateResource(resourceKey: string, id: string, formData: FormData) {
   const { config, payload } = serializePayload(resourceKey, formData);
+  if (resourceKey === 'reels') await enrichInstagramReelPayload(payload);
   const supabase = createAdminClient();
   let { error } = await supabase.from(config.table).update(payload).eq('id', id);
 
