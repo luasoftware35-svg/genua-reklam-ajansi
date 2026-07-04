@@ -192,4 +192,33 @@ async function loadInstagramReels() {
   section.hidden = true;
 }
 
-loadInstagramReels();
+function initInstagramReels() {
+  const section = document.querySelector('#instagramReelsSection');
+  if (!section) return;
+
+  let started = false;
+  const start = () => {
+    if (started) return;
+    started = true;
+    loadInstagramReels();
+  };
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          observer.disconnect();
+          start();
+        }
+      },
+      { rootMargin: '320px 0px' },
+    );
+    observer.observe(section);
+    window.setTimeout(start, 6000);
+    return;
+  }
+
+  start();
+}
+
+initInstagramReels();
