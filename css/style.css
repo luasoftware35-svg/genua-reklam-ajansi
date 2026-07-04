@@ -3406,7 +3406,8 @@ body.is-loaded .loader {
   }
 }
 
-.reels-marquee-section[hidden] {
+.reels-marquee-section[hidden],
+.reels-marquee-section:empty {
   display: none !important;
 }
 

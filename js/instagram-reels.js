@@ -45,7 +45,7 @@ function renderMarquee(section, reels, instagramUrl) {
   const trackHtml = `${cards}${cards}`;
 
   section.innerHTML = `
-    <div class="container reels-marquee-head reveal">
+    <div class="container reels-marquee-head reveal is-visible">
       <div class="section-heading">
         <p class="eyebrow">Stüdyodan</p>
         <h2 id="reelsTitle">Reels ile ürettiğimiz işler</h2>
@@ -67,48 +67,74 @@ function getFallbackReels() {
   return Array.isArray(catalog) && catalog.length ? catalog : [];
 }
 
-async function loadInstagramReels() {
-  const section = document.querySelector('#instagramReelsSection');
-  if (!section) return;
+function renderInstagramReels(section, reels, instagramUrl) {
+  if (!section || !reels.length) return;
+  renderMarquee(section, reels, instagramUrl);
+  document.dispatchEvent(new CustomEvent('genua:reels-rendered'));
+}
 
+async function loadInstagramReelsFromSupabase(section, instagramUrl) {
   const config = window.GenuaSupabase;
-  let reels = [];
-  let instagramUrl = 'https://www.instagram.com/genuadigital/';
+  if (!config?.url || !config?.key) return null;
 
-  if (config?.url && config?.key) {
-    const select = 'title,client_name,reel_url,thumbnail_url,display_order';
+  const select = 'title,client_name,reel_url,thumbnail_url,display_order';
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), 4000);
+
+  try {
     const [reelsResponse, settingsResponse] = await Promise.all([
       fetch(
         `${config.url}/rest/v1/instagram_reels?select=${encodeURIComponent(select)}&is_active=eq.true&order=display_order.asc`,
         {
           cache: 'no-store',
+          signal: controller.signal,
           headers: { apikey: config.key, Authorization: `Bearer ${config.key}` },
         },
       ),
       fetch(`${config.url}/rest/v1/site_settings?select=social_instagram&limit=1`, {
         cache: 'no-store',
+        signal: controller.signal,
         headers: { apikey: config.key, Authorization: `Bearer ${config.key}` },
       }),
     ]);
 
-    if (reelsResponse.ok) {
-      const rows = await reelsResponse.json();
-      if (Array.isArray(rows) && rows.length) reels = rows;
-    }
-
+    let nextUrl = instagramUrl;
     if (settingsResponse.ok) {
       const settingsRows = await settingsResponse.json();
-      instagramUrl = settingsRows?.[0]?.social_instagram?.trim() || instagramUrl;
+      nextUrl = settingsRows?.[0]?.social_instagram?.trim() || nextUrl;
     }
+
+    if (!reelsResponse.ok) return null;
+
+    const rows = await reelsResponse.json();
+    if (!Array.isArray(rows) || !rows.length) return null;
+
+    return { reels: rows, instagramUrl: nextUrl };
+  } catch {
+    return null;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+}
+
+async function loadInstagramReels() {
+  const section = document.querySelector('#instagramReelsSection');
+  if (!section) return;
+
+  const fallback = getFallbackReels();
+  const defaultInstagramUrl = 'https://www.instagram.com/genuadigital/';
+
+  if (fallback.length) {
+    renderInstagramReels(section, fallback, defaultInstagramUrl);
   }
 
-  if (!reels.length) reels = getFallbackReels();
-  if (!reels.length) {
-    section.hidden = true;
+  const remote = await loadInstagramReelsFromSupabase(section, defaultInstagramUrl);
+  if (remote?.reels?.length) {
+    renderInstagramReels(section, remote.reels, remote.instagramUrl);
     return;
   }
 
-  renderMarquee(section, reels, instagramUrl);
+  if (!fallback.length) section.hidden = true;
 }
 
 loadInstagramReels();

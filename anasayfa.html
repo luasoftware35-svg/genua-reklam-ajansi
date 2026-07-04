@@ -157,7 +157,7 @@
       </div>
     </section>
 
-    <section class="reels-marquee-section section-padding" id="instagramReelsSection" aria-labelledby="reelsTitle" hidden>
+    <section class="reels-marquee-section section-padding" id="instagramReelsSection" aria-labelledby="reelsTitle">
     </section>
 
     <section class="testimonials section-padding" aria-labelledby="testimonialsTitle">
@@ -313,6 +313,12 @@
 
     document.addEventListener("genua:services-rendered", () => {
       document.querySelectorAll("#servicesGrid .reveal:not(.is-visible)").forEach((item) => {
+        revealObserver.observe(item);
+      });
+    });
+
+    document.addEventListener("genua:reels-rendered", () => {
+      document.querySelectorAll("#instagramReelsSection .reveal:not(.is-visible)").forEach((item) => {
         revealObserver.observe(item);
       });
     });
