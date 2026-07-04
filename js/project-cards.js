@@ -52,7 +52,7 @@ function renderProjectVisual(project, index) {
   const cover = projectCoverImage(project);
   if (cover) {
     const logo = project.logo_url
-      ? `<span class="project-brand-logo has-image"><img src="${escapeHtml(project.logo_url)}" alt="" loading="lazy" decoding="async"></span>`
+      ? `<span class="project-brand-logo has-image"><img src="${escapeHtml(project.logo_url)}" alt="${escapeHtml(project.title)} logosu" loading="lazy" decoding="async"></span>`
       : '';
     return `<div class="project-visual has-photo"><img src="${escapeHtml(cover)}" alt="${escapeHtml(project.title)}" loading="lazy" decoding="async">${logo}</div>`;
   }

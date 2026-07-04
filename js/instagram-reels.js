@@ -85,6 +85,7 @@ async function hydrateReelThumbnails(section) {
 
 function renderMarquee(section, reels, instagramUrl) {
   section.hidden = false;
+  section.setAttribute('aria-labelledby', 'reelsTitle');
   const cards = reels.map(reelCard).join('');
   const trackHtml = `${cards}${cards}`;
 

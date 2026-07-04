@@ -171,7 +171,7 @@ function ensureSocialLinks(container, settings) {
   ].filter(([url]) => url);
 
   const markup = links
-    .map(([url, label, text]) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener" aria-label="${escapeHtml(label)}">${text}</a>`)
+    .map(([url, label, text]) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener" title="${escapeHtml(label.replace(/^Genua\s+/i, ''))}">${text}</a>`)
     .join('');
 
   if (!markup) return;
@@ -227,8 +227,19 @@ function injectWhatsAppButton(settings) {
   link.href = `https://wa.me/${whatsapp}`;
   link.target = '_blank';
   link.rel = 'noopener';
-  link.setAttribute('aria-label', 'WhatsApp ile iletişime geç');
-  link.innerHTML = '<span aria-hidden="true">WA</span><span class="whatsapp-float-label">WhatsApp</span>';
+  link.innerHTML = '<span class="whatsapp-float-label">WhatsApp</span>';
+
+  const syncWhatsAppLabel = () => {
+    const mobile = window.matchMedia('(max-width: 640px)').matches;
+    if (mobile) {
+      link.setAttribute('aria-label', 'WhatsApp');
+    } else {
+      link.removeAttribute('aria-label');
+    }
+  };
+
+  syncWhatsAppLabel();
+  window.matchMedia('(max-width: 640px)').addEventListener('change', syncWhatsAppLabel);
   document.body.appendChild(link);
 }
 
