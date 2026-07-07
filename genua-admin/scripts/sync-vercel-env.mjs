@@ -10,7 +10,8 @@ const vercelBin = resolve(adminDir, 'node_modules/.bin/vercel');
 
 const extra = {
   FORM_NOTIFY_EMAIL: 'hello@genuadigital.com',
-  FORM_FROM_EMAIL: 'Genua Formlar <onboarding@resend.dev>',
+  FORM_FROM_EMAIL: 'Genua Chat <onboarding@resend.dev>',
+  ANTHROPIC_CHAT_MODEL: 'claude-sonnet-4-20250514',
 };
 
 function parseEnvFile(path) {
@@ -85,4 +86,8 @@ for (const [name, value] of Object.entries(entries)) {
 
 if (!entries.RESEND_API_KEY) {
   console.warn('RESEND_API_KEY eklenmedi. Mail bildirimi için Resend API key gerekli.');
+}
+
+if (!entries.ANTHROPIC_API_KEY) {
+  console.warn('ANTHROPIC_API_KEY eklenmedi. Chatbot için Anthropic API key gerekli.');
 }

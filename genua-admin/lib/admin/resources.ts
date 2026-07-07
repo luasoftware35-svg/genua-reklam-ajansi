@@ -131,6 +131,26 @@ export const resources: Record<string, ResourceConfig> = {
       { name: 'status', label: 'Durum', type: 'select', options: ['new', 'read', 'replied', 'archived'] }, { name: 'admin_notes', label: 'Admin Notu', type: 'textarea', full: true },
     ], columns: ['full_name', 'email', 'phone', 'status', 'created_at'],
   },
+  'sohbet-leadleri': {
+    key: 'sohbet-leadleri',
+    title: 'Chatbot Leadleri',
+    description: 'G. (Genua Asistan) üzerinden toplanan teklif ve iletişim talepleri.',
+    table: 'chat_leads',
+    orderBy: 'created_at',
+    fields: [
+      { name: 'full_name', label: 'Ad Soyad', type: 'text' },
+      { name: 'contact', label: 'İletişim', type: 'text' },
+      { name: 'email', label: 'E-posta', type: 'email' },
+      { name: 'phone', label: 'Telefon', type: 'text' },
+      { name: 'service_interest', label: 'Hizmet İlgisi', type: 'text', full: true },
+      { name: 'company_size', label: 'Sektör / Firma', type: 'text', full: true },
+      { name: 'message', label: 'Özet İhtiyaç', type: 'textarea', full: true },
+      { name: 'conversation_summary', label: 'Sohbet Özeti', type: 'textarea', full: true, readOnly: true },
+      { name: 'referrer_page', label: 'Kaynak Sayfa', type: 'text', readOnly: true },
+      { name: 'status', label: 'Durum', type: 'select', options: ['new', 'read', 'contacted', 'qualified', 'archived'] },
+    ],
+    columns: ['full_name', 'contact', 'service_interest', 'status', 'created_at'],
+  },
   musteriler: {
     key: 'musteriler', title: 'Müşteri Logoları', description: 'Projelerimiz sayfasındaki referans markaları, kamu kurumları ve logo sıralaması.', table: 'client_logos', orderBy: 'display_order', createLabel: 'Yeni Logo',
     fields: [

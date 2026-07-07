@@ -17,6 +17,10 @@
       "destination": "/anasayfa.html"
     },
     {
+      "source": "/api/chat",
+      "destination": "https://genua-admin.vercel.app/api/chat"
+    },
+    {
       "source": "/api/reel-meta",
       "destination": "https://genua-admin.vercel.app/api/reel-meta"
     },
