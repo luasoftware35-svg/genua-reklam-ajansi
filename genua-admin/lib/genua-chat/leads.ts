@@ -69,21 +69,19 @@ async function sendLeadNotificationEmail(lead: LeadPayload & { referrer_page?: s
   return { skipped: false };
 }
 
-export async function saveChatLead(
+async function saveToChatLeads(
+  supabase: ReturnType<typeof getServiceClient>,
   lead: LeadPayload,
   meta: { referrer_page?: string | null; user_agent?: string | null; conversation_summary?: string | null },
+  contact: { email: string | null; phone: string | null; contact: string | null },
 ) {
-  const { email, phone, contact } = splitContact(lead);
-  if (!contact && !email && !phone) return null;
-
-  const supabase = getServiceClient();
   const { data, error } = await supabase
     .from('chat_leads')
     .insert({
       full_name: lead.full_name?.trim() || null,
-      contact: contact || email || phone,
-      email,
-      phone,
+      contact: contact.contact || contact.email || contact.phone,
+      email: contact.email,
+      phone: contact.phone,
       service_interest: lead.service_interest?.trim() || null,
       company_size: lead.company_size?.trim() || null,
       message: lead.message?.trim() || null,
@@ -96,7 +94,73 @@ export async function saveChatLead(
     .select('id')
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) throw error;
+  return data.id as string;
+}
+
+async function saveToContactMessages(
+  supabase: ReturnType<typeof getServiceClient>,
+  lead: LeadPayload,
+  meta: { referrer_page?: string | null; user_agent?: string | null; conversation_summary?: string | null },
+  contact: { email: string | null; phone: string | null; contact: string | null },
+) {
+  const phoneDigits = (contact.phone || contact.contact || '').replace(/\D/g, '');
+  const email =
+    contact.email ||
+    (contact.contact?.includes('@') ? contact.contact : null) ||
+    `chatbot+${phoneDigits || Date.now()}@genuadigital.com`;
+
+  const messageParts = [
+    lead.message?.trim(),
+    lead.service_interest ? `Hizmet: ${lead.service_interest}` : null,
+    lead.company_size ? `Firma/Sektör: ${lead.company_size}` : null,
+    meta.conversation_summary ? `\n---\nSohbet özeti:\n${meta.conversation_summary}` : null,
+  ].filter(Boolean);
+
+  const { data, error } = await supabase
+    .from('contact_messages')
+    .insert({
+      full_name: lead.full_name?.trim() || 'Chatbot Ziyaretçi',
+      email,
+      phone: contact.phone || (phoneDigits ? contact.contact : null),
+      subject: 'Genua Chat (G.) — Teklif Talebi',
+      message: messageParts.join('\n') || 'Chatbot üzerinden iletişim talebi',
+      form_type: 'quote',
+      requested_services: lead.service_interest ? [lead.service_interest.trim()] : [],
+      company_name: lead.company_size?.trim() || null,
+      referrer_page: meta.referrer_page?.trim() || null,
+      user_agent: meta.user_agent?.trim() || null,
+      status: 'new',
+    })
+    .select('id')
+    .single();
+
+  if (error) throw error;
+  return data.id as string;
+}
+
+export async function saveChatLead(
+  lead: LeadPayload,
+  meta: { referrer_page?: string | null; user_agent?: string | null; conversation_summary?: string | null },
+) {
+  const contact = splitContact(lead);
+  if (!contact.contact && !contact.email && !contact.phone) return null;
+
+  const supabase = getServiceClient();
+  let leadId: string | null = null;
+
+  const chatLeads = await supabase.from('chat_leads').select('id').limit(1);
+  if (!chatLeads.error) {
+    try {
+      leadId = await saveToChatLeads(supabase, lead, meta, contact);
+    } catch (error) {
+      console.error('chat_leads insert failed, falling back to contact_messages:', error);
+    }
+  }
+
+  if (!leadId) {
+    leadId = await saveToContactMessages(supabase, lead, meta, contact);
+  }
 
   try {
     await sendLeadNotificationEmail({ ...lead, referrer_page: meta.referrer_page });
@@ -104,5 +168,5 @@ export async function saveChatLead(
     console.error('Chat lead mail notification failed:', mailError);
   }
 
-  return data.id as string;
+  return leadId;
 }
