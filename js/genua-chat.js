@@ -4,9 +4,9 @@
   const STORAGE_KEY = 'genua.chat.messages.v1';
   const TEASER_KEY = 'genua.chat.teaser.dismissed';
   const OPENING_MESSAGE =
-    'Merhaba, ben G. — Genua ekibinden. Hizmetler, süreç veya teklif hakkında sorularını yanıtlayabilirim.';
+    'Merhaba, Genua Dijital Medya Ajansı adına G. Hizmetlerimiz, çalışma sürecimiz ve teklif talepleriniz hakkında bilgi verebilirim.';
 
-  const quickReplies = ['Hizmetleriniz neler?', 'Teklif almak istiyorum', 'Neredesiniz?', 'Örnek işler'];
+  const quickReplies = ['Hizmetleriniz neler?', 'Teklif almak istiyorum', 'Ofis adresiniz', 'Referans çalışmalar'];
 
   let isOpen = false;
   let isLoading = false;
@@ -19,13 +19,13 @@
   root.innerHTML = `
     <div class="genua-chat-teaser" id="genuaChatTeaser" hidden>
       <button type="button" aria-label="Kapat">×</button>
-      Merhaba! Projeniz için yardımcı olabilirim.
+      Merhaba. Genua Dijital Medya Ajansı olarak size nasıl yardımcı olabiliriz?
     </div>
     <div class="genua-chat-panel" id="genuaChatPanel" role="dialog" aria-label="Genua Asistan sohbet" aria-modal="true">
       <div class="genua-chat-header">
         <div>
           <strong>G. — Genua Asistan</strong>
-          <span>Anında yanıt verir</span>
+          <span>Kurumsal destek hattı</span>
         </div>
         <button class="genua-chat-close" type="button" aria-label="Sohbeti kapat">×</button>
       </div>

@@ -1,54 +1,54 @@
 (function initGenuaChatRules(global) {
   const RESPONSES = {
-    services: `Genua olarak şu alanlarda çalışıyoruz:
+    services: `Genua Dijital Medya Ajansı olarak aşağıdaki alanlarda kurumsal markalara hizmet sunuyoruz:
 
-• Dijital Reklam (Google & Meta)
+• Dijital Reklam (Google Ads & Meta)
 • Sosyal Medya Yönetimi
 • Marka Tasarımı
 • İçerik Üretimi
 • SEO
 • Web Tasarım
 
-Detay için genuadigital.com/hizmetler — teklif için "teklif almak istiyorum" yazman yeterli.`,
+Detaylı bilgi için genuadigital.com/hizmetler sayfasını inceleyebilirsiniz. Teklif talebi için "Teklif almak istiyorum" yazmanız yeterlidir.`,
 
-    process: `Sürecimiz kısaca: keşif → strateji → üretim → yayın/optimizasyon → raporlama.
+    process: `Çalışma sürecimiz; keşif, strateji, üretim, yayın/optimizasyon ve raporlama aşamalarından oluşur.
 
-Her proje kapsama göre şekillenir. İstersen birlikte ihtiyacını netleştirelim.`,
+Her proje, markanızın ihtiyaçlarına göre özelleştirilir. İhtiyaçlarınızı birlikte netleştirmekten memnuniyet duyarız.`,
 
-    portfolio: `Örnek işlerimize buradan bakabilirsin:
+    portfolio: `Referans çalışmalarımıza aşağıdaki bağlantılardan ulaşabilirsiniz:
 • genuadigital.com/portfolyo
 • genuadigital.com/projelerimiz
 • Behance: behance.net/umutavci4`,
 
-    location: `İki noktadayız:
+    location: `Ofis bilgilerimiz:
 
-Merkez Ofis — Yeni, Menderes Blv. No: 7A D:3, Merkezefendi/Denizli
-Stüdyo — Yenişehir, Ladik Evler Sitesi, 56. Sk. No: 1 M`,
+Merkez Ofis — Yeni, Menderes Blv. No: 7A D:3, 20030 Merkezefendi/Denizli
+Stüdyo — Yenişehir, Ladik Evler Sitesi, 56. Sk. No: 1 M, Denizli`,
 
-    contact: `Bize şu kanallardan ulaşabilirsin:
-• 0551 124 53 06 / WhatsApp
-• hello@genuadigital.com
-• @genuadigital (Instagram)
+    contact: `İletişim kanallarımız:
+• Telefon / WhatsApp: 0551 124 53 06
+• E-posta: hello@genuadigital.com
+• Instagram: @genuadigital
 
 Teklif formu: genuadigital.com/teklif-al`,
 
-    quoteStart: `Tabii, sana uygun teklifi hazırlayalım.
+    quoteStart: `Teklif sürecini başlatmak için memnuniyetle yardımcı olurum.
 
-Önce hangi hizmet ilgini çekiyor? (dijital reklam, sosyal medya, web tasarım, marka tasarımı, içerik, SEO — birden fazla yazabilirsin)`,
+Öncelikle hangi hizmet alanlarıyla ilgilendiğinizi belirtir misiniz? (dijital reklam, sosyal medya, web tasarım, marka tasarımı, içerik üretimi, SEO — birden fazla seçenek yazabilirsiniz)`,
 
-    quoteCompany: `Anladım. Peki sektörünüz ve firma büyüklüğünüz nedir? (ör. "e-ticaret, 8 kişilik ekip")`,
+    quoteCompany: `Teşekkür ederiz. Sektörünüzü ve firma ölçeğinizi paylaşır mısınız? (Örn: e-ticaret, 10 kişilik ekip)`,
 
-    quoteContact: `Son adım: adın soyadın ve telefon veya e-posta adresini yazar mısın? Ekibimiz 1 iş günü içinde dönüş yapar.`,
+    quoteContact: `Son olarak adınızı, soyadınızı ve telefon veya e-posta bilginizi iletir misiniz? Ekibimiz bir iş günü içinde size dönüş yapacaktır.`,
 
-    quoteDone: `Teşekkürler, bilgilerini aldım. Genua ekibi en kısa sürede seninle iletişime geçecek.
+    quoteDone: `Bilgileriniz tarafımıza ulaştı. Genua ekibi en kısa sürede sizinle iletişime geçecektir.
 
-Bu arada acil bir konu varsa 0551 124 53 06 numarasından da yazabilirsin.`,
+Acil bir konunuz varsa 0551 124 53 06 numarasından da bize ulaşabilirsiniz.`,
 
-    handoff: `Bunu ekibimize iletmem daha doğru olur. Adın ve telefon veya e-postanı yazarsan Umut ve ekip sana özel dönüş yapsın.`,
+    handoff: `Bu talebi ilgili ekibimize iletmemiz daha uygun olacaktır. Adınızı ve iletişim bilgilerinizi paylaşırsanız, ekibimiz size özel olarak dönüş sağlayacaktır.`,
 
-    default: `Bunu netleştirmek için ekibe bağlayabilirim. "Teklif almak istiyorum" yazarsan birkaç kısa soruyla ilerleriz.
+    default: `Konuyu netleştirmek adına sizi ekibimize yönlendirebilirim. Teklif talebi için "Teklif almak istiyorum" yazmanız yeterlidir.
 
-Hizmetler, örnek işler veya iletişim için de sorabilirsin.`,
+Hizmetler, referanslar veya iletişim bilgileri hakkında da bilgi alabilirsiniz.`,
   };
 
   function normalize(text) {
@@ -77,9 +77,9 @@ Hizmetler, örnek işler veya iletişim için de sorabilirsin.`,
   }
 
   function getFlowStep(messages) {
-    if (lastAssistantAsked(messages, 'hizmet ilgini')) return 'service';
-    if (lastAssistantAsked(messages, 'sektorunuz')) return 'company';
-    if (lastAssistantAsked(messages, 'telefon veya e-posta')) return 'contact';
+    if (lastAssistantAsked(messages, 'hizmet alanlariyla')) return 'service';
+    if (lastAssistantAsked(messages, 'firma olceginizi') || lastAssistantAsked(messages, 'sektorunuzu')) return 'company';
+    if (lastAssistantAsked(messages, 'iletir misiniz')) return 'contact';
     return 'idle';
   }
 
@@ -120,8 +120,8 @@ Hizmetler, örnek işler veya iletişim için de sorabilirsin.`,
       const prev = messages[i - 1];
       if (msg.role !== 'user' || !prev || prev.role !== 'assistant') continue;
       const prevN = normalize(prev.content);
-      if (prevN.includes('hizmet ilgini')) service = msg.content.trim();
-      if (prevN.includes('sektorunuz')) company = msg.content.trim();
+      if (prevN.includes('hizmet alanlariyla')) service = msg.content.trim();
+      if (prevN.includes('firma olceginizi') || prevN.includes('sektorunuzu')) company = msg.content.trim();
     }
 
     return { service, company };
@@ -142,7 +142,7 @@ Hizmetler, örnek işler veya iletişim için de sorabilirsin.`,
       const { service, company } = extractQuoteContext([...messages, { role: 'user', content: text }]);
 
       if (!contact.contact && !contact.email && !contact.phone) {
-        return { reply: 'İletişim için geçerli bir telefon veya e-posta yazar mısın? (Adınla birlikte)', lead: null };
+        return { reply: 'Lütfen adınızı, soyadınızı ve geçerli bir telefon veya e-posta adresinizi paylaşır mısınız?', lead: null };
       }
 
       return {
