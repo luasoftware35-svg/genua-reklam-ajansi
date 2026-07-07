@@ -25,7 +25,7 @@
       <div class="genua-chat-header">
         <div>
           <strong>G. — Genua Asistan</strong>
-          <span>Genelde birkaç saniye içinde yanıtlar</span>
+          <span>Anında yanıt verir</span>
         </div>
         <button class="genua-chat-close" type="button" aria-label="Sohbeti kapat">×</button>
       </div>
@@ -125,6 +125,41 @@
     window.requestAnimationFrame(() => teaser.classList.add('is-visible'));
   }
 
+  async function submitLead(lead) {
+    const phone = lead.phone || null;
+    const email =
+      lead.email ||
+      (lead.contact?.includes('@') ? lead.contact : null) ||
+      `chatbot+${Date.now()}@genuadigital.com`;
+
+    const response = await fetch('/api/forms/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        form_type: 'quote',
+        full_name: lead.full_name || 'Chatbot Ziyaretçi',
+        email,
+        phone,
+        subject: 'Genua Chat (G.) — Teklif Talebi',
+        message: [
+          lead.message,
+          lead.service_interest ? `Hizmet: ${lead.service_interest}` : null,
+          lead.company_size ? `Firma/Sektör: ${lead.company_size}` : null,
+        ]
+          .filter(Boolean)
+          .join('\n'),
+        requested_services: lead.service_interest ? [lead.service_interest] : [],
+        company_name: lead.company_size || null,
+        referrer_page: window.location.pathname,
+      }),
+    });
+
+    if (!response.ok) {
+      const result = await response.json().catch(() => ({}));
+      throw new Error(result.error || 'Lead kaydedilemedi.');
+    }
+  }
+
   async function sendMessage(text) {
     const content = text.trim();
     if (!content || isLoading) return;
@@ -138,22 +173,17 @@
     renderMessages();
 
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages,
-          page: window.location.pathname,
-        }),
-      });
+      await new Promise((resolve) => window.setTimeout(resolve, 350));
 
-      const result = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(result.error || 'Mesaj gönderilemedi.');
+      const engine = window.GenuaChatRules;
+      if (!engine?.reply) throw new Error('Chat motoru yüklenemedi.');
 
+      const result = engine.reply(messages, content);
       messages.push({ role: 'assistant', content: result.reply });
       saveMessages();
 
-      if (result.lead_saved) {
+      if (result.lead) {
+        await submitLead(result.lead);
         window.GenuaAnalytics?.track('chat_lead_saved', { page_path: window.location.pathname });
       }
     } catch (error) {

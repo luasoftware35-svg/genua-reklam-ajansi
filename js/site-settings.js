@@ -348,7 +348,7 @@ async function fetchSiteSettings() {
   return rows?.[0] ?? {};
 }
 
-function injectChatWidget() {
+  function injectChatWidget() {
   if (document.getElementById('genua-chat-root') || document.querySelector('link[data-genua-chat]')) return;
 
   const style = document.createElement('link');
@@ -356,6 +356,11 @@ function injectChatWidget() {
   style.href = 'css/genua-chat.css';
   style.setAttribute('data-genua-chat', 'true');
   document.head.appendChild(style);
+
+  const rules = document.createElement('script');
+  rules.src = 'js/genua-chat-rules.js';
+  rules.defer = true;
+  document.body.appendChild(rules);
 
   const script = document.createElement('script');
   script.src = 'js/genua-chat.js';
