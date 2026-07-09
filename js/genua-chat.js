@@ -1,12 +1,17 @@
 (function initGenuaChat() {
   if (document.getElementById('genua-chat-root')) return;
 
-  const STORAGE_KEY = 'genua.chat.messages.v1';
+  const STORAGE_KEY = 'genua.chat.messages.v2';
   const TEASER_KEY = 'genua.chat.teaser.dismissed';
   const OPENING_MESSAGE =
     'Merhaba, Genua Dijital Medya Ajansı adına G. Hizmetlerimiz, çalışma sürecimiz ve teklif talepleriniz hakkında bilgi verebilirim.';
 
-  const quickReplies = ['Hizmetleriniz neler?', 'Teklif almak istiyorum', 'Ofis adresiniz', 'Referans çalışmalar'];
+  const quickReplies = [
+    'Hizmetleriniz neler?',
+    'Teklif almak istiyorum',
+    'Ekibinizle görüşmek istiyorum',
+    'Referans çalışmalar',
+  ];
 
   let isOpen = false;
   let isLoading = false;
@@ -126,7 +131,10 @@
   }
 
   async function submitLead(lead) {
-    const phone = lead.phone || null;
+    if (!lead.phone) {
+      throw new Error('Telefon numarası alınamadı.');
+    }
+
     const email =
       lead.email ||
       (lead.contact?.includes('@') ? lead.contact : null) ||
@@ -139,7 +147,7 @@
         form_type: 'quote',
         full_name: lead.full_name || 'Chatbot Ziyaretçi',
         email,
-        phone,
+        phone: lead.phone,
         subject: 'Genua Chat (G.) — Teklif Talebi',
         message: [
           lead.message,
@@ -191,8 +199,8 @@
         role: 'assistant',
         content:
           error instanceof Error
-            ? `${error.message} İstersen hello@genuadigital.com adresine yazabilirsin.`
-            : 'Şu an yanıt veremiyorum. hello@genuadigital.com üzerinden bize ulaşabilirsin.',
+            ? `${error.message} Lütfen 0551 124 53 06 numarasından veya hello@genuadigital.com adresinden bize ulaşın.`
+            : 'Şu an yanıt veremiyoruz. 0551 124 53 06 veya hello@genuadigital.com üzerinden bize ulaşabilirsiniz.',
       });
       saveMessages();
     } finally {
