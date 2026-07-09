@@ -6,13 +6,29 @@ function escapeHtml(value) {
     .replace(/"/g, '&quot;');
 }
 
+function isHostedThumbnail(url) {
+  const value = String(url || '').trim();
+  if (!value) return false;
+  if (/instagram\.|fbcdn\.net|cdninstagram\.com/i.test(value)) return false;
+  return value.startsWith('/') || /^https?:\/\//i.test(value);
+}
+
+function reelThumbnailSrc(reel) {
+  const thumb = reel.thumbnail_url?.trim();
+  if (isHostedThumbnail(thumb)) return thumb;
+  if (reel.reel_url) {
+    return `/api/reel-thumb?reel=${encodeURIComponent(reel.reel_url)}`;
+  }
+  return '';
+}
+
 function reelCard(reel) {
   const title = reel.title || reel.client_name || 'Genua Reels';
   const subtitle = reel.client_name && reel.title ? reel.client_name : '';
-  const thumb = reel.thumbnail_url?.trim();
+  const thumb = reelThumbnailSrc(reel);
 
   return `
-    <a class="reel-card" href="${escapeHtml(reel.reel_url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(title)} — Instagram Reels'te izle" data-reel-title="${escapeHtml(title)}">
+    <a class="reel-card" href="${escapeHtml(reel.reel_url)}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(title)} — Instagram Reels'te izle" data-reel-title="${escapeHtml(title)}" data-reel-url="${escapeHtml(reel.reel_url)}">
       <div class="reel-card-media">
         ${
           thumb
@@ -39,46 +55,51 @@ function bindReelAnalytics(container) {
   });
 }
 
-const reelMetaCache = new Map();
-
-async function fetchReelMeta(reelUrl) {
-  if (reelMetaCache.has(reelUrl)) return reelMetaCache.get(reelUrl);
-
-  try {
-    const response = await fetch(`/api/reel-meta?url=${encodeURIComponent(reelUrl)}`, {
-      cache: 'force-cache',
-    });
-    if (!response.ok) return null;
-    const meta = await response.json();
-    reelMetaCache.set(reelUrl, meta);
-    return meta;
-  } catch {
-    return null;
-  }
-}
-
 function setReelCardThumbnail(card, thumbnailUrl) {
   const media = card.querySelector('.reel-card-media');
-  if (!media || media.querySelector('img')) return;
+  if (!media) return;
 
   media.querySelector('.reel-card-fallback')?.remove();
-  const img = document.createElement('img');
+  let img = media.querySelector('img');
+  if (!img) {
+    img = document.createElement('img');
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.alt = card.getAttribute('aria-label')?.replace(/ — Instagram Reels'te izle$/, '') || 'Instagram Reels';
+    media.prepend(img);
+  }
+
   img.src = thumbnailUrl;
-  img.alt = card.getAttribute('aria-label')?.replace(/ — Instagram Reels'te izle$/, '') || 'Instagram Reels';
-  img.loading = 'lazy';
-  img.decoding = 'async';
-  media.prepend(img);
+}
+
+function bindReelThumbnailFallback(section) {
+  section.querySelectorAll('.reel-card-media img').forEach((img) => {
+    if (img.dataset.fallbackBound === '1') return;
+    img.dataset.fallbackBound = '1';
+
+    img.addEventListener('error', () => {
+      const card = img.closest('.reel-card');
+      const reelUrl = card?.dataset.reelUrl || card?.getAttribute('href');
+      if (!reelUrl || img.dataset.retry === '1') return;
+      img.dataset.retry = '1';
+      img.src = `/api/reel-thumb?reel=${encodeURIComponent(reelUrl)}`;
+    }, { once: true });
+  });
 }
 
 async function hydrateReelThumbnails(section) {
   const cards = [...section.querySelectorAll('.reel-card')];
   await Promise.all(
     cards.map(async (card) => {
-      if (card.querySelector('.reel-card-media img')) return;
-      const reelUrl = card.getAttribute('href');
+      const img = card.querySelector('.reel-card-media img');
+      const reelUrl = card.dataset.reelUrl || card.getAttribute('href');
       if (!reelUrl) return;
-      const meta = await fetchReelMeta(reelUrl);
-      if (meta?.thumbnail_url) setReelCardThumbnail(card, meta.thumbnail_url);
+
+      if (img && !img.complete) return;
+      if (img?.naturalWidth > 0) return;
+
+      const proxied = `/api/reel-thumb?reel=${encodeURIComponent(reelUrl)}`;
+      setReelCardThumbnail(card, proxied);
     }),
   );
 }
@@ -105,6 +126,7 @@ function renderMarquee(section, reels, instagramUrl) {
     </div>`;
 
   bindReelAnalytics(section);
+  bindReelThumbnailFallback(section);
 }
 
 function getFallbackReels() {

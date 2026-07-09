@@ -21,7 +21,8 @@ async function enrichInstagramReelPayload(payload: Record<string, unknown>) {
   if (!title && meta.title) payload.title = meta.title;
 
   const nextThumbnail = thumbnail || meta.thumbnail_url || '';
-  if (nextThumbnail) {
+  const needsMirror = /instagram\.|fbcdn\.net|cdninstagram\.com/i.test(nextThumbnail);
+  if (nextThumbnail && (needsMirror || !thumbnail)) {
     payload.thumbnail_url = await mirrorInstagramThumbnail(nextThumbnail);
   }
 
