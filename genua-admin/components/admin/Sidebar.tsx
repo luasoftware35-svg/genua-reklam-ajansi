@@ -1,10 +1,11 @@
 import Link from 'next/link';
-import { BarChart3, BriefcaseBusiness, Bot, FileText, FolderKanban, Home, Image, Mail, MessageSquareQuote, PanelTop, Settings, Users, Wrench } from 'lucide-react';
+import { BarChart3, BriefcaseBusiness, Bot, FileText, FolderKanban, Home, Image, Mail, MessageSquareQuote, PanelTop, Settings, Star, Users, Wrench } from 'lucide-react';
 
 const items = [
   { href: '/admin', label: 'Dashboard', icon: Home },
   { href: '/admin/ayarlar', label: 'Ayarlar', icon: Settings },
   { href: '/admin/hizmetler', label: 'Hizmetler', icon: Wrench },
+  { href: '/admin/referanslar', label: 'Öne Çıkan Referanslar', icon: Star },
   { href: '/admin/projeler', label: 'Portföy', icon: FolderKanban },
   { href: '/admin/ekip', label: 'Ekip', icon: Users },
   { href: '/admin/testimonials', label: 'Görüşler', icon: MessageSquareQuote },

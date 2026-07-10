@@ -96,6 +96,26 @@ export const resources: Record<string, ResourceConfig> = {
       { name: 'display_order', label: 'Sıra', type: 'number' }, { name: 'is_active', label: 'Aktif', type: 'checkbox' }, { name: 'is_featured', label: 'Öne Çıkan', type: 'checkbox' }, ...commonSeo,
     ], columns: ['title', 'client_name', 'category', 'display_order', 'is_active'],
   },
+  referanslar: {
+    key: 'referanslar',
+    title: 'Öne Çıkan Referanslar',
+    description: 'Anasayfadaki referans kartları: kapak görseli, logo, başlık, açıklama ve bağlantı.',
+    table: 'featured_references',
+    orderBy: 'display_order',
+    createLabel: 'Yeni Referans',
+    fields: [
+      { name: 'title', label: 'Başlık', type: 'text', required: true, placeholder: 'Örn: Togg' },
+      { name: 'slug', label: 'Slug (opsiyonel)', type: 'text', placeholder: 'togg' },
+      { name: 'category', label: 'Etiket', type: 'text', placeholder: 'Referans Marka' },
+      { name: 'cover_image_url', label: 'Kapak Görseli', type: 'image', required: true },
+      { name: 'logo_url', label: 'Marka Logosu', type: 'image', placeholder: 'Kart üzerindeki küçük logo' },
+      { name: 'short_description', label: 'Açıklama', type: 'textarea', full: true },
+      { name: 'project_url', label: 'Bağlantı URL', type: 'url', placeholder: 'https://...' },
+      { name: 'display_order', label: 'Sıra', type: 'number' },
+      { name: 'is_active', label: 'Aktif', type: 'checkbox' },
+    ],
+    columns: ['title', 'category', 'cover_image_url', 'display_order', 'is_active'],
+  },
   ekip: {
     key: 'ekip', title: 'Ekip', description: 'Ekip üyeleri, görevleri ve sosyal bağlantıları.', table: 'team_members', orderBy: 'display_order', createLabel: 'Yeni Üye',
     fields: [

@@ -4,11 +4,11 @@ import { deleteResource } from '@/app/admin/(dashboard)/actions';
 import { ConfirmSubmit } from './ConfirmDialog';
 
 function show(value: unknown, column?: string) {
-  if (column === 'logo_url' && typeof value === 'string' && value) {
+  if ((column === 'logo_url' || column === 'cover_image_url') && typeof value === 'string' && value) {
     if (value.startsWith('initials:')) return value.slice(9);
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src={value} alt="" style={{ width: 56, height: 36, objectFit: 'contain', background: '#f8f8f0', borderRadius: 8, padding: 4 }} />
+      <img src={value} alt="" style={{ width: column === 'cover_image_url' ? 72 : 56, height: 36, objectFit: 'cover', background: '#f8f8f0', borderRadius: 8, padding: column === 'logo_url' ? 4 : 0 }} />
     );
   }
   if (value === true) return <span className="badge">Aktif</span>;
