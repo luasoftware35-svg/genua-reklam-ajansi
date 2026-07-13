@@ -109,7 +109,7 @@ function instagramProfileLabel(url) {
   return match ? `@${match[1]}` : '@mrrumutt2';
 }
 
-function renderMarquee(section, reels, instagramUrl) {
+function renderReelsMarquee(section, reels, instagramUrl) {
   section.hidden = false;
   section.setAttribute('aria-labelledby', 'reelsTitle');
   const cards = reels.map(reelCard).join('');
@@ -151,7 +151,7 @@ function scheduleReelThumbnailHydration(section) {
 
 function renderInstagramReels(section, reels, instagramUrl) {
   if (!section || !reels.length) return;
-  renderMarquee(section, reels, instagramUrl);
+  renderReelsMarquee(section, reels, instagramUrl);
   scheduleReelThumbnailHydration(section);
   document.dispatchEvent(new CustomEvent('genua:reels-rendered'));
 }

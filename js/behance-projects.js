@@ -78,7 +78,7 @@ async function hydrateBehanceCovers(section) {
   );
 }
 
-function renderMarquee(section, projects, behanceUrl) {
+function renderBehanceMarquee(section, projects, behanceUrl) {
   section.hidden = false;
   section.setAttribute('aria-labelledby', 'behanceTitle');
   const cards = projects.map(projectCard).join('');
@@ -100,6 +100,30 @@ function renderMarquee(section, projects, behanceUrl) {
     </div>`;
 
   bindBehanceAnalytics(section);
+  bindBehanceImageFallback(section);
+}
+
+function bindBehanceImageFallback(section) {
+  section.querySelectorAll('.behance-card-media img').forEach((img) => {
+    if (img.dataset.fallbackBound === '1') return;
+    img.dataset.fallbackBound = '1';
+
+    img.addEventListener('error', async () => {
+      const card = img.closest('.behance-card');
+      const projectUrl = card?.dataset.behanceUrl || card?.getAttribute('href');
+      if (!projectUrl || img.dataset.retry === '1') return;
+      img.dataset.retry = '1';
+
+      try {
+        const response = await fetch(`/api/behance-meta?url=${encodeURIComponent(projectUrl)}`);
+        if (!response.ok) return;
+        const meta = await response.json();
+        if (meta.cover_image_url) img.src = meta.cover_image_url;
+      } catch {
+        /* keep fallback */
+      }
+    }, { once: true });
+  });
 }
 
 function getFallbackProjects() {
@@ -118,7 +142,7 @@ function scheduleBehanceCoverHydration(section) {
 
 function renderBehanceProjects(section, projects, behanceUrl) {
   if (!section || !projects.length) return;
-  renderMarquee(section, projects, behanceUrl);
+  renderBehanceMarquee(section, projects, behanceUrl);
   scheduleBehanceCoverHydration(section);
   document.dispatchEvent(new CustomEvent('genua:behance-rendered'));
 }
@@ -174,47 +198,17 @@ async function loadBehanceProjects() {
   const fallback = getFallbackProjects();
   const defaultBehanceUrl = 'https://www.behance.net/umutavci4';
 
+  if (fallback.length) {
+    renderBehanceProjects(section, fallback, defaultBehanceUrl);
+  }
+
   const remote = await loadBehanceProjectsFromSupabase(section, defaultBehanceUrl);
   if (remote?.projects?.length) {
     renderBehanceProjects(section, remote.projects, remote.behanceUrl);
     return;
   }
 
-  if (fallback.length) {
-    renderBehanceProjects(section, fallback, defaultBehanceUrl);
-    return;
-  }
-
-  section.hidden = true;
+  if (!fallback.length) section.hidden = true;
 }
 
-function initBehanceProjects() {
-  const section = document.querySelector('#behanceProjectsSection');
-  if (!section) return;
-
-  let started = false;
-  const start = () => {
-    if (started) return;
-    started = true;
-    loadBehanceProjects();
-  };
-
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          observer.disconnect();
-          start();
-        }
-      },
-      { rootMargin: '320px 0px' },
-    );
-    observer.observe(section);
-    window.setTimeout(start, 6000);
-    return;
-  }
-
-  start();
-}
-
-initBehanceProjects();
+loadBehanceProjects();
