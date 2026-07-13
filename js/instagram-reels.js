@@ -104,11 +104,17 @@ async function hydrateReelThumbnails(section) {
   );
 }
 
+function instagramProfileLabel(url) {
+  const match = String(url || '').match(/instagram\.com\/([^/?]+)/i);
+  return match ? `@${match[1]}` : '@mrrumutt2';
+}
+
 function renderMarquee(section, reels, instagramUrl) {
   section.hidden = false;
   section.setAttribute('aria-labelledby', 'reelsTitle');
   const cards = reels.map(reelCard).join('');
   const trackHtml = `${cards}${cards}`;
+  const profileLabel = instagramProfileLabel(instagramUrl);
 
   section.innerHTML = `
     <div class="container reels-marquee-head reveal is-visible">
@@ -117,7 +123,7 @@ function renderMarquee(section, reels, instagramUrl) {
         <h2 id="reelsTitle">Reels ile ürettiğimiz işler</h2>
         <p class="section-note">Sosyal medyada yayınladığımız içeriklerden seçkiler. Kartlara tıklayarak Instagram'da izleyebilirsiniz.</p>
       </div>
-      <a class="text-link reels-profile-link" href="${escapeHtml(instagramUrl)}" target="_blank" rel="noopener noreferrer">@genuadigital <span aria-hidden="true">→</span></a>
+      <a class="text-link reels-profile-link" href="${escapeHtml(instagramUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(profileLabel)} <span aria-hidden="true">→</span></a>
     </div>
     <div class="reels-marquee-outer">
       <div class="reels-marquee-wrap">
@@ -199,7 +205,11 @@ async function loadInstagramReels() {
   if (!section) return;
 
   const fallback = getFallbackReels();
-  const defaultInstagramUrl = 'https://www.instagram.com/genuadigital/';
+  const defaultInstagramUrl = 'https://www.instagram.com/mrrumutt2/reels/';
+
+  if (fallback.length) {
+    renderInstagramReels(section, fallback, defaultInstagramUrl);
+  }
 
   const remote = await loadInstagramReelsFromSupabase(section, defaultInstagramUrl);
   if (remote?.reels?.length) {
@@ -207,41 +217,7 @@ async function loadInstagramReels() {
     return;
   }
 
-  if (fallback.length) {
-    renderInstagramReels(section, fallback, defaultInstagramUrl);
-    return;
-  }
-
-  section.hidden = true;
+  if (!fallback.length) section.hidden = true;
 }
 
-function initInstagramReels() {
-  const section = document.querySelector('#instagramReelsSection');
-  if (!section) return;
-
-  let started = false;
-  const start = () => {
-    if (started) return;
-    started = true;
-    loadInstagramReels();
-  };
-
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          observer.disconnect();
-          start();
-        }
-      },
-      { rootMargin: '320px 0px' },
-    );
-    observer.observe(section);
-    window.setTimeout(start, 6000);
-    return;
-  }
-
-  start();
-}
-
-initInstagramReels();
+loadInstagramReels();
