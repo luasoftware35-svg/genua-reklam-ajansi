@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BarChart3, BriefcaseBusiness, Bot, FileText, FolderKanban, Home, Image, Mail, MessageSquareQuote, PanelTop, Settings, Star, Users, Wrench } from 'lucide-react';
+import { BarChart3, BriefcaseBusiness, Bot, FileText, FolderKanban, Home, Image, LayoutGrid, Mail, MessageSquareQuote, PanelTop, Settings, Star, Users, Wrench } from 'lucide-react';
 
 const items = [
   { href: '/admin', label: 'Dashboard', icon: Home },
@@ -13,6 +13,7 @@ const items = [
   { href: '/admin/mesajlar', label: 'Mesajlar', icon: Mail },
   { href: '/admin/sohbet-leadleri', label: 'Chatbot Leadleri', icon: Bot },
   { href: '/admin/musteriler', label: 'Müşteri Logoları', icon: BriefcaseBusiness },
+  { href: '/admin/behance', label: 'Behance Projeleri', icon: LayoutGrid },
   { href: '/admin/bannerlar', label: 'Bannerlar', icon: PanelTop },
   { href: '/admin/medya', label: 'Medya', icon: Image },
   { href: '/admin/aktivite', label: 'Aktivite', icon: BarChart3 },

@@ -29,6 +29,10 @@
       "destination": "https://genua-admin.vercel.app/api/reel-thumb"
     },
     {
+      "source": "/api/behance-meta",
+      "destination": "https://genua-admin.vercel.app/api/behance-meta"
+    },
+    {
       "source": "/api/forms/:path*",
       "destination": "https://genua-admin.vercel.app/api/forms/:path*"
     },

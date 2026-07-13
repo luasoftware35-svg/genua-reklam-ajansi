@@ -184,6 +184,23 @@ export const resources: Record<string, ResourceConfig> = {
       { name: 'is_active', label: 'Aktif', type: 'checkbox' },
     ], columns: ['company_name', 'logo_url', 'initials', 'display_order', 'is_public_client', 'is_collapsed', 'is_active'],
   },
+  behance: {
+    key: 'behance',
+    title: 'Behance Projeleri',
+    description: 'Anasayfadaki ters yönde kayan Behance bandı. Proje linki yapıştırın; kapak görseli otomatik çekilir.',
+    table: 'behance_projects',
+    orderBy: 'display_order',
+    createLabel: 'Yeni Behance Projesi',
+    fields: [
+      { name: 'title', label: 'Başlık', type: 'text', placeholder: 'Boş bırakılırsa Behance başlığı kullanılır' },
+      { name: 'client_name', label: 'Müşteri / Marka', type: 'text', placeholder: 'Örn: SEFO, Togg' },
+      { name: 'project_url', label: 'Behance Proje URL', type: 'url', required: true, placeholder: 'https://www.behance.net/gallery/...' },
+      { name: 'cover_image_url', label: 'Kapak Görseli', type: 'image', placeholder: 'Boş bırakılırsa linkten otomatik çekilir' },
+      { name: 'display_order', label: 'Sıra', type: 'number' },
+      { name: 'is_active', label: 'Aktif', type: 'checkbox' },
+    ],
+    columns: ['title', 'client_name', 'project_url', 'display_order', 'is_active'],
+  },
   reels: {
     key: 'reels',
     title: 'Instagram Reels',

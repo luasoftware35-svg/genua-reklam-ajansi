@@ -8,6 +8,7 @@ import { estimateReadTime, parseJson, parseList, slugify } from '@/lib/utils';
 import { getResourceConfig, type ResourceField } from '@/lib/admin/resources';
 import { stripProjectHeroFields } from '@/lib/admin/project-row';
 import { stripTeamResumeField } from '@/lib/admin/team-row';
+import { fetchBehanceProjectMeta } from '@/lib/behance-oembed';
 import { fetchInstagramReelMeta, mirrorInstagramThumbnail } from '@/lib/instagram-oembed';
 
 async function enrichInstagramReelPayload(payload: Record<string, unknown>) {
@@ -25,6 +26,20 @@ async function enrichInstagramReelPayload(payload: Record<string, unknown>) {
   if (nextThumbnail && (needsMirror || !thumbnail)) {
     payload.thumbnail_url = await mirrorInstagramThumbnail(nextThumbnail);
   }
+
+  return payload;
+}
+
+async function enrichBehanceProjectPayload(payload: Record<string, unknown>) {
+  const projectUrl = String(payload.project_url || '').trim();
+  if (!projectUrl) return payload;
+
+  const title = String(payload.title || '').trim();
+  const cover = String(payload.cover_image_url || '').trim();
+  const meta = await fetchBehanceProjectMeta(projectUrl);
+
+  if (!title && meta.title) payload.title = meta.title;
+  if (!cover && meta.cover_image_url) payload.cover_image_url = meta.cover_image_url;
 
   return payload;
 }
@@ -94,6 +109,7 @@ function handleResourceWriteError(resourceKey: string, error: { message: string 
 export async function createResource(resourceKey: string, formData: FormData) {
   const { config, payload } = serializePayload(resourceKey, formData);
   if (resourceKey === 'reels') await enrichInstagramReelPayload(payload);
+  if (resourceKey === 'behance') await enrichBehanceProjectPayload(payload);
   const supabase = createAdminClient();
   let { error } = await supabase.from(config.table).insert(payload);
 
@@ -112,6 +128,7 @@ export async function createResource(resourceKey: string, formData: FormData) {
 export async function updateResource(resourceKey: string, id: string, formData: FormData) {
   const { config, payload } = serializePayload(resourceKey, formData);
   if (resourceKey === 'reels') await enrichInstagramReelPayload(payload);
+  if (resourceKey === 'behance') await enrichBehanceProjectPayload(payload);
   const supabase = createAdminClient();
   let { error } = await supabase.from(config.table).update(payload).eq('id', id);
 

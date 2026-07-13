@@ -3603,6 +3603,150 @@ body.is-loaded .loader {
   }
 }
 
+.behance-marquee-section[hidden],
+.behance-marquee-section:empty {
+  display: none !important;
+}
+
+.behance-marquee-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.behance-marquee-head .section-heading {
+  margin-bottom: 0;
+}
+
+.behance-profile-link {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.behance-marquee-outer {
+  width: 100%;
+}
+
+.behance-marquee-wrap {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.behance-marquee-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  padding: 4px 0 8px;
+  animation: behanceMarqueeReverse 48s linear infinite;
+}
+
+.behance-marquee-wrap:hover .behance-marquee-track,
+.behance-marquee-wrap:focus-within .behance-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes behanceMarqueeReverse {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.behance-card {
+  flex: 0 0 auto;
+  width: min(360px, 78vw);
+  color: inherit;
+  text-decoration: none;
+}
+
+.behance-card-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(160deg, #151515, #242420);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+}
+
+.behance-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.behance-card:hover .behance-card-media img,
+.behance-card:focus-visible .behance-card-media img {
+  transform: scale(1.03);
+}
+
+.behance-card-fallback {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+
+.behance-card-badge {
+  position: absolute;
+  inset: auto 14px 14px auto;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.58);
+  backdrop-filter: blur(8px);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: #fff;
+}
+
+.behance-card-copy {
+  display: grid;
+  gap: 4px;
+  padding: 12px 4px 0;
+}
+
+.behance-card-copy strong {
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.behance-card-copy span {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .behance-marquee-track {
+    animation: none;
+    overflow-x: auto;
+    max-width: 100%;
+    scroll-snap-type: x mandatory;
+    padding-inline: 20px;
+  }
+
+  .behance-card {
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 720px) {
+  .behance-marquee-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 .whatsapp-float {
   position: fixed;
   right: 20px;

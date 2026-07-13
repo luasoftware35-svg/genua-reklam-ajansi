@@ -158,6 +158,9 @@
     <section class="reels-marquee-section section-padding" id="instagramReelsSection">
     </section>
 
+    <section class="behance-marquee-section section-padding" id="behanceProjectsSection" hidden>
+    </section>
+
     <section class="testimonials section-padding" aria-labelledby="testimonialsTitle">
       <div class="container">
         <div class="section-heading centered reveal">
@@ -260,6 +263,8 @@
   <script src="js/site-settings.js" defer></script>
   <script src="js/instagram-reels-catalog.js" defer></script>
   <script src="js/instagram-reels.js" defer></script>
+  <script src="js/behance-projects-catalog.js" defer></script>
+  <script src="js/behance-projects.js" defer></script>
   <script src="js/testimonials.js" defer></script>
   <script>
     const header = document.querySelector("#siteHeader");
@@ -323,6 +328,12 @@
 
     document.addEventListener("genua:reels-rendered", () => {
       document.querySelectorAll("#instagramReelsSection .reveal:not(.is-visible)").forEach((item) => {
+        revealObserver.observe(item);
+      });
+    });
+
+    document.addEventListener("genua:behance-rendered", () => {
+      document.querySelectorAll("#behanceProjectsSection .reveal:not(.is-visible)").forEach((item) => {
         revealObserver.observe(item);
       });
     });
