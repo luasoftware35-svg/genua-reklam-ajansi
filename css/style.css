@@ -2457,6 +2457,7 @@ body.is-loaded .loader {
   display: grid;
   gap: 8px;
   padding: 16px;
+  overflow: hidden;
   background: var(--card);
   border: 1px solid rgba(168, 204, 0, 0.25);
   border-radius: var(--radius-lg);
@@ -3744,6 +3745,343 @@ body.is-loaded .loader {
   .behance-marquee-head {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+/* Services page motion */
+.page-hero--services {
+  isolation: isolate;
+}
+
+.services-hero-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.services-hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(12px);
+  opacity: 0.55;
+  animation: servicesOrbFloat 14s ease-in-out infinite;
+}
+
+.services-hero-orb--a {
+  top: 12%;
+  left: -4%;
+  width: min(420px, 58vw);
+  height: min(420px, 58vw);
+  background: radial-gradient(circle, rgba(219, 255, 43, 0.34) 0%, rgba(219, 255, 43, 0) 68%);
+}
+
+.services-hero-orb--b {
+  top: 18%;
+  right: -8%;
+  width: min(360px, 48vw);
+  height: min(360px, 48vw);
+  background: radial-gradient(circle, rgba(168, 204, 0, 0.28) 0%, rgba(168, 204, 0, 0) 70%);
+  animation-delay: -4s;
+}
+
+.services-hero-orb--c {
+  bottom: 8%;
+  left: 38%;
+  width: min(280px, 40vw);
+  height: min(280px, 40vw);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 72%);
+  animation-delay: -8s;
+}
+
+.services-hero-ring {
+  position: absolute;
+  top: 50%;
+  right: 8%;
+  width: min(220px, 34vw);
+  height: min(220px, 34vw);
+  border: 1px solid rgba(219, 255, 43, 0.22);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  animation: servicesRingSpin 24s linear infinite;
+}
+
+.services-hero-ring::before {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+}
+
+.page-hero--services .container {
+  position: relative;
+  z-index: 1;
+}
+
+.services-motion-item {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.services-motion-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.services-hero-title {
+  max-width: 920px;
+  margin: 0;
+}
+
+.services-hero-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(110%) rotate(4deg);
+  transition: opacity 0.55s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--word-i, 0) * 55ms + 180ms);
+}
+
+.services-hero-title.is-split .services-hero-word {
+  opacity: 1;
+  transform: translateY(0) rotate(0deg);
+}
+
+.service-sidebar-indicator {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 0;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--accent);
+  box-shadow: 0 10px 24px rgba(219, 255, 43, 0.22);
+  opacity: 0;
+  transform: translateY(0);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), height 0.35s ease, opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.service-sidebar .tab-btn {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  border-color: transparent;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.service-sidebar .tab-btn.is-active {
+  color: var(--dark);
+  background: transparent;
+  transform: none;
+}
+
+.service-sidebar .tab-btn:not(.is-active):hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.55);
+  transform: translateX(4px);
+}
+
+.service-detail-motion {
+  transition:
+    border-color 0.45s ease,
+    box-shadow 0.45s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.service-detail-motion.is-inview {
+  border-color: rgba(168, 204, 0, 0.32);
+  box-shadow: 0 18px 48px rgba(17, 17, 17, 0.07);
+}
+
+.service-detail-motion.is-scroll-active {
+  border-color: rgba(219, 255, 43, 0.58);
+  box-shadow:
+    0 0 0 1px rgba(219, 255, 43, 0.2),
+    0 28px 64px rgba(17, 17, 17, 0.11),
+    0 0 48px rgba(219, 255, 43, 0.08);
+  transform: translateY(-3px);
+}
+
+.service-detail-motion .icon-badge,
+.service-detail-motion h2,
+.service-detail-motion > p,
+.service-detail-motion > h3,
+.service-detail-motion .check-list li,
+.service-detail-motion .tools-grid .tool-card,
+.service-detail-motion > .btn {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.service-detail-motion .icon-badge {
+  transform: scale(0.72) rotate(-10deg);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
+}
+
+.service-detail-motion.is-inview .icon-badge {
+  opacity: 1;
+  animation: servicesBadgePop 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.04s both;
+}
+
+.service-detail-motion.is-inview h2 {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s;
+}
+
+.service-detail-motion.is-inview > p {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.18s;
+}
+
+.service-detail-motion.is-inview > h3 {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.26s;
+}
+
+.service-detail-motion.is-inview .check-list li {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.service-detail-motion.is-inview > h3 + .check-list li:nth-child(1),
+.service-detail-motion.is-inview > .check-list li:nth-child(1) {
+  transition-delay: 0.34s;
+}
+
+.service-detail-motion.is-inview > h3 + .check-list li:nth-child(2),
+.service-detail-motion.is-inview > .check-list li:nth-child(2) {
+  transition-delay: 0.4s;
+}
+
+.service-detail-motion.is-inview > h3 + .check-list li:nth-child(3),
+.service-detail-motion.is-inview > .check-list li:nth-child(3) {
+  transition-delay: 0.46s;
+}
+
+.service-detail-motion.is-inview .tools-grid .tool-card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.service-detail-motion.is-inview .tools-grid .tool-card:nth-child(1) {
+  transition-delay: 0.52s;
+}
+
+.service-detail-motion.is-inview .tools-grid .tool-card:nth-child(2) {
+  transition-delay: 0.58s;
+}
+
+.service-detail-motion.is-inview .tools-grid .tool-card:nth-child(3) {
+  transition-delay: 0.64s;
+}
+
+.service-detail-motion.is-inview > .btn {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.72s;
+}
+
+.service-detail-motion.is-inview .tools-grid + .btn,
+.service-detail-motion.is-inview .check-list + .btn {
+  transition-delay: 0.72s;
+}
+
+.service-detail-motion .tools-grid .tool-card {
+  will-change: transform;
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.service-detail-motion.is-inview .tools-grid .tool-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(219, 255, 43, 0.52);
+  box-shadow: 0 18px 36px rgba(17, 17, 17, 0.1);
+  transition-delay: 0s;
+}
+
+.service-detail-motion.is-scroll-active .icon-badge {
+  box-shadow: 0 0 0 6px rgba(219, 255, 43, 0.14);
+}
+
+@keyframes servicesOrbFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -18px, 0) scale(1.04);
+  }
+}
+
+@keyframes servicesRingSpin {
+  from {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+@keyframes servicesBadgePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.72) rotate(-10deg);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.08) rotate(3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-hero-orb,
+  .services-hero-ring {
+    animation: none;
+  }
+
+  .services-motion-item,
+  .services-hero-word,
+  .service-detail-motion .icon-badge,
+  .service-detail-motion h2,
+  .service-detail-motion > p,
+  .service-detail-motion > h3,
+  .service-detail-motion .check-list li,
+  .service-detail-motion .tools-grid .tool-card,
+  .service-detail-motion > .btn {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .service-sidebar-indicator {
+    display: none;
+  }
+}
+
+@media (max-width: 1040px) {
+  .services-hero-ring {
+    right: -6%;
+    opacity: 0.45;
   }
 }
 
