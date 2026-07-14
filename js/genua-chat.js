@@ -2,7 +2,6 @@
   if (document.getElementById('genua-chat-root')) return;
 
   const STORAGE_KEY = 'genua.chat.messages.v2';
-  const TEASER_KEY = 'genua.chat.teaser.dismissed';
   const OPENING_MESSAGE =
     'Merhaba, Genua Dijital Medya Ajansı adına G. Hizmetlerimiz, çalışma sürecimiz ve teklif talepleriniz hakkında bilgi verebilirim.';
 
@@ -16,16 +15,11 @@
   let isOpen = false;
   let isLoading = false;
   let messages = [];
-  let teaserTimer = null;
 
   const root = document.createElement('div');
   root.id = 'genua-chat-root';
   root.className = 'genua-chat-root';
   root.innerHTML = `
-    <div class="genua-chat-teaser" id="genuaChatTeaser" hidden>
-      <button type="button" aria-label="Kapat">×</button>
-      Merhaba. Genua Dijital Medya Ajansı olarak size nasıl yardımcı olabiliriz?
-    </div>
     <div class="genua-chat-panel" id="genuaChatPanel" role="dialog" aria-label="Genua Asistan sohbet" aria-modal="true">
       <div class="genua-chat-header">
         <div>
@@ -48,7 +42,6 @@
 
   document.body.appendChild(root);
 
-  const teaser = root.querySelector('#genuaChatTeaser');
   const panel = root.querySelector('#genuaChatPanel');
   const toggle = root.querySelector('#genuaChatToggle');
   const closeBtn = root.querySelector('.genua-chat-close');
@@ -108,7 +101,6 @@
     toggle.setAttribute('aria-label', isOpen ? 'Genua Asistan sohbetini kapat' : 'Genua Asistan sohbetini aç');
 
     if (isOpen) {
-      hideTeaser(true);
       if (!messages.length) {
         messages.push({ role: 'assistant', content: OPENING_MESSAGE });
         saveMessages();
@@ -116,18 +108,6 @@
       renderMessages();
       window.setTimeout(() => input.focus(), 120);
     }
-  }
-
-  function hideTeaser(persist) {
-    teaser.classList.remove('is-visible');
-    teaser.hidden = true;
-    if (persist) sessionStorage.setItem(TEASER_KEY, '1');
-  }
-
-  function showTeaser() {
-    if (sessionStorage.getItem(TEASER_KEY) || isOpen) return;
-    teaser.hidden = false;
-    window.requestAnimationFrame(() => teaser.classList.add('is-visible'));
   }
 
   async function submitLead(lead) {
@@ -212,11 +192,6 @@
 
   toggle.addEventListener('click', () => setOpen(!isOpen));
   closeBtn.addEventListener('click', () => setOpen(false));
-  teaser.querySelector('button').addEventListener('click', () => hideTeaser(true));
-  teaser.addEventListener('click', (event) => {
-    if (event.target.closest('button')) return;
-    setOpen(true);
-  });
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -236,8 +211,6 @@
   messages = loadMessages();
   renderQuickReplies();
   if (messages.length) renderMessages();
-
-  teaserTimer = window.setTimeout(showTeaser, 2600);
 
   window.GenuaChat = { open: () => setOpen(true), close: () => setOpen(false) };
 })();

@@ -15,46 +15,6 @@
   z-index: 125;
 }
 
-.genua-chat-teaser {
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + 12px);
-  max-width: 240px;
-  padding: 12px 14px;
-  border-radius: 16px 16px 4px 16px;
-  background: var(--gchat-panel);
-  border: 1px solid var(--gchat-border);
-  color: var(--gchat-text);
-  font-size: 0.88rem;
-  line-height: 1.45;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
-  opacity: 0;
-  transform: translateY(8px);
-  pointer-events: none;
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-
-.genua-chat-teaser.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.genua-chat-teaser button {
-  position: absolute;
-  top: 6px;
-  right: 8px;
-  width: 22px;
-  height: 22px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--gchat-muted);
-  font-size: 1rem;
-  line-height: 1;
-  cursor: pointer;
-}
-
 .genua-chat-toggle {
   width: 58px;
   height: 58px;
@@ -260,15 +220,10 @@
     max-height: min(68vh, 520px);
   }
 
-  .genua-chat-teaser {
-    max-width: 210px;
-    font-size: 0.84rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .genua-chat-panel,
-  .genua-chat-teaser,
   .genua-chat-toggle {
     transition: none;
   }

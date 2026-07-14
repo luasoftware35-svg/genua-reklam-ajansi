@@ -2462,6 +2462,7 @@ body.is-loaded .loader {
   border: 1px solid rgba(168, 204, 0, 0.25);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-soft);
+  isolation: isolate;
 }
 
 .service-sidebar .tab-btn {
@@ -2473,6 +2474,7 @@ body.is-loaded .loader {
   font-size: 0.88rem;
   font-weight: 700;
   text-align: left;
+  line-height: 1.25;
 }
 
 .service-sidebar a {
@@ -3851,7 +3853,7 @@ body.is-loaded .loader {
 
 .service-sidebar-indicator {
   position: absolute;
-  top: 16px;
+  top: 0;
   left: 16px;
   right: 16px;
   z-index: 0;
@@ -3860,14 +3862,15 @@ body.is-loaded .loader {
   background: var(--accent);
   box-shadow: 0 10px 24px rgba(219, 255, 43, 0.22);
   opacity: 0;
-  transform: translateY(0);
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), height 0.35s ease, opacity 0.25s ease;
+  transition: top 0.45s cubic-bezier(0.22, 1, 0.36, 1), height 0.35s ease, opacity 0.25s ease;
   pointer-events: none;
 }
 
 .service-sidebar .tab-btn {
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: center;
   background: transparent;
   border-color: transparent;
   transition: color 0.25s ease, transform 0.25s ease;

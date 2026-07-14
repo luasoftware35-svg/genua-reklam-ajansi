@@ -38,12 +38,8 @@
   function moveSidebarIndicator(activeTab) {
     if (!sidebar || !indicator || !activeTab) return;
 
-    const sidebarTop = sidebar.getBoundingClientRect().top;
-    const tabRect = activeTab.getBoundingClientRect();
-    const offset = tabRect.top - sidebarTop + sidebar.scrollTop;
-
-    indicator.style.height = `${tabRect.height}px`;
-    indicator.style.transform = `translateY(${offset}px)`;
+    indicator.style.top = `${activeTab.offsetTop}px`;
+    indicator.style.height = `${activeTab.offsetHeight}px`;
     indicator.style.opacity = '1';
   }
 
