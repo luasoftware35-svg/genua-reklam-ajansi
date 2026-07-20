@@ -44,7 +44,7 @@ const payload = {
   footer_description:
     'Denizli merkezli dijital medya ve reklam ajansı. Dijital reklam, sosyal medya, marka tasarımı ve içerik üretiminde kurumsal çözümler.',
   footer_copyright: '© 2026 Genua Reklam Ajansı. Tüm hakları saklıdır.',
-  meta_og_image_url: 'https://genuareklam.com/varlıklar/resimler/genua-og.svg',
+  meta_og_image_url: 'https://genuadigital.com/varlıklar/resimler/genua-ekip.jpg',
 };
 
 const { data: existing } = await supabase.from('site_settings').select('id').limit(1).maybeSingle();

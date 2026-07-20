@@ -17,7 +17,7 @@ UPDATE site_settings SET
   hero_cta_secondary_url = '/teklif-al.html',
   footer_description = 'Denizli merkezli dijital medya ve reklam ajansı. Dijital reklam, sosyal medya, marka tasarımı ve içerik üretiminde kurumsal çözümler.',
   footer_copyright = '© 2026 Genua Reklam Ajansı. Tüm hakları saklıdır.',
-  meta_og_image_url = 'https://genuareklam.com/varlıklar/resimler/genua-og.svg',
+  meta_og_image_url = 'https://genuadigital.com/varlıklar/resimler/genua-ekip.jpg',
   updated_at = NOW()
 WHERE id IN (SELECT id FROM site_settings LIMIT 1);
 
@@ -45,5 +45,5 @@ SELECT
   '/teklif-al.html',
   'Denizli merkezli dijital medya ve reklam ajansı. Dijital reklam, sosyal medya, marka tasarımı ve içerik üretiminde kurumsal çözümler.',
   '© 2026 Genua Reklam Ajansı. Tüm hakları saklıdır.',
-  'https://genuareklam.com/varlıklar/resimler/genua-og.svg'
+  'https://genuadigital.com/varlıklar/resimler/genua-ekip.jpg'
 WHERE NOT EXISTS (SELECT 1 FROM site_settings LIMIT 1);

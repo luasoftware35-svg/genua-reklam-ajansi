@@ -2,19 +2,30 @@
   "siteOrigin": "https://genuadigital.com",
   "siteName": "Genua Reklam Ajansı",
   "locale": "tr_TR",
-  "defaultOgImage": "/varlıklar/resimler/genua-og.svg",
+  "defaultOgImage": "/varlıklar/resimler/genua-ekip.jpg",
   "favicon": "varlıklar/favicon.svg",
   "logo": "/varlıklar/resimler/genua-logo.png",
   "twitterHandle": "@genuadigital",
   "organization": {
     "legalName": "Genua Reklam Ajansı",
+    "alternateName": "Genua Dijital Medya Ajansı",
     "email": "hello@genuadigital.com",
     "phone": "+905511245306",
+    "streetAddress": "Yeni, Menderes Blv. No: 7A D:3",
+    "postalCode": "20030",
     "addressLocality": "Denizli",
     "addressRegion": "Denizli",
     "addressCountry": "TR",
+    "latitude": 37.7833,
+    "longitude": 29.0947,
+    "openingHours": [
+      { "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "09:00", "closes": "18:00" }
+    ],
+    "priceRange": "$$",
+    "foundingDate": "2022",
     "instagram": "https://www.instagram.com/genuadigital/",
     "linkedin": "https://tr.linkedin.com/company/genua-digital-media-agency",
-    "behance": "https://www.behance.net/umutavci4"
+    "behance": "https://www.behance.net/umutavci4",
+    "googleMapsUrl": "https://www.google.com/maps/search/?api=1&query=Yeni%2C%20Menderes%20Blv.%20No%3A%207A%20D%3A3%2C%2020030%20Denizli%20Merkezefendi%2FDenizli"
   }
 }

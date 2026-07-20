@@ -9,12 +9,104 @@
       "source": "/index.html",
       "destination": "/anasayfa",
       "permanent": true
+    },
+    {
+      "source": "/denizli-reklam-ajansi.html",
+      "destination": "/denizli-reklam-ajansi",
+      "permanent": true
+    },
+    {
+      "source": "/hakkimizda.html",
+      "destination": "/hakkimizda",
+      "permanent": true
+    },
+    {
+      "source": "/hizmetler.html",
+      "destination": "/hizmetler",
+      "permanent": true
+    },
+    {
+      "source": "/blog-denizli-reklam-ajansi.html",
+      "destination": "/blog-denizli-reklam-ajansi",
+      "permanent": true
     }
   ],
   "rewrites": [
     {
       "source": "/anasayfa",
       "destination": "/anasayfa.html"
+    },
+    {
+      "source": "/denizli-reklam-ajansi",
+      "destination": "/denizli-reklam-ajansi.html"
+    },
+    {
+      "source": "/hakkimizda",
+      "destination": "/hakkimizda.html"
+    },
+    {
+      "source": "/hizmetler",
+      "destination": "/hizmetler.html"
+    },
+    {
+      "source": "/dijital-reklam",
+      "destination": "/dijital-reklam.html"
+    },
+    {
+      "source": "/sosyal-medya",
+      "destination": "/sosyal-medya.html"
+    },
+    {
+      "source": "/marka-tasarim",
+      "destination": "/marka-tasarim.html"
+    },
+    {
+      "source": "/icerik-uretimi",
+      "destination": "/icerik-uretimi.html"
+    },
+    {
+      "source": "/seo",
+      "destination": "/seo.html"
+    },
+    {
+      "source": "/web-tasarim",
+      "destination": "/web-tasarim.html"
+    },
+    {
+      "source": "/projelerimiz",
+      "destination": "/projelerimiz.html"
+    },
+    {
+      "source": "/portfolyo",
+      "destination": "/portfolyo.html"
+    },
+    {
+      "source": "/vaka-analizi",
+      "destination": "/vaka-analizi.html"
+    },
+    {
+      "source": "/blog",
+      "destination": "/blog.html"
+    },
+    {
+      "source": "/blog-denizli-reklam-ajansi",
+      "destination": "/blog-denizli-reklam-ajansi.html"
+    },
+    {
+      "source": "/blog-detay",
+      "destination": "/blog-detay.html"
+    },
+    {
+      "source": "/iletisim",
+      "destination": "/iletisim.html"
+    },
+    {
+      "source": "/teklif-al",
+      "destination": "/teklif-al.html"
+    },
+    {
+      "source": "/gizlilik-politikasi",
+      "destination": "/gizlilik-politikasi.html"
     },
     {
       "source": "/api/chat",
