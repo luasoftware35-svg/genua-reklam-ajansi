@@ -82,6 +82,28 @@ const pages = {
       { name: 'Ana Sayfa', path: '/anasayfa' },
       { name: 'Hizmetler', path: '/hizmetler' },
     ],
+    faq: [
+      {
+        question: 'Genua hangi dijital pazarlama hizmetlerini birlikte sunuyor?',
+        answer:
+          'Dijital reklam (Google Ads, Meta Ads), sosyal medya yönetimi, marka tasarımı, içerik üretimi, SEO ve kurumsal web tasarımı. İhtiyaca göre tek hizmet veya uçtan uca paket olarak çalışıyoruz.',
+      },
+      {
+        question: 'Tek bir hizmet mi almak zorundayım, yoksa paket mi daha doğru?',
+        answer:
+          'Zorunluluk yok. Reklam bütçesi olan bir marka yalnızca medya yönetimi alabilir; yeni marka genelde kimlik + web + sosyal medya ile başlar. Teklifte kapsamı ihtiyaca göre ayırırız.',
+      },
+      {
+        question: 'Denizli dışındaki markalarla da çalışıyor musunuz?',
+        answer:
+          'Evet. Merkez ofisimiz Denizli Merkezefendi’de; toplantı ve çekimler yerinde, kampanya ve içerik yönetimi Türkiye genelinde uzaktan yürür.',
+      },
+      {
+        question: 'Süreç nasıl başlıyor?',
+        answer:
+          'Teklif Al formunu doldurmanız yeterli. Brief’i inceliyor, gerekirse 30 dakikalık keşif görüşmesi planlıyor ve 1 iş günü içinde kapsam ile teklifi iletiyoruz.',
+      },
+    ],
   },
   'dijital-reklam.html': {
     title: 'Dijital Reklam Yönetimi | Google Ads & Meta Ads – Genua Denizli',
@@ -95,6 +117,28 @@ const pages = {
       { name: 'Ana Sayfa', path: '/anasayfa' },
       { name: 'Hizmetler', path: '/hizmetler' },
       { name: 'Dijital Reklam', path: '/dijital-reklam' },
+    ],
+    faq: [
+      {
+        question: 'Google Ads mi, Meta Ads mi başlamalıyım?',
+        answer:
+          'Arama niyeti yüksekse Google Ads; görsel keşif ve yerel randevu/satışsa Meta Ads öne çıkar. Çoğu markada ikisini aynı ölçümle birlikte kuruyoruz; bütçeyi kanala göre kaydırıyoruz.',
+      },
+      {
+        question: 'Aylık reklam bütçesi ne kadar olmalı?',
+        answer:
+          'Test için net bir taban gerekir; çok düşük bütçe öğrenmeyi uzatır. Teklifte hedef (form, arama, satış), sektör ve rekabete göre medya + yönetim bedelini ayrı yazarız. Sürpriz kalem bırakmayız.',
+      },
+      {
+        question: 'Kampanyaları nasıl raporluyorsunuz?',
+        answer:
+          'Haftalık optimizasyon, aylık yönetici özeti. Tıklama değil; lead, randevu, satış maliyeti ve yaratıcı test sonuçları. GA4 ve reklam panellerini aynı hedefe bağlarız.',
+      },
+      {
+        question: 'Sözleşme süresi ne kadar?',
+        answer:
+          'Performans işi en az birkaç öğrenme döngüsü ister. Tipik başlangıç 3 aydır; ilk ay kurulum ve test, sonraki aylar ölçeklenir. Aylık çıkış koşulları teklifte yazılıdır.',
+      },
     ],
   },
   'sosyal-medya.html': {
@@ -110,6 +154,28 @@ const pages = {
       { name: 'Hizmetler', path: '/hizmetler' },
       { name: 'Sosyal Medya', path: '/sosyal-medya' },
     ],
+    faq: [
+      {
+        question: 'İçerikleri siz mi üretiyorsunuz, yoksa sadece yayınlıyor musunuz?',
+        answer:
+          'Üretim dahildir: konsept, çekim veya tasarım, metin, yayın ve topluluk yanıtları. Marka onay takvimiyle çalışırız; “sadece post basma” modeli sunmuyoruz.',
+      },
+      {
+        question: 'Ayda kaç içerik çıkar?',
+        answer:
+          'Hesap ve hedefe göre değişir. Kurumsal planda genelde Reels + carousel + Story dengesi kurulur; sayı teklifte yazılıdır. Hacim için kaliteyi düşürmeyiz.',
+      },
+      {
+        question: 'Yorum ve mesajları kim yanıtlıyor?',
+        answer:
+          'Topluluk yönetimini biz üstleniriz. Hassas veya kriz niteliğindeki mesajlar için önceden onaylı yanıt rehberi ve eskalasyon hattı tanımlarız.',
+      },
+      {
+        question: 'Kamu kurumu hesapları da yönetiyor musunuz?',
+        answer:
+          'Evet. Denizli Valiliği gibi kamu iletişim işlerinde ton, onay hiyerarşisi ve görsel standart ayrı kurgulanır. Kurumsal markalarla aynı üretim kalitesi, daha sıkı onay süreci uygulanır.',
+      },
+    ],
   },
   'marka-tasarim.html': {
     title: 'Marka Tasarımı & Kurumsal Kimlik | Denizli – Genua',
@@ -124,6 +190,28 @@ const pages = {
       { name: 'Hizmetler', path: '/hizmetler' },
       { name: 'Marka Tasarımı', path: '/marka-tasarim' },
     ],
+    faq: [
+      {
+        question: 'Sadece logo mu tasarlıyorsunuz?',
+        answer:
+          'Logo tek başına yetmez. Konumlandırma, renk, tipografi, kullanım kuralları ve sosyal/reklam şablonlarıyla teslim ederiz. İsterseniz yalnızca logo yenilemesi de yapılabilir; kapsam teklifte ayrılır.',
+      },
+      {
+        question: 'Süreç ne kadar sürer?',
+        answer:
+          'Tipik kimlik işi 3–6 haftadır: keşif, yön seçimi, uygulama, brand book. Lansman tarihi varsa takvimi ona göre sıkıştırırız.',
+      },
+      {
+        question: 'Kaç revizyon hakkım var?',
+        answer:
+          'Teklifte tur sayısı yazılıdır. İlk turda yön seçilir, sonraki turlarda detay işlenir. Sınırsız “bir de şunu deneyelim” modeli kaliteyi düşürdüğü için kullanmayız.',
+      },
+      {
+        question: 'Brand book nedir, gerçekten gerekir mi?',
+        answer:
+          'Ekibin ve ajansın aynı logoyu, rengi ve boşluğu kullanması için kılavuzdur. Olmazsa her paylaşımda marka dağılır. Küçük işletmede kısa kılavuz, kurumsalda tam dosya teslim ederiz.',
+      },
+    ],
   },
   'icerik-uretimi.html': {
     title: 'İçerik Üretimi | Video, Fotoğraf & Reklam Kreatifi – Genua Denizli',
@@ -137,6 +225,28 @@ const pages = {
       { name: 'Ana Sayfa', path: '/anasayfa' },
       { name: 'Hizmetler', path: '/hizmetler' },
       { name: 'İçerik Üretimi', path: '/icerik-uretimi' },
+    ],
+    faq: [
+      {
+        question: 'Çekim stüdyoda mı, sahada mı yapılıyor?',
+        answer:
+          'İkisini de kullanırız. Yenişehir stüdyomuz ürün, ekip ve kontrollü ışık işleri içindir; saha çekimi mekân, etkinlik ve katalog içindir. Brief’e göre karar veririz.',
+      },
+      {
+        question: 'Reels ve reklam videosu aynı çekimden çıkar mı?',
+        answer:
+          'Evet, doğru planlanırsa çıkar. Tek çekim gününde yatay reklam, dikey Reels ve still kare için shot listesi hazırlarız. Format sonradan uydurulmaz, çekimde kilitlenir.',
+      },
+      {
+        question: 'Teslim süresi ne kadar?',
+        answer:
+          'Tek gün çekimde ham seçki genelde birkaç gün, kurgulu Reels/reklam 1–2 hafta içindedir. Kampanya tarihi varsa teslim takvimi sözleşmede yazılır.',
+      },
+      {
+        question: 'Görsellerin kullanım hakkı kimde kalır?',
+        answer:
+          'Markanın kendi kanallarında kullanım hakkı teslimle birlikte netleşir. Stok satışı veya üçüncü taraf lisansı ayrıdır. Teklifte hak kapsamını yazarız.',
+      },
     ],
   },
   'seo.html': {
@@ -153,6 +263,28 @@ const pages = {
       { name: 'Hizmetler', path: '/hizmetler' },
       { name: 'SEO', path: '/seo' },
     ],
+    faq: [
+      {
+        question: 'SEO sonuçları ne kadar sürede görünür?',
+        answer:
+          'Teknik düzeltmeler haftalar içinde indekse yansıyabilir; rekabetçi kelimelerde 3–6 ay gerçekçi penceredir. “Bir haftada birincilik” vaat etmeyiz. Search Console ile ilerlemeyi gösteririz.',
+      },
+      {
+        question: 'Blog yazmak SEO için yeterli mi?',
+        answer:
+          'Hayır. Hız, indeks, iç link, arama niyeti ve yerel sayfalar olmadan blog zayıf kalır. Yazıyı konu kümesine bağlarız; her yazının kendi adresi, başlığı ve kapağı olur.',
+      },
+      {
+        question: 'Teknik SEO tam olarak neyi kapsar?',
+        answer:
+          'Taranabilirlik, hız, mobil, kanonik, şema, yönlendirmeler ve Search Console hataları. İçerik planı ayrı katmandır; ikisini birlikte yürütürüz.',
+      },
+      {
+        question: 'Sıralama garantisi veriyor musunuz?',
+        answer:
+          'Hayır. Google algoritmasını kimse satın alamaz. Garantimiz süreç, şeffaf rapor ve arama niyetine uygun sayfa mimarisidir; sıralama hedef değil sonuçtur.',
+      },
+    ],
   },
   'web-tasarim.html': {
     title: 'Web Tasarım & Geliştirme | Kurumsal Site – Genua Denizli',
@@ -167,6 +299,28 @@ const pages = {
       { name: 'Ana Sayfa', path: '/anasayfa' },
       { name: 'Hizmetler', path: '/hizmetler' },
       { name: 'Web Tasarım', path: '/web-tasarim' },
+    ],
+    faq: [
+      {
+        question: 'Hazır tema mı, size özel tasarım mı?',
+        answer:
+          'Kurumsal işlerde arayüzü markaya göre tasarlarız. Hazır tema hız kazandırır ama aynı görünümü onlarca siteyle paylaşır. Teklifte kapsam (sayfa sayısı, form, çok dil) net yazılır.',
+      },
+      {
+        question: 'Bir kurumsal site ne kadar sürede çıkar?',
+        answer:
+          'İçerik hazırsa tipik 4–8 haftadır: telif/wireframe, tasarım, geliştirme, SEO iskeleti, test. İçerik gecikmesi takvimi uzatır; bunu baştan konuşuruz.',
+      },
+      {
+        question: 'SEO web tasarımın içinde mi?',
+        answer:
+          'Teknik iskelet (hız, semantik HTML, meta, şema, kanonik) sitede kurulur. Kelime kümesi ve blog operasyonu ayrı SEO hizmetidir. İkisini birlikte almak daha temiz sonuç verir.',
+      },
+      {
+        question: 'Yayın sonrası bakım var mı?',
+        answer:
+          'Evet, isteğe bağlı. Güvenlik, yedek, küçük içerik güncellemesi ve form/analitik kontrolü aylık bakımda yürür. Tek seferlik teslim de mümkündür.',
+      },
     ],
   },
   'projelerimiz.html': {
