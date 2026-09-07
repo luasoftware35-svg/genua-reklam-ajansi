@@ -126,8 +126,31 @@ function readTemplate() {
   }
 }
 
+function readSlug(req) {
+  const candidates = [
+    req.query?.slug,
+    req.query?.path,
+  ];
+  const url = String(req.url || '');
+  try {
+    candidates.push(new URL(url, ORIGIN).searchParams.get('slug'));
+  } catch {
+    /* ignore */
+  }
+  const pathMatch = url.match(/\/blog\/([^/?#]+)/);
+  if (pathMatch?.[1]) candidates.push(decodeURIComponent(pathMatch[1]));
+  const invokePath = String(req.headers?.['x-invoke-path'] || req.headers?.['x-matched-path'] || '');
+  const invokeMatch = invokePath.match(/\/blog\/([^/?#]+)/);
+  if (invokeMatch?.[1]) candidates.push(decodeURIComponent(invokeMatch[1]));
+
+  return candidates
+    .flat()
+    .map((value) => String(value || '').trim())
+    .find((value) => isValidSlug(value) && value !== ':slug') || '';
+}
+
 module.exports = async function handler(req, res) {
-  const slug = String(req.query.slug || '').trim();
+  const slug = readSlug(req);
   if (!isValidSlug(slug)) {
     res.writeHead(302, { Location: '/blog' });
     res.end();

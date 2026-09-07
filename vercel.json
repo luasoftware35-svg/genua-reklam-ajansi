@@ -1,10 +1,12 @@
 {
   "functions": {
     "api/blog-post.js": {
-      "includeFiles": "{blog-detay.html,lib/blog-detay-template.html,lib/blog.js}"
+      "includeFiles": "{blog-detay.html,lib/blog-detay-template.html,lib/blog.js}",
+      "runtime": "nodejs20.x"
     },
     "api/sitemap.js": {
-      "includeFiles": "lib/blog.js"
+      "includeFiles": "lib/blog.js",
+      "runtime": "nodejs20.x"
     }
   },
   "redirects": [
@@ -132,7 +134,7 @@
     },
     {
       "source": "/blog/:slug",
-      "destination": "/api/blog-post?slug=:slug"
+      "destination": "/api/blog-post"
     },
     {
       "source": "/blog-denizli-reklam-ajansi",
