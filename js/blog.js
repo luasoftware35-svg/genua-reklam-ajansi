@@ -106,7 +106,7 @@ function renderToc(content) {
   wrapper.innerHTML = prepareArticleContent(content);
   const headings = wrapper.querySelectorAll('h2');
   if (!headings.length) return '';
-  return headings
+  return [...headings]
     .map((heading) => `<a href="#${heading.id}">${escapeHtml(heading.textContent.trim())}</a>`)
     .join('');
 }
