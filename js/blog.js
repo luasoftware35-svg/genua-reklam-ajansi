@@ -16,12 +16,25 @@ function formatDate(value) {
 }
 
 function detailUrl(slug) {
-  return `blog-detay.html?slug=${encodeURIComponent(slug)}`;
+  return `/blog/${encodeURIComponent(slug)}`;
+}
+
+function currentSlug() {
+  const pathName = window.location.pathname.replace(/\/+$/, '');
+  const match = pathName.match(/^\/blog\/([^/]+)$/);
+  if (match?.[1]) return decodeURIComponent(match[1]);
+  return new URLSearchParams(window.location.search).get('slug');
+}
+
+function assetSrc(url) {
+  if (!url) return '';
+  if (/^https?:\/\//i.test(url) || url.startsWith('/')) return url;
+  return `/${url}`;
 }
 
 function coverMarkup(url, alt, className = 'blog-image') {
   if (!url) return `<div class="${className}"></div>`;
-  return `<div class="${className} has-cover"><img src="${escapeHtml(url)}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async"></div>`;
+  return `<div class="${className} has-cover"><img src="${escapeHtml(assetSrc(url))}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async"></div>`;
 }
 
 
@@ -76,6 +89,13 @@ function prepareArticleContent(html) {
   wrapper.innerHTML = html || '';
   wrapper.querySelectorAll('h2').forEach((heading, index) => {
     if (!heading.id) heading.id = `bolum-${index + 1}`;
+  });
+  wrapper.querySelectorAll('a[href]').forEach((anchor) => {
+    const href = anchor.getAttribute('href') || '';
+    const match = href.match(/blog-detay(?:\.html)?\?slug=([^&#]+)/);
+    if (match?.[1]) {
+      anchor.setAttribute('href', detailUrl(decodeURIComponent(match[1])));
+    }
   });
   return wrapper.innerHTML;
 }
@@ -146,13 +166,18 @@ async function loadBlogList() {
 }
 
 async function loadBlogDetail() {
-  const params = new URLSearchParams(window.location.search);
-  const slug = params.get('slug');
+  const slug = currentSlug();
   const config = window.GenuaSupabase;
   if (!config?.url || !config?.key) return;
 
   if (!slug) {
-    window.location.replace('blog.html');
+    window.location.replace('/blog');
+    return;
+  }
+
+  const querySlug = new URLSearchParams(window.location.search).get('slug');
+  if (querySlug && !window.location.pathname.replace(/\/+$/, '').startsWith('/blog/')) {
+    window.location.replace(detailUrl(querySlug));
     return;
   }
 
@@ -162,10 +187,29 @@ async function loadBlogDetail() {
   const post = posts?.[0];
   if (!post) return;
 
-  document.title = post.meta_title || `${post.title} | Genua Blog`;
+  const pageTitle = post.meta_title || `${post.title} | Genua Blog`;
+  const pageDescription = post.meta_description || post.excerpt || pageTitle;
+  const canonical = `${window.location.origin}${detailUrl(post.slug)}`;
+  const coverAbsolute = post.cover_image_url
+    ? new URL(assetSrc(post.cover_image_url), `${window.location.origin}/`).href
+    : '';
 
+  document.title = pageTitle;
   const metaDescription = document.querySelector('meta[name="description"]');
-  if (metaDescription && post.meta_description) metaDescription.setAttribute('content', post.meta_description);
+  if (metaDescription) metaDescription.setAttribute('content', pageDescription);
+  document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach((el) => {
+    el.setAttribute('content', pageTitle);
+  });
+  document.querySelectorAll('meta[property="og:description"], meta[name="twitter:description"]').forEach((el) => {
+    el.setAttribute('content', pageDescription);
+  });
+  document.querySelectorAll('link[rel="canonical"]').forEach((el) => el.setAttribute('href', canonical));
+  document.querySelectorAll('meta[property="og:url"]').forEach((el) => el.setAttribute('content', canonical));
+  if (coverAbsolute) {
+    document.querySelectorAll('meta[property="og:image"], meta[name="twitter:image"]').forEach((el) => {
+      el.setAttribute('content', coverAbsolute);
+    });
+  }
 
   const heroEl = document.querySelector('#blogHero');
   const contentEl = document.querySelector('#blogContent');
@@ -174,14 +218,14 @@ async function loadBlogDetail() {
 
   if (heroEl) {
     const coverMarkup = post.cover_image_url
-      ? `<div class="blog-article-cover"><img src="${escapeHtml(post.cover_image_url)}" alt="${escapeHtml(post.title)}" loading="eager" decoding="async"></div>`
+      ? `<div class="blog-article-cover"><img src="${escapeHtml(assetSrc(post.cover_image_url))}" alt="${escapeHtml(post.title)}" loading="eager" decoding="async"></div>`
       : '';
 
     heroEl.innerHTML = `
       <div class="container">
         <div class="breadcrumb">
-          <a href="anasayfa.html">Ana Sayfa</a><span>/</span>
-          <a href="blog.html">Blog</a><span>/</span>
+          <a href="/anasayfa">Ana Sayfa</a><span>/</span>
+          <a href="/blog">Blog</a><span>/</span>
           <span>${escapeHtml(post.category || 'Blog')}</span>
         </div>
         <p class="eyebrow">${escapeHtml(post.category || 'Blog')}</p>
@@ -196,8 +240,8 @@ async function loadBlogDetail() {
     contentEl.innerHTML = `
       ${articleHtml}
       <div class="form-actions">
-        <a class="btn btn-primary" href="teklif-al.html">Teklif Al</a>
-        <a class="btn" href="blog.html">Blog'a Dön</a>
+        <a class="btn btn-primary" href="/teklif-al">Teklif Al</a>
+        <a class="btn" href="/blog">Blog'a Dön</a>
       </div>`;
   }
 

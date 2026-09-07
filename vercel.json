@@ -1,4 +1,12 @@
 {
+  "functions": {
+    "api/blog-post.js": {
+      "includeFiles": "{blog-detay.html,lib/blog-detay-template.html,lib/blog.js}"
+    },
+    "api/sitemap.js": {
+      "includeFiles": "lib/blog.js"
+    }
+  },
   "redirects": [
     {
       "source": "/",
@@ -28,6 +36,40 @@
     {
       "source": "/blog-denizli-reklam-ajansi.html",
       "destination": "/blog-denizli-reklam-ajansi",
+      "permanent": true
+    },
+    {
+      "source": "/blog-detay.html",
+      "has": [
+        {
+          "type": "query",
+          "key": "slug",
+          "value": "(?<slug>[a-z0-9-]+)"
+        }
+      ],
+      "destination": "/blog/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/blog-detay",
+      "has": [
+        {
+          "type": "query",
+          "key": "slug",
+          "value": "(?<slug>[a-z0-9-]+)"
+        }
+      ],
+      "destination": "/blog/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/blog-detay.html",
+      "destination": "/blog",
+      "permanent": true
+    },
+    {
+      "source": "/blog-detay",
+      "destination": "/blog",
       "permanent": true
     }
   ],
@@ -89,12 +131,16 @@
       "destination": "/blog.html"
     },
     {
+      "source": "/blog/:slug",
+      "destination": "/api/blog-post?slug=:slug"
+    },
+    {
       "source": "/blog-denizli-reklam-ajansi",
       "destination": "/blog-denizli-reklam-ajansi.html"
     },
     {
-      "source": "/blog-detay",
-      "destination": "/blog-detay.html"
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
     },
     {
       "source": "/iletisim",

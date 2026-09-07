@@ -221,17 +221,16 @@ const pages = {
     ],
   },
   'blog-detay.html': {
-    title: '2026 Performans Pazarlama Planı | Genua Reklam Ajansı Blog',
+    title: 'Blog | Denizli Dijital Pazarlama Rehberleri – Genua',
     description:
-      'Kurumsal markalar için 2026 performans pazarlama planı: medya bütçesi, içerik üretimi, landing page optimizasyonu ve ölçümleme çerçevesi.',
-    keywords: 'performans pazarlama, dijital reklam stratejisi 2026, medya planlama, dönüşüm optimizasyonu',
-    path: '/blog-detay',
-    schema: 'article',
-    articleTitle: '2026\'da kurumsal markalar için performans pazarlama nasıl planlanmalı?',
+      'Denizli reklam ajansı Genua blog: dijital pazarlama, sosyal medya, reklam, SEO ve marka stratejisi üzerine uygulanabilir rehberler.',
+    keywords: 'dijital pazarlama blog, denizli reklam ajansı blog, seo içerikleri',
+    path: '/blog',
+    schema: 'webpage',
+    robots: 'noindex, follow',
     breadcrumbs: [
       { name: 'Ana Sayfa', path: '/anasayfa' },
       { name: 'Blog', path: '/blog' },
-      { name: 'Performans Pazarlama', path: '/blog-detay' },
     ],
   },
   'vaka-analizi.html': {
