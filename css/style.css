@@ -1872,6 +1872,43 @@ body.is-loaded .loader {
   padding: 32px 0 96px;
 }
 
+.blog-offer {
+  margin: 48px 0 8px;
+  padding: clamp(24px, 4vw, 36px);
+  color: rgba(255, 255, 255, 0.82);
+  background:
+    radial-gradient(circle at 92% 12%, rgba(219, 255, 43, 0.2), transparent 28%),
+    linear-gradient(135deg, var(--dark), var(--dark-soft));
+  border: 1px solid rgba(219, 255, 43, 0.22);
+  border-radius: var(--radius-xl);
+}
+
+.blog-offer .eyebrow {
+  color: var(--accent);
+}
+
+.blog-offer h2 {
+  max-width: 22ch;
+  margin: 8px 0 14px;
+  color: var(--white);
+  font-size: clamp(1.55rem, 3vw, 2.15rem);
+}
+
+.blog-offer p {
+  max-width: 58ch;
+  margin: 0;
+}
+
+.blog-offer .form-actions {
+  margin-top: 22px;
+}
+
+.blog-offer .btn:not(.btn-primary) {
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .breadcrumb {
   display: flex;
   flex-wrap: wrap;
@@ -3381,6 +3418,15 @@ body.is-loaded .loader {
 
   .blog-article-section {
     padding: 24px 0 72px;
+  }
+
+  .blog-offer {
+    margin-top: 32px;
+    padding: 22px 20px;
+  }
+
+  .blog-offer h2 {
+    max-width: none;
   }
 
   .card-grid,

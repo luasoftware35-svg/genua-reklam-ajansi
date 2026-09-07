@@ -32,6 +32,86 @@ function assetSrc(url) {
   return `/${url}`;
 }
 
+function offerForPost(post) {
+  const category = String(post.category || '').toLocaleLowerCase('tr-TR');
+  const hay = `${post.slug || ''} ${post.title || ''}`.toLocaleLowerCase('tr-TR');
+  const offers = [
+    {
+      test: () => /sosyal/.test(category) || /carousel|instagram|reels|influencer|creator|tiktok|takvim/.test(hay),
+      eyebrow: 'Bunu sizin için yapalım',
+      title: 'Carousel, Reels ve içerik takvimini ajans temposunda kuralım.',
+      text: 'Yazıdaki formatı marka hesabınıza indiriyoruz: shot listesi, onay akışı ve haftalık yayın. Sosyal medya yönetimini uçtan uca teslim ederiz.',
+      serviceHref: '/sosyal-medya',
+      serviceLabel: 'Sosyal medya hizmeti',
+    },
+    {
+      test: () => /seo/.test(category) || /arama niyeti|aeo|ai bakışı|ai-bakisi|google-ai/.test(hay),
+      eyebrow: 'Bunu sizin için yapalım',
+      title: 'Arama niyeti ve teknik SEO’yu sitenize uygulayalım.',
+      text: 'Sayfa iskeleti, iç link ve Search Console takibini aynı planda yürütürüz. Blog yazmak yetmez; indekslenen, dönüşüm bağlayan yapı kurarız.',
+      serviceHref: '/seo',
+      serviceLabel: 'SEO hizmeti',
+    },
+    {
+      test: () => /web/.test(category) || /landing|dönüşüm|donusum|checklist/.test(hay),
+      eyebrow: 'Bunu sizin için yapalım',
+      title: 'Landing ve form akışını dönüşüm için kuralım.',
+      text: 'Sayfa hızı, teklif hiyerarşisi ve form ölçümü aynı teslimde olur. Kurumsal siteyi vitrin değil, randevu ve lead noktası yaparız.',
+      serviceHref: '/web-tasarim',
+      serviceLabel: 'Web tasarım hizmeti',
+    },
+    {
+      test: () => /marka/.test(category) || /marka-dili|marka dili/.test(hay),
+      eyebrow: 'Bunu sizin için yapalım',
+      title: 'Marka dilini reklam ve sosyalde tek sisteme indirelim.',
+      text: 'Logo yetmez. Renk, mesaj ve şablonlar aynı kılavuzdan çıkar; her paylaşımda marka dağılmaz.',
+      serviceHref: '/marka-tasarim',
+      serviceLabel: 'Marka tasarımı',
+    },
+    {
+      test: () => /içerik|kamera/.test(category) || /fx5|fx3|çekim/.test(hay),
+      eyebrow: 'Bunu sizin için yapalım',
+      title: 'Stüdyo ve saha çekimini kampanya formatına çevirelim.',
+      text: 'Katalog, Reels ve reklam kırpımı aynı çekim gününden çıkar. Yenişehir stüdyosu ve saha prodüksiyonu içerik paketine dahildir.',
+      serviceHref: '/icerik-uretimi',
+      serviceLabel: 'İçerik üretimi',
+    },
+    {
+      test: () => /reklam/.test(category) || /ads|bütçe|butce|performans|yasal|google-ads/.test(hay),
+      eyebrow: 'Bunu sizin için yapalım',
+      title: 'Google ve Meta bütçesini iş sonucuna bağlayalım.',
+      text: 'Kampanyayı tıklama değil lead, randevu ve satış maliyetiyle yönetiriz. Haftalık optimizasyon, aylık yönetici özeti.',
+      serviceHref: '/dijital-reklam',
+      serviceLabel: 'Dijital reklam hizmeti',
+    },
+  ];
+
+  return (
+    offers.find((offer) => offer.test()) || {
+      eyebrow: 'Bunu sizin için yapalım',
+      title: 'Bu konuyu markanız için uygulayalım.',
+      text: 'Strateji, üretim ve medyayı aynı masada toplarız. Brief’i alınca 1 iş günü içinde kapsam ve teklif döneriz.',
+      serviceHref: '/hizmetler',
+      serviceLabel: 'Hizmetlere bak',
+    }
+  );
+}
+
+function renderOfferBox(post) {
+  const offer = offerForPost(post);
+  return `
+    <aside class="blog-offer" aria-label="Yazıdan teklife">
+      <p class="eyebrow">${escapeHtml(offer.eyebrow)}</p>
+      <h2>${escapeHtml(offer.title)}</h2>
+      <p>${escapeHtml(offer.text)}</p>
+      <div class="form-actions">
+        <a class="btn btn-primary" href="/teklif-al">Teklif Al</a>
+        <a class="btn" href="${escapeHtml(offer.serviceHref)}">${escapeHtml(offer.serviceLabel)}</a>
+        <a class="btn" href="/blog">Blog'a Dön</a>
+      </div>
+    </aside>`;
+}
+
 function coverMarkup(url, alt, className = 'blog-image') {
   if (!url) return `<div class="${className}"></div>`;
   return `<div class="${className} has-cover"><img src="${escapeHtml(assetSrc(url))}" alt="${escapeHtml(alt)}" loading="lazy" decoding="async"></div>`;
@@ -176,7 +256,9 @@ async function loadBlogDetail() {
   }
 
   const querySlug = new URLSearchParams(window.location.search).get('slug');
-  if (querySlug && !window.location.pathname.replace(/\/+$/, '').startsWith('/blog/')) {
+  const onPrettyBlogPath = window.location.pathname.replace(/\/+$/, '').startsWith('/blog/');
+  const isLocalHost = /^(localhost|127\.0\.0\.1)$/.test(window.location.hostname);
+  if (querySlug && !onPrettyBlogPath && !isLocalHost) {
     window.location.replace(detailUrl(querySlug));
     return;
   }
@@ -239,10 +321,7 @@ async function loadBlogDetail() {
     const articleHtml = prepareArticleContent(post.content || `<p>${escapeHtml(post.excerpt || '')}</p>`);
     contentEl.innerHTML = `
       ${articleHtml}
-      <div class="form-actions">
-        <a class="btn btn-primary" href="/teklif-al">Teklif Al</a>
-        <a class="btn" href="/blog">Blog'a Dön</a>
-      </div>`;
+      ${renderOfferBox(post)}`;
   }
 
   if (tocEl) {
