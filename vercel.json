@@ -1,12 +1,10 @@
 {
   "functions": {
     "api/blog-post.js": {
-      "includeFiles": "{blog-detay.html,lib/blog-detay-template.html,lib/blog.js}",
-      "runtime": "nodejs20.x"
+      "includeFiles": "{blog-detay.html,lib/blog-detay-template.html,lib/blog.js}"
     },
     "api/sitemap.js": {
-      "includeFiles": "lib/blog.js",
-      "runtime": "nodejs20.x"
+      "includeFiles": "lib/blog.js"
     }
   },
   "redirects": [
